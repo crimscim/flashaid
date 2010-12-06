@@ -123,7 +123,7 @@ var flashaidInstall = {
 
 	    if(flversion == "64bit"){//match 64bit architecture and declare command
 
-		var commandline = "cd \""+tempfolder.path+"\" && rm -f *.tar.gz* && wget http://download.macromedia.com/pub/labs/flashplayer10/flashplayer10_2_p3_64bit_linux_111710.tar.gz && tar xvf flashplayer10_2_p3_64bit_linux_111710.tar.gz && sudo mv libflashplayer.so /usr/lib/mozilla/plugins/ && sudo ln -s /usr/lib/mozilla/plugins/libflashplayer.so /usr/lib/firefox-addons/plugins/libflashplayer.so && rm -f *.tar.gz*";
+		var commandline = "cd \""+tempfolder.path+"\" && rm -f *.tar.gz* && wget http://download.macromedia.com/pub/labs/flashplayer10/flashplayer10_2_p3_64bit_linux_111710.tar.gz && tar xvf flashplayer10_2_p3_64bit_linux_111710.tar.gz && sudo chown root:root libflashplayer.so && sudo mv libflashplayer.so /usr/lib/mozilla/plugins/ && sudo ln -s /usr/lib/mozilla/plugins/libflashplayer.so /usr/lib/firefox-addons/plugins/libflashplayer.so && rm -f *.tar.gz*";
 	    }
 
 	    if(runscript == true){
