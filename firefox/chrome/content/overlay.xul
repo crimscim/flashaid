@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?xml-stylesheet href="chrome://flashaid/content/css/toolbar.css" type="text/css" ?>
+<?xml-stylesheet href="chrome://flashaid/skin/toolbar.css" type="text/css" ?>
 
 <!DOCTYPE overlay SYSTEM "chrome://flashaid/locale/flashaid.dtd">
 
 <overlay id="flashaid-overlay" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
     <script type="application/x-javascript" src="chrome://flashaid/content/scripts/functions-firstrun.js"/>
-    <script type="application/x-javascript" src="chrome://flashaid/content/scripts/functions-install.js"/>
     
     <window id="main-window">
 	<stringbundleset id="strbundles">
@@ -15,14 +14,6 @@
     </window>
     
     <toolbarpalette id="BrowserToolbarPalette">
-	<toolbarbutton id="flashaidbutton-1" label="&FLASHAIDTITLE;" tooltiptext="&FLASHAIDTITLE;" popup="flashaidpopmenu" class="toolbarbutton-1 chromeclass-toolbar-additional flashaidbutton"/>
+	<toolbarbutton id="flashaid-toolbar-button" label="&FLASHAIDTITLE;" tooltiptext="&FLASHAIDTITLE;" oncommand="window.open('chrome://flashaid/content/runner.xul', 'flashaid-runner', 'chrome,centerscreen,alwaysRaised');" class="toolbarbutton-1 chromeclass-toolbar-additional"/>
     </toolbarpalette>
-
-    <popupset>
-	<menupopup id="flashaidpopmenu">
-	    <menuitem label="&Install;" class="menuitem-iconic" image="chrome://flashaid/content/images/plus_small.png" oncommand="flashaidInstall.flashaidInstaller('install');"/>
-	    <menuitem label="&Remove;" class="menuitem-iconic" image="chrome://flashaid/content/images/minus_small.png" oncommand="flashaidInstall.flashaidInstaller('remove');"/>
-	    <menuitem label="&Preferences;" class="menuitem-iconic" image="chrome://flashaid/content/images/settings_small.png" oncommand="window.openDialog('chrome://flashaid/content/options.xul','flashaid-prefs', 'chrome,centerscreen,alwaysRaised');"/>
-	</menupopup>
-    </popupset>
 </overlay>

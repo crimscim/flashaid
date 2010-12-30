@@ -1,11 +1,60 @@
-<!ENTITY FLASHAIDTITLE "FLASH-AID">
-<!ENTITY FLASHAIDPreferences "FLASH-AID Preferences">
-<!ENTITY Install "Install">
-<!ENTITY InstallVersion "Flash version to be installed:">
-<!ENTITY Preferences "Preferences">
-<!ENTITY Remove "Remove">
+<!ENTITY AdobeInstaller "Adobe from repositories (/usr/lib/flashplugin-installer/libflashplayer.so)">
+<!ENTITY AdobeNonFree "Adobe from repositories (/usr/lib/flashplugin-nonfree/libflashplayer.so)">
+<!ENTITY AdobePartner "Adobe from partner repositories (/usr/lib/adobe-flashplugin/libflashplayer.so)">
+<!ENTITY Beta "Adobe Beta, from Adobe Labs">
+<!ENTITY CheckUpdates "Check for flash updates">
+<!ENTITY CheckUpdatesTips "When selecting the option to check for flash updates, the extension will download a very small json file from webgapps.org once a day. This file contains only the timestamp for flash versions available from Adobe, which allows the extension to determine if you have the latest version, in order to alert about available updates.">
+<!ENTITY CustomURL "Custom (http url or local path)">
+<!ENTITY Documentation "Documentation">
+<!ENTITY DocumentationTooltip "Visit Flash-Aid documentation web page at webgapps.org">
+<!ENTITY DoNotInstall "Do not install">
+<!ENTITY Execute "Execute">
+<!ENTITY ExecuteTooltip "Execute the script to remove conflicting plugins, install flash and apply tweaks.">
+<!ENTITY ExpertMode "Expert Mode">
+<!ENTITY FirefoxProfile "Firefox profile plugins folder (~/.mozilla/firefox/**/plugins)">
+<!ENTITY FLASHAIDPreferences "Flash-Aid Preferences">
+<!ENTITY FLASHAIDTITLE "Flash-Aid">
+<!ENTITY Gnash "Gnash from repositories (/usr/lib/gnash/libgnashplugin.so)">
+<!ENTITY Help "Help">
+<!ENTITY HideTips "Hide Tips">
+<!ENTITY InstallationOptions "Installation Options">
+<!ENTITY InstallTips32 "Flash-Aid has detected that your browser architecture is 32bit and selected the best plugin for you. If you want to install a different plugin or just remove flash, then click the Expert Mode.">
+<!ENTITY InstallTips64 "Flash-Aid has detected that your browser architecture is 64bit and selected the best plugin for you. If you want to install a different plugin or just remove flash, then click the Expert Mode.">
+<!ENTITY InstallVersion "Version and Source:">
+<!ENTITY Lightspark "Lightspark from repositories (/usr/lib/lightspark/liblightspark.so)">
+<!ENTITY MozillaPlugins "Mozilla plugins (~/.mozilla/plugins)">
+<!ENTITY NpviewerTweak "Npviewer tweak for 64bit system with 32bit plugin">
+<!ENTITY OPTPlugins "Minefield plugins (/opt/firefox/plugins/libflashplayer.so)">
+<!ENTITY OverrrideGPUValidation "Overrride GPU Validation (improves performance and solve fullscreen issues)">
+<!ENTITY Refresh "Refresh">
+<!ENTITY RefreshTooltip "Click to refresh the script preview">
+<!ENTITY RemovalOptions "Removal Options">
+<!ENTITY RemovalTips "The following plugins have been detected by Flash-Aid and are selected to be removed. This is essential to make sure the proper plugin, that will be installed, gets loaded by Firefox. If you cannot see any plugins listed or if want to remove an item from the removal script, then click the Expert Mode.">
+<!ENTITY Repo32 "Adobe, from repositories">
+<!ENTITY Repo64 "Adobe, from repositories (32bit with compatibility wrapper)">
+<!ENTITY RepoGnash "Gnash, from repositories">
+<!ENTITY RepoLightspark "Lightspark, from repositories">
+<!ENTITY Report "Generate Report">
+<!ENTITY ReportTip "The report feature is a script that fetches information about your system, browser and flash installation and produces a text file that is saved on your Desktop. This file can be sent to the developer for helping troubleshooting issues.">
+<!ENTITY ReportTooltip "Click here to generate a report about your system">
+<!ENTITY RepoSwfdec "Swfdec, from repositories">
+<!ENTITY Reset "Reset">
+<!ENTITY RestoreDefault "Restore Default">
+<!ENTITY ScriptPreview "Script Preview">
+<!ENTITY ScriptWarning "When you click the Execute button, the extension creates and launch a shell script in a terminal, in order to perform the necessary flash maintenance actions. Your password will be requested, since the process needs administrative privileges. You will need to restart Firefox after executing the script, which can be previewed below. The extension detects and use the best options for your system by default. However, it is recommended to run a Test before executing the script, to check if there is any dependency issues. If necessary, you can change the script options through the other tabs, using the Expert Mode.">
+<!ENTITY Search "Search">
+<!ENTITY SelectPathTip "Select a local file or type an url (only tar.gz accepted)">
 <!ENTITY SelectProgram "Select Program">
-<!ENTITY ScriptWarning "The extension will now execute a shell script to perform necessary flash maintenance actions. A terminal will open and will request your password, since the process needs administrative privileges. You will need to restart Firefox after the installation. The script to be executed is below.">
+<!ENTITY Support "Get Support">
+<!ENTITY SupportTooltip "Visit the support area of webgapps.org">
+
+<!ENTITY Swfdec "Swfdec from repositories (/usr/lib/swfdec-mozilla/libswfdecmozilla.so)">
+<!ENTITY SystemPluginF "System plugin installed manually (/usr/lib/firefox-addons/plugins/libflashplayer.so)">
+<!ENTITY SystemPlugin "System plugin installed manually (/usr/lib/mozilla/plugins/libflashplayer.so)">
+<!ENTITY TerminalPathTips "The Terminal path is required for running the extension. The default should be fine for most systems, but if you find any errors while executing the script, then select an emulator like gnome-terminal or konsole, located in the /usr/bin directory.">
 <!ENTITY Terminal "Terminal Path">
-<!ENTITY Version64bit "FLASH-AID has detected that your browser architecture is 64bit and will install the latest 64bit beta version of Flash, but you can choose the 32bit version if you prefer the stable version.">
-<!ENTITY Version32bit "FLASH-AID has detected that your browser architecture is 32bit and thus will install Flash 32bit version.">
+<!ENTITY Test "Test">
+<!ENTITY TestTooltip "Execute the script in simulation mode, to foresee possible errors and dependency issues.">
+<!ENTITY TweakingOptions "Tweaking Options">
+<!ENTITY TweakTips "Flash-Aid has detected that your system do not have the following tweaks and selected them for you. If you don't want to apply these tweaks or want to select more tweaks, then click the Expert Mode.">
+<!ENTITY Wine "Windows flash installed by Wine (~/.wine/dosdevices/c:/windows/system32/Macromed/Flash)">

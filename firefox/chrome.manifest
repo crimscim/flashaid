@@ -1,7 +1,9 @@
-content flashaid chrome/content/
-locale flashaid en-US chrome/locale/en-US/
-locale flashaid pt-BR chrome/locale/pt-BR/
-locale flashaid tr-TR chrome/locale/tr-TR/
+content   flashaid                    chrome/content/
+skin      flashaid      classic/1.0   chrome/skin/
 
-overlay chrome://browser/content/browser.xul chrome://flashaid/content/overlay.xul
-style chrome://global/content/customizeToolbar.xul chrome://flashaid/content/css/toolbar.css
+locale    flashaid  en-US         chrome/locale/en-US/
+locale    flashaid  pt-BR         chrome/locale/pt-BR/
+
+overlay chrome://browser/content/browser.xul          chrome://flashaid/content/overlay.xul
+style   chrome://global/content/customizeToolbar.xul  chrome://flashaid/skin/toolbar.css
+

@@ -1,0 +1,7 @@
+#flashaid-toolbar-button {
+  list-style-image: url("chrome://flashaid/skin/toolbar.png");
+}
+
+toolbar[iconsize="small"] #flashaid-toolbar-button {
+  list-style-image: url("chrome://flashaid/skin/toolbar-small.png");
+}
