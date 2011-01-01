@@ -51,9 +51,9 @@
 <!ENTITY SystemPluginF "Plugin instalado manualmente (/usr/lib/firefox-addons/plugins/libflashplayer.so)">
 <!ENTITY SystemPlugin "Plugin instalado manualmente (/usr/lib/mozilla/plugins/libflashplayer.so)">
 <!ENTITY Terminal "Caminho do Console">
-<!ENTITY TerminalPathTips "O caminho para o terminal é requerido para que a extensão funcione. O padrão deve servir para a maioria dos sistemas, mas se encontrar algum error ao tentar executar o script, então selecione um emulador de terminal como gnome-terminal ou konsole, localizados na pasta /usr/bin.">
+<!ENTITY TerminalPathTips "O caminho para o terminal é requerido para que a extensão funcione. O padrão deve servir para a maioria dos sistemas, mas se encontrar algum error de processo ao tentar executar o script, então selecione um emulador de terminal como gnome-terminal ou konsole, localizados na pasta /usr/bin.">
 <!ENTITY Test "Testar">
 <!ENTITY TestTooltip "Execute o script em modo de simulação, para prever possíveis erros e problemas com dependências.">
 <!ENTITY TweakingOptions "Opções de Optimização">
-<!ENTITY TweakTips "Flash-Aid detectou que seu sistema nçao possui as seguintes optimizações e as selecionou pra você. Se não deseja aplicar essas optimizações ou se deseja selecionar outras optimizações, então clique no Modo Avançado.">
+<!ENTITY TweakTips "Flash-Aid detectou que as seguintes optimizações de flash podem ser aplicadas ao seu sistema. Se deseja remover alguma dessas optimizações ou se deseja selecionar outras optimizações, então clique no Modo Avançado. Optimizações não selecionadas serão removidas, caso já tenham sido aplicadas.">
 <!ENTITY Wine "Flash para Windows instalado pelo Wine (~/.wine/dosdevices/c:/windows/system32/Macromed/Flash)">

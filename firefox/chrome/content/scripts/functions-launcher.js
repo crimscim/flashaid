@@ -11,7 +11,7 @@ var flashaidRunner = {
 		.getService(Components.interfaces.nsIPrefService)
 		.getBranch("extensions.flashaid.");
 
-	//preferences
+	//get preferences
 	var checkupdates = this.prefs.getBoolPref("updatelaert");
 	var needrestart = this.prefs.getBoolPref("needrestart");
 	var terminalpath = this.prefs.getCharPref("terminal");
@@ -19,13 +19,15 @@ var flashaidRunner = {
 	var osversion = this.prefs.getCharPref("osversion");
 	var oscodename = this.prefs.getCharPref("oscodename");
 
+	//fetch localization from strbundle
+	var strbundle = document.getElementById("flashaidstrings");
+	var messagetitle = strbundle.getString("flashaidalert");
+	var message = strbundle.getString("needrestart");
+
+	//set terminal path
 	document.getElementById("terminal").value = terminalpath;
 
-	if(needrestart === true){
-	    //fetch localization from strbundle
-	    var strbundle = document.getElementById("flashaidstrings");
-	    var messagetitle = strbundle.getString("flashaidalert");
-	    var message = strbundle.getString("needrestart");
+	if(needrestart === true){//check if user restarted the browser after running the script
 
 	    //alert user
 	    var prompts = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
@@ -34,12 +36,14 @@ var flashaidRunner = {
 	    window.close();
 	}
 
+	//toggle update check
 	if(checkupdates === false){
 	    document.getElementById("checkupdates").checked = false;
 	}else{
 	    document.getElementById("checkupdates").checked = true;
 	}
 
+	//toggle lightspark installation option
 	if(osversion === "10.10" && oscodename === "maverick"){
 
 	    //initiate file
@@ -54,6 +58,7 @@ var flashaidRunner = {
 	    document.getElementById("repolightspark").hidden = true;
 	}
 
+	//switch instalaltion options based on architecture
 	if(osString.match(/x86_64/)){
 
 	    document.getElementById("installtip32").hidden = true;
@@ -63,7 +68,11 @@ var flashaidRunner = {
 	    document.getElementById("beta").hidden = false;
 	    document.getElementById("flversion").disabled = true;
 	    try{
-		document.getElementById("flversion").value = "beta";
+		if(osversion === "8.04" || oscodename === "hardy"){
+		    document.getElementById("flversion").value = "repo64";
+		}else{
+		    document.getElementById("flversion").value = "beta";
+		}
 	    }catch(e){
 		//do nothing
 	    }
@@ -81,7 +90,7 @@ var flashaidRunner = {
 	    }
 	}
 
-	//hide all options
+	//hide and unselect all removal/tweak options
 	document.getElementById("lightspark").hidden = true;
 	document.getElementById("lightspark").checked = false;
 	document.getElementById("gnash").hidden = true;
@@ -111,9 +120,10 @@ var flashaidRunner = {
 	document.getElementById("npviewer").hidden = true;
 	document.getElementById("npviewer").checked = false;
 
+	///declare variables
 	var lightspark, swfdec, gnash, adobeinstaller, adobenonfree, adobepartner, systemplugin, systempluginf, mozilla, opt, firefox, wine, istream, pluginreg, gpu, OverrideGPUValidation, npviewer, GDK_NATIVE_WINDOWS;
 
-	//**************************check files********************************************
+	//**************************check plugins********************************************
 
 	//initiate file
 	lightspark = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
@@ -220,79 +230,23 @@ var flashaidRunner = {
 	    document.getElementById("wine").hidden = false;
 	    document.getElementById("wine").disabled = true;
 	}
-	//initiate file
-	gpu = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
-	gpu.initWithPath("/etc/adobe/mms.cfg");
-	if(gpu.exists()){
 
-	    document.getElementById("overrridegpuvalidation").hidden = false;
-	    document.getElementById("overrridegpuvalidation").checked = true;
-	    document.getElementById("overrridegpuvalidation").disabled = true;
-
-	    //read file
-	    istream = Components.classes["@mozilla.org/network/file-input-stream;1"].createInstance(Components.interfaces.nsIFileInputStream);
-	    istream.init(gpu, 0x01, 444, 0);
-	    istream.QueryInterface(Components.interfaces.nsILineInputStream);
-
-	    var line = {}, lines = [], hasmore;
-	    do {
-		hasmore = istream.readLine(line);
-		lines.push(line.value);
-
-		OverrideGPUValidation = /OverrideGPUValidation=true/.test(line.value);
-		if (OverrideGPUValidation === true) {
-		    document.getElementById("overrridegpuvalidation").hidden = true;
-		    document.getElementById("overrridegpuvalidation").checked = false;
-		    document.getElementById("overrridegpuvalidation").disabled = false;
-		}
-	    } while(hasmore);
-	    istream.close();
-	}else{
-	    document.getElementById("overrridegpuvalidation").hidden = false;
-	    document.getElementById("overrridegpuvalidation").checked = true;
-	    document.getElementById("overrridegpuvalidation").disabled = true;
-	}
+	//gpu validation
+	document.getElementById("overrridegpuvalidation").hidden = false;
+	document.getElementById("overrridegpuvalidation").checked = true;
+	document.getElementById("overrridegpuvalidation").disabled = true;
 
 	if(osString.match(/x86_64/)){
-	    //initiate file
-	    npviewer = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
-	    npviewer.initWithPath("/usr/lib/nspluginwrapper/i386/linux/npviewer");
-	    if(npviewer.exists()){
-
-		document.getElementById("npviewer").hidden = false;
-		document.getElementById("npviewer").checked = true;
-		document.getElementById("npviewer").disabled = true;
-
-		//read file
-		istream = Components.classes["@mozilla.org/network/file-input-stream;1"].createInstance(Components.interfaces.nsIFileInputStream);
-		istream.init(npviewer, 0x01, 444, 0);
-		istream.QueryInterface(Components.interfaces.nsILineInputStream);
-
-		var line = {}, lines = [], hasmore;
-		do {
-		    hasmore = istream.readLine(line);
-		    lines.push(line.value);
-
-		    GDK_NATIVE_WINDOWS = /export.*GDK_NATIVE_WINDOWS=1/.test(line.value);
-		    if (GDK_NATIVE_WINDOWS === true) {
-			document.getElementById("npviewer").hidden = true;
-			document.getElementById("npviewer").checked = false;
-			document.getElementById("npviewer").disabled = false;
-		    }
-		} while(hasmore);
-		istream.close();
-
-	    }else{
-		document.getElementById("npviewer").hidden = true;
-		document.getElementById("npviewer").checked = false;
-		document.getElementById("npviewer").disabled = false;
-	    }
+	    document.getElementById("npviewer").hidden = false;
+	    document.getElementById("npviewer").checked = true;
+	    document.getElementById("npviewer").disabled = true;
 	}else{
 	    document.getElementById("npviewer").hidden = true;
 	    document.getElementById("npviewer").checked = false;
 	    document.getElementById("npviewer").disabled = false;
 	}
-
+  
+	//toggle tips
 	if(hidetips === true){
 	    document.getElementById("hidetips").checked = true;
 	    document.getElementById("tipscript").hidden = true;
@@ -318,11 +272,14 @@ var flashaidRunner = {
 	    document.getElementById("tipcheckupdates").hidden = false;
 	    document.getElementById("tipterminalpath").hidden = false;
 	}
+
+	//update the script preview
 	flashaidRunner.scriptManager("preview");
     },
 
     scriptManager: function(aAction){
 
+	//hide script action buttons after executing
 	if(aAction === "execute"){
 	    document.getElementById("executebutton").hidden = true;
 	    document.getElementById("testbutton").hidden = true;
@@ -351,7 +308,12 @@ var flashaidRunner = {
 	var pleasewait = "echo \""+pleasewaitmessage+"\"";
 	var endlinemessage = strbundle.getString("done");
 	var endline = "echo -n \""+endlinemessage+"\" && read";
+	var removecommands = strbundle.getString("removecommands");
+	var updatecommands = strbundle.getString("updatecommands");
+	var installcommands = strbundle.getString("installcommands");
+	var tweakcommands = strbundle.getString("tweakcommands");
 
+	//check terminal binary existance
 	try{
 	    //initialize terminal with path
 	    var terminal = Components.classes["@mozilla.org/file/local;1"]
@@ -382,9 +344,10 @@ var flashaidRunner = {
 	var npviewer = document.getElementById("npviewer").checked;
 	var flversion = document.getElementById("flversion").value;
 	var customurl = document.getElementById("customurlpath").value;
+	//declare variables
 	var simulate, runscript, tarball;
 
-	if(terminalok === true){//match if necessary files exists and run the installer/remover
+	if(terminalok === true){//match if terminal binary exist, generates and run the script
 
 	    document.getElementById("testbutton").disabled = false;
 	    document.getElementById("executebutton").disabled = false;
@@ -418,6 +381,7 @@ var flashaidRunner = {
 	    }
 	    tempscript.createUnique(Components.interfaces.nsIFile.NORMAL_FILE_TYPE, 0777);
 
+	    //switch modes
 	    if(aAction === "preview"){
 		simulate = " ";
 		runscript = false;
@@ -433,10 +397,14 @@ var flashaidRunner = {
 		}
 	    }
 
+	    //declare commands
 	    if(aAction === "preview"){
 		command = bashline+newline;
 	    }else{
 		command = bashline+newline+pleasewait+newline+"sudo -k";
+	    }
+	    if(aAction !== "preview"){
+		command = command+newline+"echo '"+removecommands+"'";
 	    }
 	    if(lightspark === true){
 		command = command+newline+"sudo apt-get --yes"+simulate+"purge lightspark-common";
@@ -477,8 +445,13 @@ var flashaidRunner = {
 		    command = command+newline+"sudo rm -f /usr/lib/firefox-addons/plugins/libflashplayer.so";
 		}
 	    }
+	    if(aAction !== "preview"){
+		command = command+newline+"echo '"+updatecommands+"'";
+	    }
 	    command = command+newline+"sudo apt-get"+simulate+"update";
-
+	    if(aAction !== "preview"){
+		command = command+newline+"echo '"+installcommands+"'";
+	    }
 	    if(flversion !== "donotinstall"){
 
 		if(flversion === "repognash"){
@@ -576,7 +549,10 @@ var flashaidRunner = {
 		    }
 		}
 	    }
-
+	    if(aAction !== "preview"){
+		command = command+newline+"echo '"+tweakcommands+"'";
+	    }
+	    //generate tweak commands
 	    if(overrridegpuvalidation === true){
 
 		if(aAction !== "test"){
@@ -589,18 +565,59 @@ var flashaidRunner = {
 		    //initiate file
 		    var mmscfg = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
 		    mmscfg.initWithPath("/etc/adobe/mms.cfg");
-		    if(!mmscfg.exists()){
-			command = command+newline+"echo 'OverrideGPUValidation=true' | sudo tee /etc/adobe/mms.cfg";
+		    if(mmscfg.exists()){
+			command = command+newline+"TWEAK=$(cat /etc/adobe/mms.cfg | grep 'OverrideGPUValidation=true')";
+			command = command+newline+"if test -z \"${TWEAK}\";then";
+			command = command+newline+"echo 'OverrideGPUValidation=true' | sudo tee -a /etc/adobe/mms.cfg";
+			command = command+newline+"fi";
 		    }else{
 			command = command+newline+"echo 'OverrideGPUValidation=true' | sudo tee /etc/adobe/mms.cfg";
 		    }
+		}
+	    }else{
+		if(aAction !== "test"){
 
+		    //initiate file
+		    var mmscfg = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+		    mmscfg.initWithPath("/etc/adobe/mms.cfg");
+		    if(mmscfg.exists()){
+			command = command+newline+"cat /etc/adobe/mms.cfg | sed '/OverrideGPUValidation=true/d' | sudo tee /etc/adobe/mms.cfg";
+		    }
 		}
 	    }
+
 	    if(npviewer === true){
 
+		if(aAction !== "test"){
+		    command = command+newline+"NPVIEWER=/usr/lib/nspluginwrapper/i386/linux/npviewer";
+		    command = command+newline+"if test -f \"${NPVIEWER}\";then";
+		    command = command+newline+"TWEAK=$(cat /usr/lib/nspluginwrapper/i386/linux/npviewer | grep  'GDK_NATIVE_WINDOWS=1')";
+		    command = command+newline+"if test -z \"${TWEAK}\";then";
+		    command = command+newline+"echo '#!/bin/sh' | sudo tee /usr/lib/nspluginwrapper/i386/linux/npviewer";
+		    command = command+newline+"echo 'TARGET_OS=linux' | sudo tee -a /usr/lib/nspluginwrapper/i386/linux/npviewer";
+		    command = command+newline+"echo 'TARGET_ARCH=i386' | sudo tee -a /usr/lib/nspluginwrapper/i386/linux/npviewer";
+		    command = command+newline+"echo 'case \"$*\" in' | sudo tee -a /usr/lib/nspluginwrapper/i386/linux/npviewer";
+		    command = command+newline+"echo '*libflashplayer*)' | sudo tee -a /usr/lib/nspluginwrapper/i386/linux/npviewer";
+		    command = command+newline+"echo '	export GDK_NATIVE_WINDOWS=1' | sudo tee -a /usr/lib/nspluginwrapper/i386/linux/npviewer";
+		    command = command+newline+"echo '	;;' | sudo tee -a /usr/lib/nspluginwrapper/i386/linux/npviewer";
+		    command = command+newline+"echo 'esac' | sudo tee -a /usr/lib/nspluginwrapper/i386/linux/npviewer";
+		    command = command+newline+"echo '. /usr/lib/nspluginwrapper/noarch/npviewer' | sudo tee -a /usr/lib/nspluginwrapper/i386/linux/npviewer";
+		    command = command+newline+"fi";
+		    command = command+newline+"fi";
+		}
+	    }else{
+		if(aAction !== "test"){
+
+		    //initiate file
+		    var npviewer = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+		    npviewer.initWithPath("/usr/lib/nspluginwrapper/i386/linux/npviewer");
+		    if(npviewer.exists()){
+			command = command+newline+"cat /usr/lib/nspluginwrapper/i386/linux/npviewer | sed '/export GDK_NATIVE_WINDOWS=1/d' | sudo tee /usr/lib/nspluginwrapper/i386/linux/npviewer";
+		    }
+		}
 	    }
 
+	    //write and launch the script
 	    if(runscript === true){
 
 		//write command lines to temporary script
@@ -625,9 +642,9 @@ var flashaidRunner = {
 		var arguments = ["-e","'"+tempscript.path+"'"];
 		process.run(false, arguments, arguments.length);
 
+		//set restart pref to force restart
 		if(aAction !== "test"){
 		    this.prefs.setBoolPref("needrestart",true);
-		    //var mustclose = setTimeout("window.close();",5000);
 		}
 
 	    }else{
@@ -661,7 +678,7 @@ var flashaidRunner = {
 	var bashline = "#!/bin/bash";
 	var newline = "\n";
 	var command;
-
+	//declare commands
 	command = "echo 'Ubuntu Architecture' > ~/Desktop/firefox-report.txt";
 	command = command+newline+"echo '' >> ~/Desktop/firefox-report.txt";
 	command = command+newline+"uname -a >> ~/Desktop/firefox-report.txt";
@@ -755,8 +772,10 @@ var flashaidRunner = {
 		.getService(Components.interfaces.nsIPrefService)
 		.getBranch("extensions.flashaid.");
 
+	//get pref
 	var hidetips = this.prefs.getBoolPref("hidetips");
 
+	//toggle tips display
 	if(hidetips === false){
 	    this.prefs.setBoolPref("hidetips", true);
 	    document.getElementById("tipscript").hidden = true;
@@ -792,9 +811,11 @@ var flashaidRunner = {
 	var osString = Components.classes["@mozilla.org/network/protocol;1?name=http"]
 		.getService(Components.interfaces.nsIHttpProtocolHandler).oscpu; 
 
+	//get status
 	var advanced = document.getElementById("advanced").checked;
 	var flversion = document.getElementById("flversion").value;
 
+	//toggle display
 	if(advanced === false){
 	    document.getElementById("lightspark").hidden = false;
 	    document.getElementById("lightspark").disabled = false;
@@ -851,6 +872,7 @@ var flashaidRunner = {
 	    //get checked value
 	    var checkupdates = document.getElementById("checkupdates").checked;
 
+	    //update pref
 	    if(checkupdates === false){
 		this.prefs.setBoolPref("updatelaert",true);
 	    }else{
@@ -865,8 +887,10 @@ var flashaidRunner = {
 	var osString = Components.classes["@mozilla.org/network/protocol;1?name=http"]
 		.getService(Components.interfaces.nsIHttpProtocolHandler).oscpu; 
 
+	//get selected install option
 	var flversion = document.getElementById("flversion").value;
 
+	//toggle custom field display
 	if(flversion !== "customurl"){
 	    document.getElementById("customurlpath").value = "";
 	    document.getElementById("customurlpath").hidden = true;
@@ -874,7 +898,10 @@ var flashaidRunner = {
 	    document.getElementById("customurlpathtip").hidden = true;
 	    document.getElementById("customurlpathsearch").hidden = true;
 	    document.getElementById("customurlpathreset").hidden = true;
-
+	    if(flversion === "repo64"){
+		document.getElementById("npviewer").hidden = false;
+		document.getElementById("npviewer").checked = true;
+	    }
 	}else{
 	    document.getElementById("customurlpath").hidden = false;
 	    document.getElementById("customurlpath").disabled = false;
@@ -918,9 +945,27 @@ var flashaidRunner = {
 			  .getService(Components.interfaces.nsIPrefService)
 			  .getBranch("extensions.flashaid.");
 
+	//reset field
 	if(aPref === "terminal"){
-	    document.getElementById("terminal").value = "/usr/bin/x-terminal-emulator";
-	    this.prefs.setCharPref("terminal", "/usr/bin/x-terminal-emulator");
+
+	    //initiate file
+	    var gnometerminal = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+	    gnometerminal.initWithPath("/usr/bin/gnome-terminal");
+	    if(gnometerminal.exists()){
+		document.getElementById("terminal").value = "/usr/bin/gnome-terminal";
+		this.prefs.setCharPref("terminal","/usr/bin/gnome-terminal");
+	    }else{
+		//initiate file
+		var konsole = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+		konsole.initWithPath("/usr/bin/konsole");
+		if(konsole.exists()){
+		    document.getElementById("terminal").value = "/usr/bin/konsole";
+		    this.prefs.setCharPref("terminal","/usr/bin/konsole");
+		}else{
+		    document.getElementById("terminal").value = "/usr/bin/x-terminal-emulator";
+		    this.prefs.setCharPref("terminal", "/usr/bin/x-terminal-emulator");
+		}
+	    }
 	}
 	if(aPref === "customurlpath"){
 	    document.getElementById("customurlpath").value = "";

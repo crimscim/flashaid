@@ -54,28 +54,12 @@ var flashaidFirstrun = {
 		//set preferences
 		this.prefs.setBoolPref("firstrun",false);
 		this.prefs.setCharPref("version",current);
-
-		//automatic installer
-		var installer = setTimeout("flashaidInstall.flashaidInstaller('install')",3000);
 	    }
 
 	    if(ver !== current && !firstrun){//actions specific for extension updates
 
 		//set preferences
 		this.prefs.setCharPref("version",current);
-		
-		//var testversion = ver.replace(/rc/,"");
-
-		//if (testversion !== "1.0.13" && testversion !== "1.0.12"){
-		    //get os architecture
-		    //var osString = Components.classes["@mozilla.org/network/protocol;1?name=http"]
-			    //.getService(Components.interfaces.nsIHttpProtocolHandler).oscpu; 
-			    
-		    //if(osString.match(/x86_64/)){//match 64bit system
-			//automatic installer
-			//var installer = setTimeout("flashaidInstall.flashaidInstaller('install')",3000);
-		    //}
-		//}
 	    }
 	}
     },
@@ -122,6 +106,19 @@ var flashaidFirstrun = {
 	} while(hasmore);
 	istream.close();
 
+	//initiate file
+	var gnometerminal = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+	gnometerminal.initWithPath("/usr/bin/gnome-terminal");
+	if(gnometerminal.exists()){
+	     this.prefs.setCharPref("terminal","/usr/bin/gnome-terminal");
+	}else{
+	    //initiate file
+	    var konsole = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+	    konsole.initWithPath("/usr/bin/konsole");
+	    if(konsole.exists()){
+		this.prefs.setCharPref("terminal","/usr/bin/konsole");
+	    }
+	}
     },
 
     flashBetaUpdate: function(){
@@ -245,5 +242,5 @@ var flashaidFirstrun = {
 //event listeners to call the functions when Firefox starts
 window.addEventListener("load",function(){ flashaidFirstrun.init(); },true);
 window.addEventListener("load", function(e) { setTimeout("flashaidFirstrun.getSysInfo()",500); }, false);
-window.addEventListener("load", function(e) { setTimeout("flashaidFirstrun.flashBetaUpdate()",15000); }, false);
+window.addEventListener("load", function(e) { setTimeout("flashaidFirstrun.flashBetaUpdate()",5000); }, false);
 window.addEventListener("unload", function(e) { flashaidFirstrun.resetNeedRestart(); }, false);

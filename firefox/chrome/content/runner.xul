@@ -167,10 +167,7 @@
 	    <hbox>
 		<checkbox label="&ExpertMode;" id="advanced" size="30" checked="false" onclick="flashaidRunner.optionsAdvanced();"/>
 		<spacer width="5" flex="0"/>
-		<checkbox label="&HideTips;" id="hidetips" size="30" checked="false" onclick="flashaidRunner.optionsToggleTips();"/>
-		<spacer width="10" flex="1"/>
-		<image src="chrome://flashaid/skin/icon48.png"/>
-		<spacer width="10" flex="0"/>
+		<checkbox label="&HideTips;" id="hidetips" size="30" hidden="true" checked="false" onclick="flashaidRunner.optionsToggleTips();"/>
 	    </hbox>
 	    <spacer height="40" flex="0"/>
 	</vbox>

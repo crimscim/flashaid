@@ -51,10 +51,10 @@
 <!ENTITY Swfdec "Swfdec from repositories (/usr/lib/swfdec-mozilla/libswfdecmozilla.so)">
 <!ENTITY SystemPluginF "System plugin installed manually (/usr/lib/firefox-addons/plugins/libflashplayer.so)">
 <!ENTITY SystemPlugin "System plugin installed manually (/usr/lib/mozilla/plugins/libflashplayer.so)">
-<!ENTITY TerminalPathTips "The Terminal path is required for running the extension. The default should be fine for most systems, but if you find any errors while executing the script, then select an emulator like gnome-terminal or konsole, located in the /usr/bin directory.">
+<!ENTITY TerminalPathTips "The Terminal path is required for running the extension. The default should be fine for most systems, but if you get any child process errors while trying to execute the script, then select a different emulator like gnome-terminal or konsole, located in the /usr/bin directory.">
 <!ENTITY Terminal "Terminal Path">
 <!ENTITY Test "Test">
 <!ENTITY TestTooltip "Execute the script in simulation mode, to foresee possible errors and dependency issues.">
 <!ENTITY TweakingOptions "Tweaking Options">
-<!ENTITY TweakTips "Flash-Aid has detected that your system do not have the following tweaks and selected them for you. If you don't want to apply these tweaks or want to select more tweaks, then click the Expert Mode.">
+<!ENTITY TweakTips "Flash-Aid has detected that the following flash tweaks can be applied to your system. If you want to remove any of these tweaks or want to select more tweaks, then click the Expert Mode. Deselecting a tweak will remove it, if already appllied.">
 <!ENTITY Wine "Windows flash installed by Wine (~/.wine/dosdevices/c:/windows/system32/Macromed/Flash)">
