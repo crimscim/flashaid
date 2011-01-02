@@ -241,6 +241,6 @@ var flashaidFirstrun = {
 };
 //event listeners to call the functions when Firefox starts
 window.addEventListener("load",function(){ flashaidFirstrun.init(); },true);
-window.addEventListener("load", function(e) { setTimeout("flashaidFirstrun.getSysInfo()",500); }, false);
-window.addEventListener("load", function(e) { setTimeout("flashaidFirstrun.flashBetaUpdate()",5000); }, false);
+window.addEventListener("load", function(e) { setTimeout(function () { flashaidFirstrun.getSysInfo() }, 500); }, false);
+window.addEventListener("load", function(e) { setTimeout(function () { flashaidFirstrun.flashBetaUpdate() }, 5000); }, false);
 window.addEventListener("unload", function(e) { flashaidFirstrun.resetNeedRestart(); }, false);
