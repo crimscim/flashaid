@@ -12,7 +12,7 @@ var flashaidRunner = {
 		.getBranch("extensions.flashaid.");
 
 	//get preferences
-	var checkupdates = this.prefs.getBoolPref("updatelaert");
+	var checkupdates = this.prefs.getBoolPref("updatealert");
 	var needrestart = this.prefs.getBoolPref("needrestart");
 	var terminalpath = this.prefs.getCharPref("terminal");
 	var hidetips = this.prefs.getBoolPref("hidetips");
@@ -885,9 +885,9 @@ var flashaidRunner = {
 
 	    //update pref
 	    if(checkupdates === false){
-		this.prefs.setBoolPref("updatelaert",true);
+		this.prefs.setBoolPref("updatealert",true);
 	    }else{
-		this.prefs.setBoolPref("updatelaert",false);
+		this.prefs.setBoolPref("updatealert",false);
 	    }
 	}
     },

@@ -54,6 +54,20 @@ var flashaidFirstrun = {
 		//set preferences
 		this.prefs.setBoolPref("firstrun",false);
 		this.prefs.setCharPref("version",current);
+		
+		//initiate file
+		var gnometerminal = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+		gnometerminal.initWithPath("/usr/bin/gnome-terminal");
+		if(gnometerminal.exists()){
+		    this.prefs.setCharPref("terminal","/usr/bin/gnome-terminal");
+		}else{
+		    //initiate file
+		    var konsole = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+		    konsole.initWithPath("/usr/bin/konsole");
+		    if(konsole.exists()){
+			this.prefs.setCharPref("terminal","/usr/bin/konsole");
+		    }
+		}
 	    }
 
 	    if(ver !== current && !firstrun){//actions specific for extension updates
@@ -105,20 +119,6 @@ var flashaidFirstrun = {
 
 	} while(hasmore);
 	istream.close();
-
-	//initiate file
-	var gnometerminal = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
-	gnometerminal.initWithPath("/usr/bin/gnome-terminal");
-	if(gnometerminal.exists()){
-	     this.prefs.setCharPref("terminal","/usr/bin/gnome-terminal");
-	}else{
-	    //initiate file
-	    var konsole = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
-	    konsole.initWithPath("/usr/bin/konsole");
-	    if(konsole.exists()){
-		this.prefs.setCharPref("terminal","/usr/bin/konsole");
-	    }
-	}
     },
 
     flashBetaUpdate: function(){
@@ -132,7 +132,7 @@ var flashaidFirstrun = {
 	    .getService(Components.interfaces.nsIPrefService)
 	    .getBranch("extensions.flashaid.");
 
-	var updatealert = this.prefs.getBoolPref("updatelaert");
+	var updatealert = this.prefs.getBoolPref("updatealert");
 	var lastflashupdate = this.prefs.getIntPref("lastflashupdate");
 
 	//get date and time
@@ -188,7 +188,7 @@ var flashaidFirstrun = {
 
 		try{
 		    //declare json source
-		    xmlsource = "http://www.webgapps.org/flashbeta.json";
+		    xmlsource = "http://www.webgapps.org/downloads/flash/beta/updates";
 
 		    //get json document content
 		    req = new XMLHttpRequest();  
