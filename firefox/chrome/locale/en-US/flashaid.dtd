@@ -4,6 +4,7 @@
 <!ENTITY Beta "Adobe Beta, from Adobe Labs">
 <!ENTITY CheckUpdates "Check for flash updates">
 <!ENTITY CheckUpdatesTips "When selecting the option to check for flash updates, the extension will download a very small json file from webgapps.org once a day. This file contains only the timestamp for flash versions available from Adobe, which allows the extension to determine if you have the latest version, in order to alert about available updates.">
+<!ENTITY Chrome "Google, from Chrome">
 <!ENTITY CustomURL "Custom (http url or local path)">
 <!ENTITY Documentation "Documentation">
 <!ENTITY DocumentationTooltip "Visit Flash-Aid documentation web page at webgapps.org">
@@ -47,7 +48,6 @@
 <!ENTITY SelectProgram "Select Program">
 <!ENTITY Support "Get Support">
 <!ENTITY SupportTooltip "Visit the support area of webgapps.org">
-
 <!ENTITY Swfdec "Swfdec from repositories (/usr/lib/swfdec-mozilla/libswfdecmozilla.so)">
 <!ENTITY SystemPluginF "System plugin installed manually (/usr/lib/firefox-addons/plugins/libflashplayer.so)">
 <!ENTITY SystemPlugin "System plugin installed manually (/usr/lib/mozilla/plugins/libflashplayer.so)">

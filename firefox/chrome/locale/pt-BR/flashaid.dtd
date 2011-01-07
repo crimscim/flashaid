@@ -4,6 +4,7 @@
 <!ENTITY Beta "Adobe Beta, da Adobe Labs">
 <!ENTITY CheckUpdates "Checar por atualizações do flash">
 <!ENTITY CheckUpdatesTips "Quando selecionada a opção para checar por atualizações do flash, a extensão irá baixar um arquivo json bem pequeno de webgapps.org uma vez por dia. Este arquivo contém apenas a estampa de tempo das versões flash da Adobe, o que permite à extensão determinar se você possui a versão mais recente, para poder alertá-lo sobre atualizações disponíveis.">
+<!ENTITY Chrome "Google, from Chrome">
 <!ENTITY CustomURL "Personalizado (http url ou caminho local)">
 <!ENTITY Documentation "Documentação">
 <!ENTITY DocumentationTooltip "Visite a página de documentação do Flash-Aid no site webgapps.org (inglês)">

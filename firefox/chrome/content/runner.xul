@@ -55,6 +55,7 @@
 				      <menuitem id="repo32" label="&Repo32;" value="repo32"/>
 				      <menuitem id="repo64" label="&Repo64;" value="repo64"/>
 				      <menuitem id="beta" label="&Beta;" value="beta" selected="true"/>
+				      <menuitem id="googlechrome" label="&Chrome;" value="googlechrome"/>
 				      <menuitem id="repognash" label="&RepoGnash;" value="repognash"/>
 				      <menuitem id="reposwfdec" label="&RepoSwfdec;" value="reposwfdec"/>
 				      <menuitem id="repolightspark" label="&RepoLightspark;" value="repolightspark"/>

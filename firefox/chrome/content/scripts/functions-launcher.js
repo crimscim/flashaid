@@ -66,6 +66,7 @@ var flashaidRunner = {
 	    document.getElementById("repo32").hidden = true;
 	    document.getElementById("repo64").hidden = false;
 	    document.getElementById("beta").hidden = false;
+	    document.getElementById("googlechrome").hidden = true;
 	    document.getElementById("flversion").disabled = true;
 	    try{
 		if(osversion === "8.04" || oscodename === "hardy"){
@@ -87,6 +88,14 @@ var flashaidRunner = {
 		document.getElementById("flversion").value = "beta";
 	    }catch(e){
 		//do nothing
+	    }
+	    //initiate file
+	    var googlechrome = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+	    googlechrome.initWithPath("/opt/google/chrome/libgcflashplayer.so");
+	    if(googlechrome.exists()){
+		document.getElementById("googlechrome").hidden = false;
+	    }else{
+		document.getElementById("googlechrome").hidden = true;
 	    }
 	}
 
@@ -441,7 +450,7 @@ var flashaidRunner = {
 		if(systemplugin === true){
 		    command = command+newline+"sudo rm -f /usr/lib/mozilla/plugins/libflashplayer.so";
 		}
-		if(systemplugin === true){
+		if(systempluginf === true){
 		    command = command+newline+"sudo rm -f /usr/lib/firefox-addons/plugins/libflashplayer.so";
 		}
 	    }
@@ -515,6 +524,11 @@ var flashaidRunner = {
 			if(aAction !== "test"){
 			    command = command+newline+"sudo ln -s /usr/lib/mozilla/plugins/libflashplayer.so /opt/firefox/plugins/libflashplayer.so";
 			}
+		    }
+		}
+		if(flversion === "googlechrome"){
+		    if(aAction !== "test"){
+			command = command+newline+"sudo ln -s /opt/google/chrome/libgcflashplayer.so /usr/lib/mozilla/plugins/libflashplayer.so";
 		    }
 		}
 		if(flversion === "customurl"){
