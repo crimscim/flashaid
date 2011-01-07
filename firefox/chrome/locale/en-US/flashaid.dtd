@@ -26,7 +26,7 @@
 <!ENTITY MozillaPlugins "Mozilla plugins (~/.mozilla/plugins)">
 <!ENTITY NpviewerTweak "Npviewer tweak for 64bit system with 32bit plugin">
 <!ENTITY OPTPlugins "Minefield plugins (/opt/firefox/plugins/libflashplayer.so)">
-<!ENTITY OverrrideGPUValidation "Overrride GPU Validation (improves performance and solve fullscreen issues)">
+<!ENTITY OverrideGPUValidation "Override GPU Validation (improves performance and solve fullscreen issues)">
 <!ENTITY Refresh "Refresh">
 <!ENTITY RefreshTooltip "Click to refresh the script preview">
 <!ENTITY RemovalOptions "Removal Options">

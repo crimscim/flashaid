@@ -44,7 +44,10 @@ var flashaidRunner = {
 	}
 
 	//toggle lightspark installation option
-	if(osversion === "10.10" && oscodename === "maverick"){
+	if(osversion === "10.10" || osversion === "11.04" || oscodename === "maverick" || oscodename === "natty"){
+	  
+	    //hide swfdec install
+	    document.getElementById("reposwfdec").hidden = true;
 
 	    //initiate file
 	    var sources = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
@@ -124,8 +127,8 @@ var flashaidRunner = {
 	document.getElementById("firefox").checked = false;
 	document.getElementById("wine").hidden = true;
 	document.getElementById("wine").checked = false;
-	document.getElementById("overrridegpuvalidation").hidden = true;
-	document.getElementById("overrridegpuvalidation").checked = false;
+	document.getElementById("overridegpuvalidation").hidden = true;
+	document.getElementById("overridegpuvalidation").checked = false;
 	document.getElementById("npviewer").hidden = true;
 	document.getElementById("npviewer").checked = false;
 
@@ -241,9 +244,9 @@ var flashaidRunner = {
 	}
 
 	//gpu validation
-	document.getElementById("overrridegpuvalidation").hidden = false;
-	document.getElementById("overrridegpuvalidation").checked = true;
-	document.getElementById("overrridegpuvalidation").disabled = true;
+	document.getElementById("overridegpuvalidation").hidden = false;
+	document.getElementById("overridegpuvalidation").checked = true;
+	document.getElementById("overridegpuvalidation").disabled = true;
 
 	if(osString.match(/x86_64/)){
 	    document.getElementById("npviewer").hidden = false;
@@ -349,7 +352,7 @@ var flashaidRunner = {
 	var opt = document.getElementById("opt").checked;
 	var firefox = document.getElementById("firefox").checked;
 	var wine = document.getElementById("wine").checked;
-	var overrridegpuvalidation = document.getElementById("overrridegpuvalidation").checked;
+	var overridegpuvalidation = document.getElementById("overridegpuvalidation").checked;
 	var npviewer = document.getElementById("npviewer").checked;
 	var flversion = document.getElementById("flversion").value;
 	var customurl = document.getElementById("customurlpath").value;
@@ -578,7 +581,7 @@ var flashaidRunner = {
 		command = command+newline+"echo '"+tweakcommands+"'";
 	    }
 	    //generate tweak commands
-	    if(overrridegpuvalidation === true){
+	    if(overridegpuvalidation === true){
 
 		if(aAction !== "test"){
 		    //initiate folder
@@ -866,8 +869,8 @@ var flashaidRunner = {
 	    document.getElementById("firefox").disabled = false;
 	    document.getElementById("wine").hidden = false;
 	    document.getElementById("wine").disabled = false;
-	    document.getElementById("overrridegpuvalidation").hidden = false;
-	    document.getElementById("overrridegpuvalidation").disabled = false;
+	    document.getElementById("overridegpuvalidation").hidden = false;
+	    document.getElementById("overridegpuvalidation").disabled = false;
 	    if(osString.match(/x86_64/)){
 		document.getElementById("npviewer").hidden = false;
 		document.getElementById("npviewer").disabled = false;

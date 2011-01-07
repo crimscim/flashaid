@@ -114,7 +114,7 @@
 			    <spacer height="5" flex="0"/>
 			    <textbox id="tiptweaks" value="&TweakTips;" readonly="true" multiline="true" cols="80" rows="4" flex="0"/>
 			    <spacer height="20" flex="0"/>
-			    <checkbox label="&OverrrideGPUValidation;" id="overrridegpuvalidation" size="30" checked="false" hidden="true"/>
+			    <checkbox label="&OverrideGPUValidation;" id="overridegpuvalidation" size="30" checked="false" hidden="true"/>
 			    <checkbox label="&NpviewerTweak;" id="npviewer" size="30" checked="false" hidden="true"/>
 			    <spacer height="10" flex="1"/>
 			</vbox>
