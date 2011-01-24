@@ -503,24 +503,24 @@ var flashaidRunner = {
 
 							if(osString.match(/i686/)){
 								if(aAction === "test"){
-									command = command+newline+"cd \""+tempfolder.path+"\" && rm -f *.tar.gz* && wget http://www.webgapps.org/downloads/flash/beta/flashplayer64 && tar xvf flashplayer64 && rm -f libflashplayer.so && rm -f flashplayer64";
-									command = command+newline+"cd \""+tempfolder.path+"\" && rm -f *.tar.gz* && wget http://www.webgapps.org/downloads/flash/beta/flashplayer32 && tar xvf flashplayer32 && rm -f libflashplayer.so && rm -f flashplayer32";
+									command = command+newline+"cd \""+tempfolder.path+"\" && rm -f flashplayer64* && wget http://www.webgapps.org/downloads/flash/beta/flashplayer64 && tar xvf flashplayer64 && rm -f libflashplayer.so && rm -f flashplayer64*";
+									command = command+newline+"cd \""+tempfolder.path+"\" && rm -f flashplayer32* && wget http://www.webgapps.org/downloads/flash/beta/flashplayer32 && tar xvf flashplayer32 && rm -f libflashplayer.so && rm -f flashplayer32*";
 								}else{
-									command = command+newline+"cd \""+tempfolder.path+"\" && rm -f *.tar.gz* && wget http://www.webgapps.org/downloads/flash/beta/flashplayer64 && tar xvf flashplayer64 && sudo chown root:root libflashplayer.so && sudo mv libflashplayer.so /usr/lib/mozilla/plugins/ && sudo ln -s /usr/lib/mozilla/plugins/libflashplayer.so /usr/lib/firefox-addons/plugins/libflashplayer.so && rm -f flashplayer64 && mkdir ~/.mozilla/plugins/";
-									command = command+newline+"cd \""+tempfolder.path+"\" && rm -f *.tar.gz* && wget http://www.webgapps.org/downloads/flash/beta/flashplayer32 && tar xvf flashplayer32 && mv libflashplayer.so ~/.mozilla/plugins/ && rm -f flashplayer32";
+									command = command+newline+"cd \""+tempfolder.path+"\" && rm -f flashplayer64* && wget http://www.webgapps.org/downloads/flash/beta/flashplayer64 && tar xvf flashplayer64 && sudo chown root:root libflashplayer.so && sudo mv libflashplayer.so /usr/lib/mozilla/plugins/ && sudo ln -s /usr/lib/mozilla/plugins/libflashplayer.so /usr/lib/firefox-addons/plugins/libflashplayer.so && rm -f flashplayer64* && mkdir ~/.mozilla/plugins/";
+									command = command+newline+"cd \""+tempfolder.path+"\" && rm -f flashplayer32* && wget http://www.webgapps.org/downloads/flash/beta/flashplayer32 && tar xvf flashplayer32 && mv libflashplayer.so ~/.mozilla/plugins/ && rm -f flashplayer32*";
 								}
 							}else{
 								if(aAction === "test"){
-									command = command+newline+"cd \""+tempfolder.path+"\" && rm -f *.tar.gz* && wget http://www.webgapps.org/downloads/flash/beta/flashplayer64 && tar xvf flashplayer64 && rm -f libflashplayer.so && rm -f flashplayer64";
+									command = command+newline+"cd \""+tempfolder.path+"\" && rm -f flashplayer64* && wget http://www.webgapps.org/downloads/flash/beta/flashplayer64 && tar xvf flashplayer64 && rm -f libflashplayer.so && rm -f flashplayer64*";
 								}else{
-									command = command+newline+"cd \""+tempfolder.path+"\" && rm -f *.tar.gz* && wget http://www.webgapps.org/downloads/flash/beta/flashplayer64 && tar xvf flashplayer64 && sudo chown root:root libflashplayer.so && sudo mv libflashplayer.so /usr/lib/mozilla/plugins/ && sudo ln -s /usr/lib/mozilla/plugins/libflashplayer.so /usr/lib/firefox-addons/plugins/libflashplayer.so && rm -f flashplayer64";
+									command = command+newline+"cd \""+tempfolder.path+"\" && rm -f flashplayer64* && wget http://www.webgapps.org/downloads/flash/beta/flashplayer64 && tar xvf flashplayer64 && sudo chown root:root libflashplayer.so && sudo mv libflashplayer.so /usr/lib/mozilla/plugins/ && sudo ln -s /usr/lib/mozilla/plugins/libflashplayer.so /usr/lib/firefox-addons/plugins/libflashplayer.so && rm -f flashplayer64*";
 								}
 							}
 						}else{
 							if(aAction === "test"){
-								command = command+newline+"cd \""+tempfolder.path+"\" && rm -f *.tar.gz* && wget http://www.webgapps.org/downloads/flash/beta/flashplayer32 && tar xvf flashplayer32 && rm -f libflashplayer.so && rm -f flashplayer32";
+								command = command+newline+"cd \""+tempfolder.path+"\" && rm -f flashplayer32* && wget http://www.webgapps.org/downloads/flash/beta/flashplayer32 && tar xvf flashplayer32 && rm -f libflashplayer.so && rm -f flashplayer32*";
 							}else{
-								command = command+newline+"cd \""+tempfolder.path+"\" && rm -f *.tar.gz* && wget http://www.webgapps.org/downloads/flash/beta/flashplayer32 && tar xvf flashplayer32 && sudo chown root:root libflashplayer.so && sudo mv libflashplayer.so /usr/lib/mozilla/plugins/ && sudo ln -s /usr/lib/mozilla/plugins/libflashplayer.so /usr/lib/firefox-addons/plugins/libflashplayer.so && rm -f flashplayer32";
+								command = command+newline+"cd \""+tempfolder.path+"\" && rm -f flashplayer32* && wget http://www.webgapps.org/downloads/flash/beta/flashplayer32 && tar xvf flashplayer32 && sudo chown root:root libflashplayer.so && sudo mv libflashplayer.so /usr/lib/mozilla/plugins/ && sudo ln -s /usr/lib/mozilla/plugins/libflashplayer.so /usr/lib/firefox-addons/plugins/libflashplayer.so && rm -f flashplayer32*";
 							}
 						}
 						if(opt === true){
