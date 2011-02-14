@@ -88,6 +88,9 @@ var flashaidFirstrun = {
 
 		getSysInfo: function(){
 
+			//declare release info
+			var version, codename;
+
 			//access preferences interface
 			this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
 			.getService(Components.interfaces.nsIPrefService)
@@ -99,34 +102,34 @@ var flashaidFirstrun = {
 			.createInstance(Components.interfaces.nsILocalFile);
 			sourcefile.initWithPath(sourcefile_path);
 
-			//declare release info
-			var version, codename;
+			if(sourcefile.exists){
 
-			//read sourcefile and fetch lines with release info
-			var istream = Components.classes["@mozilla.org/network/file-input-stream;1"].
-			createInstance(Components.interfaces.nsIFileInputStream);
-			istream.init(sourcefile, 0x01, 0444, 0);
-			istream.QueryInterface(Components.interfaces.nsILineInputStream);
+				//read sourcefile and fetch lines with release info
+				var istream = Components.classes["@mozilla.org/network/file-input-stream;1"].
+				createInstance(Components.interfaces.nsIFileInputStream);
+				istream.init(sourcefile, 0x01, 0444, 0);
+				istream.QueryInterface(Components.interfaces.nsILineInputStream);
 
-			var line = {}, lines = [], hasmore;
-			do {
-				hasmore = istream.readLine(line);
-				lines.push(line.value);
+				var line = {}, lines = [], hasmore;
+				do {
+					hasmore = istream.readLine(line);
+					lines.push(line.value);
 
-				var matchversion = /DISTRIB_RELEASE=/.test(line.value);
-				var matchcodename = /DISTRIB_CODENAME=/.test(line.value);
+					var matchversion = /DISTRIB_RELEASE=/.test(line.value);
+					var matchcodename = /DISTRIB_CODENAME=/.test(line.value);
 
-				if (matchversion == true) {
-					version = line.value.replace(/DISTRIB_RELEASE=/g, "");
-					this.prefs.setCharPref("osversion",version);
-				}
-				if (matchcodename == true) {
-					var codename = line.value.replace(/DISTRIB_CODENAME=/g, "");
-					this.prefs.setCharPref("oscodename",codename);
-				}
+					if (matchversion == true) {
+						version = line.value.replace(/DISTRIB_RELEASE=/g, "");
+						this.prefs.setCharPref("osversion",version);
+					}
+					if (matchcodename == true) {
+						var codename = line.value.replace(/DISTRIB_CODENAME=/g, "");
+						this.prefs.setCharPref("oscodename",codename);
+					}
 
-			} while(hasmore);
-			istream.close();
+				} while(hasmore);
+				istream.close();
+			}
 		},
 
 		flashBetaUpdate: function(){

@@ -6,4 +6,3 @@ locale    flashaid  pt-BR         chrome/locale/pt-BR/
 
 overlay chrome://browser/content/browser.xul          chrome://flashaid/content/overlay.xul
 style   chrome://global/content/customizeToolbar.xul  chrome://flashaid/skin/toolbar.css
-
