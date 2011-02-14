@@ -201,6 +201,7 @@ var flashaidFirstrun = {
 						//get json document content
 						req = new XMLHttpRequest();  
 						req.open('GET', xmlsource, false);   
+						req.channel.loadFlags |= Components.interfaces.nsIRequest.LOAD_BYPASS_CACHE;
 						req.send(null);  
 						if(req.status === 200) {//match if data has been downloaded and execute function
 
