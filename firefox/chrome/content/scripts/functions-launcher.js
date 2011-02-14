@@ -129,11 +129,13 @@ var flashaidRunner = {
 			document.getElementById("wine").checked = false;
 			document.getElementById("overridegpuvalidation").hidden = true;
 			document.getElementById("overridegpuvalidation").checked = false;
+			document.getElementById("enablelinuxhwvideodecode").hidden = true;
+			document.getElementById("enablelinuxhwvideodecode").checked = false;
 			document.getElementById("npviewer").hidden = true;
 			document.getElementById("npviewer").checked = false;
 
 			///declare variables
-			var lightspark, swfdec, gnash, adobeinstaller, adobenonfree, adobepartner, systemplugin, systempluginf, mozilla, opt, firefox, wine, istream, pluginreg, gpu, OverrideGPUValidation, npviewer, GDK_NATIVE_WINDOWS;
+			var lightspark, swfdec, gnash, adobeinstaller, adobenonfree, adobepartner, systemplugin, systempluginf, mozilla, opt, firefox, wine, istream, pluginreg, gpu, OverrideGPUValidation, EnableLinuxHWVideoDecode, vdpauso, npviewer, GDK_NATIVE_WINDOWS;
 
 			//**************************check plugins********************************************
 
@@ -248,6 +250,15 @@ var flashaidRunner = {
 			document.getElementById("overridegpuvalidation").checked = true;
 			document.getElementById("overridegpuvalidation").disabled = true;
 
+			//initiate file
+			vdpauso = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+			vdpauso.initWithPath("/usr/lib/vdpau/libvdpau_nvidia.so.1");
+			if(vdpauso.exists()){
+				document.getElementById("enablelinuxhwvideodecode").hidden = false;
+				document.getElementById("enablelinuxhwvideodecode").checked = true;
+				document.getElementById("enablelinuxhwvideodecode").disabled = true;
+			}
+
 			if(osString.match(/x86_64/)){
 				document.getElementById("npviewer").hidden = false;
 				document.getElementById("npviewer").checked = true;
@@ -294,6 +305,7 @@ var flashaidRunner = {
 			//hide script action buttons after executing
 			if(aAction === "execute"){
 				document.getElementById("executebutton").hidden = true;
+				document.getElementById("exportbutton").hidden = true;
 				document.getElementById("testbutton").hidden = true;
 				document.getElementById("refreshbutton").hidden = true;
 			}
@@ -324,6 +336,8 @@ var flashaidRunner = {
 			var updatecommands = strbundle.getString("updatecommands");
 			var installcommands = strbundle.getString("installcommands");
 			var tweakcommands = strbundle.getString("tweakcommands");
+			var exported = strbundle.getString("exported");
+			var messagetitle = strbundle.getString("flashaidmessage");
 
 			//check terminal binary existance
 			try{
@@ -353,6 +367,7 @@ var flashaidRunner = {
 			var firefox = document.getElementById("firefox").checked;
 			var wine = document.getElementById("wine").checked;
 			var overridegpuvalidation = document.getElementById("overridegpuvalidation").checked;
+			var enablelinuxhwvideodecode = document.getElementById("enablelinuxhwvideodecode").checked;
 			var npviewer = document.getElementById("npviewer").checked;
 			var flversion = document.getElementById("flversion").value;
 			var customurl = document.getElementById("customurlpath").value;
@@ -363,6 +378,7 @@ var flashaidRunner = {
 
 				document.getElementById("testbutton").disabled = false;
 				document.getElementById("executebutton").disabled = false;
+				document.getElementById("exportbutton").disabled = false;
 
 				//declare temp folder
 				var tempfolder = Components.classes["@mozilla.org/file/directory_service;1"]
@@ -393,20 +409,23 @@ var flashaidRunner = {
 				}
 				tempscript.createUnique(Components.interfaces.nsIFile.NORMAL_FILE_TYPE, 0777);
 
+				//declare desktop folder
+				var desktop = Components.classes['@mozilla.org/file/directory_service;1']
+				.getService(Components.interfaces.nsIProperties)
+				.get("Desk", Components.interfaces.nsILocalFile);
+
 				//switch modes
 				if(aAction === "preview"){
 					simulate = " ";
 					runscript = false;
 				}else{
-
-					runscript = true;
-
 					if(aAction === "test"){
 						simulate = " --dry-run ";
 					}
-					if(aAction === "execute"){
+					if(aAction === "execute" || aAction === "export"){
 						simulate = " ";
 					}
+					runscript = true;
 				}
 
 				//declare commands
@@ -580,37 +599,45 @@ var flashaidRunner = {
 				if(aAction !== "preview"){
 					command = command+newline+"echo '"+tweakcommands+"'";
 				}
-				//generate tweak commands
+				//***********************************generate tweak commands***************************************
+
+				//initiate folder
+				var etcadobe = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+				etcadobe.initWithPath("/etc/adobe");
+				if(!etcadobe.exists() || !etcadobe.isDirectory()){
+					command = command+newline+"sudo mkdir /etc/adobe";
+				}
+				//initiate file
+				var mmscfg = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+				mmscfg.initWithPath("/etc/adobe/mms.cfg");
+				if(!mmscfg.exists() || mmscfg.isDirectory()){
+					command = command+newline+"sudo touch /etc/adobe/mms.cfg";
+				}
 				if(overridegpuvalidation === true){
 
 					if(aAction !== "test"){
-						//initiate folder
-						var etcadobe = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
-						etcadobe.initWithPath("/etc/adobe");
-						if(!etcadobe.exists() || !etcadobe.isDirectory()){
-							command = command+newline+"sudo mkdir /etc/adobe";
-						}
-						//initiate file
-						var mmscfg = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
-						mmscfg.initWithPath("/etc/adobe/mms.cfg");
-						if(mmscfg.exists()){
-							command = command+newline+"TWEAK=$(cat /etc/adobe/mms.cfg | grep 'OverrideGPUValidation=true')";
-							command = command+newline+"if test -z \"${TWEAK}\";then";
-							command = command+newline+"echo 'OverrideGPUValidation=true' | sudo tee -a /etc/adobe/mms.cfg";
-							command = command+newline+"fi";
-						}else{
-							command = command+newline+"echo 'OverrideGPUValidation=true' | sudo tee /etc/adobe/mms.cfg";
-						}
+						command = command+newline+"TWEAK=$(cat /etc/adobe/mms.cfg | grep 'OverrideGPUValidation')";
+						command = command+newline+"if test -z \"${TWEAK}\";then";
+						command = command+newline+"echo 'OverrideGPUValidation=true' | sudo tee -a /etc/adobe/mms.cfg";
+						command = command+newline+"fi";
 					}
 				}else{
 					if(aAction !== "test"){
+						command = command+newline+"cat /etc/adobe/mms.cfg | sed '/OverrideGPUValidation=true/d' | sudo tee /etc/adobe/mms.cfg";
+					}
+				}
 
-						//initiate file
-						var mmscfg = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
-						mmscfg.initWithPath("/etc/adobe/mms.cfg");
-						if(mmscfg.exists()){
-							command = command+newline+"cat /etc/adobe/mms.cfg | sed '/OverrideGPUValidation=true/d' | sudo tee /etc/adobe/mms.cfg";
-						}
+				if(enablelinuxhwvideodecode === true){
+
+					if(aAction !== "test"){
+						command = command+newline+"TWEAK=$(cat /etc/adobe/mms.cfg | grep 'EnableLinuxHWVideoDecode')";
+						command = command+newline+"if test -z \"${TWEAK}\";then";
+						command = command+newline+"echo 'EnableLinuxHWVideoDecode=1' | sudo tee -a /etc/adobe/mms.cfg";
+						command = command+newline+"fi";
+					}
+				}else{
+					if(aAction !== "test"){
+						command = command+newline+"cat /etc/adobe/mms.cfg | sed '/EnableLinuxHWVideoDecode=1/d' | sudo tee /etc/adobe/mms.cfg";
 					}
 				}
 
@@ -663,15 +690,33 @@ var flashaidRunner = {
 					}
 					converter.close(); 
 
-					//execute the script
-					var process = Components.classes['@mozilla.org/process/util;1']
-					.createInstance(Components.interfaces.nsIProcess);
-					process.init(terminal);
-					var arguments = ["-e","'"+tempscript.path+"'"];
-					process.run(false, arguments, arguments.length);
-
+					if(aAction !== "export"){
+						//execute the script
+						var process = Components.classes['@mozilla.org/process/util;1']
+						.createInstance(Components.interfaces.nsIProcess);
+						process.init(terminal);
+						var arguments = ["-e","'"+tempscript.path+"'"];
+						process.run(false, arguments, arguments.length);
+					}
+					if(aAction === "export"){
+						//declare and remove export script
+						var exportscript = Components.classes["@mozilla.org/file/directory_service;1"]
+						.getService(Components.interfaces.nsIProperties)
+						.get("Desk", Components.interfaces.nsIFile);
+						exportscript.append("flashaid.sh");
+						if(exportscript.exists()) {
+							exportscript.remove(false);
+						}
+						tempscript.copyTo(desktop,"flashaid.sh");
+						//alert user
+						alertsService = Components.classes["@mozilla.org/alerts-service;1"]
+						.getService(Components.interfaces.nsIAlertsService);
+						alertsService.showAlertNotification("chrome://flashaid/skin/icon48.png",
+								messagetitle, exported,
+								false, "", null);
+					}
 					//set restart pref to force restart
-					if(aAction !== "test"){
+					if(aAction !== "test" && aAction !== "export"){
 						this.prefs.setBoolPref("needrestart",true);
 					}
 
@@ -682,6 +727,7 @@ var flashaidRunner = {
 				document.getElementById("script").value = noterminal;
 				document.getElementById("testbutton").disabled = true;
 				document.getElementById("executebutton").disabled = true;
+				document.getElementById("exportbutton").disabled = true;
 			}
 		},
 
@@ -871,6 +917,8 @@ var flashaidRunner = {
 				document.getElementById("wine").disabled = false;
 				document.getElementById("overridegpuvalidation").hidden = false;
 				document.getElementById("overridegpuvalidation").disabled = false;
+				document.getElementById("enablelinuxhwvideodecode").hidden = false;
+				document.getElementById("enablelinuxhwvideodecode").disabled = false;
 				if(osString.match(/x86_64/)){
 					document.getElementById("npviewer").hidden = false;
 					document.getElementById("npviewer").disabled = false;
@@ -985,7 +1033,7 @@ var flashaidRunner = {
 				//initiate file					
 				var xfce4 = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
 				xfce4.initWithPath("/usr/bin/xfce4-terminal");
-				
+
 				if(gnometerminal.exists()){
 					document.getElementById("terminal").value = gnometerminal.path;
 					this.prefs.setCharPref("terminal",gnometerminal.path);

@@ -3,175 +3,237 @@
 
 <!DOCTYPE window SYSTEM "chrome://flashaid/locale/flashaid.dtd">
 
-<window id="flashaid-runner" title="&FLASHAIDTITLE;" orient="vertical"  xmlns:html="http://www.w3.org/1999/xhtml" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+<window id="flashaid-runner" title="&FLASHAIDTITLE;" orient="vertical"
+	xmlns:html="http://www.w3.org/1999/xhtml"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-	<script type="application/x-javascript" src="chrome://flashaid/content/scripts/functions-launcher.js"/>
-    
+	<script type="application/x-javascript"
+		src="chrome://flashaid/content/scripts/functions-launcher.js" />
+
 	<stringbundleset id="strbundles">
-		<stringbundle id="flashaidstrings" src="chrome://flashaid/locale/strings.properties"/>
+		<stringbundle id="flashaidstrings"
+			src="chrome://flashaid/locale/strings.properties" />
 	</stringbundleset>
-    
+
 	<hbox flex="1">
-		<spacer width="10" flex="0"/>
+		<spacer width="10" flex="0" />
 		<vbox flex="1">
-			<spacer height="10" flex="0"/>
+			<spacer height="10" flex="0" />
 			<tabbox flex="1">
 				<tabs>
-					<tab id="commandstab" label="&ScriptPreview;"/>
-					<tab id="installationtab" label="&InstallationOptions;"/>
-					<tab id="removaltab" label="&RemovalOptions;"/>
-					<tab id="tweakstab" label="&TweakingOptions;"/>
-					<tab id="preferencestab" label="&FLASHAIDPreferences;"/>
-					<tab id="helptab" label="&Help;"/>
+					<tab id="commandstab" label="&ScriptPreview;" />
+					<tab id="installationtab" label="&InstallationOptions;" />
+					<tab id="removaltab" label="&RemovalOptions;" />
+					<tab id="tweakstab" label="&TweakingOptions;" />
+					<tab id="preferencestab" label="&FLASHAIDPreferences;" />
+					<tab id="helptab" label="&Help;" />
 				</tabs>
 				<tabpanels flex="1">
 					<tabpanel id="commands" flex="1">
 						<vbox>
-							<spacer height="5" flex="0"/>
-							<textbox id="tipscript" value="&ScriptWarning;" readonly="true" multiline="true" cols="80" rows="6" flex="0"/>
-							<spacer height="10" flex="0"/>
-							<textbox id="script" readonly="false" multiline="true" cols="80" rows="10" flex="1"/>
-							<spacer height="5" flex="0"/>
+							<spacer height="5" flex="0" />
+							<textbox id="tipscript" value="&ScriptWarning;" readonly="true"
+								multiline="true" cols="80" rows="6" flex="0" />
+							<spacer height="10" flex="0" />
+							<textbox id="script" readonly="false" multiline="true"
+								cols="80" rows="10" flex="1" />
+							<spacer height="5" flex="0" />
 							<hbox>
-								<spacer width="10" flex="1"/>
-								<button id="refreshbutton" orient="vertical" flex="0" label="&Refresh;" tooltiptext="&RefreshTooltip;" oncommand="flashaidRunner.scriptManager('preview');"/>
-								<button id="testbutton" orient="vertical" flex="0" label="&Test;" tooltiptext="&TestTooltip;" oncommand="flashaidRunner.scriptManager('test');"/>
-								<button id="executebutton" orient="vertical" flex="0" label="&Execute;" tooltiptext="&ExecuteTooltip;" oncommand="flashaidRunner.scriptManager('execute');"/>
+								<spacer width="10" flex="1" />
+								<button id="refreshbutton" orient="vertical" flex="0"
+									label="&Refresh;" tooltiptext="&RefreshTooltip;"
+									oncommand="flashaidRunner.scriptManager('preview');" />
+								<button id="testbutton" orient="vertical" flex="0" label="&Test;"
+									tooltiptext="&TestTooltip;" oncommand="flashaidRunner.scriptManager('test');" />
+								<button id="exportbutton" orient="vertical" flex="0"
+									label="&Export;" tooltiptext="&ExportTooltip;"
+									oncommand="flashaidRunner.scriptManager('export');" />
+								<button id="executebutton" orient="vertical" flex="0"
+									label="&Execute;" tooltiptext="&ExecuteTooltip;"
+									oncommand="flashaidRunner.scriptManager('execute');" />
 							</hbox>
-							<spacer height="5" flex="0"/>
+							<spacer height="5" flex="0" />
 						</vbox>
 					</tabpanel>
 					<tabpanel id="installation" flex="1">
 						<vbox>
-							<spacer height="5" flex="0"/>
-							<textbox id="installtip32" value="&InstallTips32;" readonly="true" multiline="true" cols="80" rows="4" flex="0" hidden="true"/>
-							<textbox id="installtip64" value="&InstallTips64;" readonly="true" multiline="true" cols="80" rows="4" flex="0" hidden="true"/>
-							<spacer height="20" flex="0"/>
+							<spacer height="5" flex="0" />
+							<textbox id="installtip32" value="&InstallTips32;"
+								readonly="true" multiline="true" cols="80" rows="4" flex="0"
+								hidden="true" />
+							<textbox id="installtip64" value="&InstallTips64;"
+								readonly="true" multiline="true" cols="80" rows="4" flex="0"
+								hidden="true" />
+							<spacer height="20" flex="0" />
 							<hbox>
-								<spacer width="10" flex="0"/>
-								<label value="&InstallVersion;"/>
-								<menulist id="flversion" width="400" flex="0" onselect="flashaidRunner.optionsInstall();">
-									<menupopup id="flversionpop" >
-										<menuitem id="repo32" label="&Repo32;" value="repo32"/>
-										<menuitem id="repo64" label="&Repo64;" value="repo64"/>
-										<menuitem id="beta" label="&Beta;" value="beta" selected="true"/>
-										<menuitem id="googlechrome" label="&Chrome;" value="googlechrome"/>
-										<menuitem id="repognash" label="&RepoGnash;" value="repognash"/>
-										<menuitem id="reposwfdec" label="&RepoSwfdec;" value="reposwfdec"/>
-										<menuitem id="repolightspark" label="&RepoLightspark;" value="repolightspark"/>
-										<menuitem id="customurl" label="&CustomURL;" value="customurl"/>
-										<menuitem id="donotinstall" label="&DoNotInstall;" value="donotinstall"/>
+								<spacer width="10" flex="0" />
+								<label value="&InstallVersion;" />
+								<menulist id="flversion" width="400" flex="0"
+									onselect="flashaidRunner.optionsInstall();">
+									<menupopup id="flversionpop">
+										<menuitem id="repo32" label="&Repo32;" value="repo32" />
+										<menuitem id="repo64" label="&Repo64;" value="repo64" />
+										<menuitem id="beta" label="&Beta;" value="beta"
+											selected="true" />
+										<menuitem id="googlechrome" label="&Chrome;" value="googlechrome" />
+										<menuitem id="repognash" label="&RepoGnash;" value="repognash" />
+										<menuitem id="reposwfdec" label="&RepoSwfdec;" value="reposwfdec" />
+										<menuitem id="repolightspark" label="&RepoLightspark;"
+											value="repolightspark" />
+										<menuitem id="customurl" label="&CustomURL;" value="customurl" />
+										<menuitem id="donotinstall" label="&DoNotInstall;"
+											value="donotinstall" />
 									</menupopup>
 								</menulist>
-								<spacer width="10" flex="0"/>
+								<spacer width="10" flex="0" />
 							</hbox>
-							<spacer height="20" flex="0"/>
+							<spacer height="20" flex="0" />
 							<hbox>
-								<spacer width="140" flex="0"/>
-								<textbox id="customurlpath" size="45" flex="0" hidden="true" disabled="true"/>
+								<spacer width="140" flex="0" />
+								<textbox id="customurlpath" size="45" flex="0" hidden="true"
+									disabled="true" />
 								<vbox>
-									<spacer height="1" flex="1"/>
-									<image id="customurlpathsearch" width="24" height="24" src="chrome://flashaid/skin/search32.png" tooltiptext="&Search;" onclick="flashaidRunner.openFile('customurlpath','&SelectProgram;');" hidden="true"/>
-									<spacer height="1" flex="1"/>
+									<spacer height="1" flex="1" />
+									<image id="customurlpathsearch" width="24" height="24"
+										src="chrome://flashaid/skin/search32.png" tooltiptext="&Search;"
+										onclick="flashaidRunner.openFile('customurlpath','&SelectProgram;');"
+										hidden="true" />
+									<spacer height="1" flex="1" />
 								</vbox>
 								<vbox>
-									<spacer height="1" flex="1"/>
-									<image id="customurlpathreset" width="24" height="24" src="chrome://flashaid/skin/delete24.png" tooltiptext="&Reset;" onclick="flashaidRunner.resetPath('customurlpath');"/>
-									<spacer height="1" flex="1"/>
+									<spacer height="1" flex="1" />
+									<image id="customurlpathreset" width="24" height="24"
+										src="chrome://flashaid/skin/delete24.png" tooltiptext="&Reset;"
+										onclick="flashaidRunner.resetPath('customurlpath');" />
+									<spacer height="1" flex="1" />
 								</vbox>
-								<spacer width="10" flex="1"/>
+								<spacer width="10" flex="1" />
 							</hbox>
 							<hbox>
-								<spacer width="140" flex="0"/>
-								<label id="customurlpathtip" value="&SelectPathTip;" hidden="true"/>
-								<spacer width="10" flex="1"/>
+								<spacer width="140" flex="0" />
+								<label id="customurlpathtip" value="&SelectPathTip;"
+									hidden="true" />
+								<spacer width="10" flex="1" />
 							</hbox>
-							<spacer height="10" flex="1"/>
+							<spacer height="10" flex="1" />
 						</vbox>
 					</tabpanel>
 					<tabpanel id="removal" flex="1">
 						<vbox>
-							<spacer height="5" flex="0"/>
-							<textbox id="tipremoval" value="&RemovalTips;" readonly="true" multiline="true" cols="80" rows="4" flex="0"/>
-							<spacer height="20" flex="0"/>
-							<checkbox label="&Lightspark;" id="lightspark" size="30" checked="false" hidden="true"/>
-							<checkbox label="&Gnash;" id="gnash" size="30" checked="false" hidden="true"/>
-							<checkbox label="&Swfdec;" id="swfdec" size="30" checked="false" hidden="true"/>
-							<checkbox label="&AdobeInstaller;" id="adobeinstaller" size="30" checked="false" hidden="true"/>
-							<checkbox label="&AdobePartner;" id="adobepartner" size="30" checked="false" hidden="true"/>
-							<checkbox label="&AdobeNonFree;" id="adobenonfree" size="30" checked="false" hidden="true"/>
-							<checkbox label="&SystemPlugin;" id="systemplugin" size="30" checked="false" hidden="true"/>
-							<checkbox label="&SystemPluginF;" id="systempluginf" size="30" checked="false" hidden="true"/>
-							<checkbox label="&MozillaPlugins;" id="mozilla" size="30" checked="false" hidden="true"/>
-							<checkbox label="&OPTPlugins;" id="opt" size="30" checked="false" hidden="true"/>
-							<checkbox label="&FirefoxProfile;" id="firefox" size="30" checked="false" hidden="true"/>
-							<checkbox label="&Wine;" id="wine" size="30" checked="false" hidden="true"/>
-							<spacer height="10" flex="1"/>
+							<spacer height="5" flex="0" />
+							<textbox id="tipremoval" value="&RemovalTips;" readonly="true"
+								multiline="true" cols="80" rows="4" flex="0" />
+							<spacer height="20" flex="0" />
+							<checkbox label="&Lightspark;" id="lightspark" size="30"
+								checked="false" hidden="true" />
+							<checkbox label="&Gnash;" id="gnash" size="30" checked="false"
+								hidden="true" />
+							<checkbox label="&Swfdec;" id="swfdec" size="30"
+								checked="false" hidden="true" />
+							<checkbox label="&AdobeInstaller;" id="adobeinstaller"
+								size="30" checked="false" hidden="true" />
+							<checkbox label="&AdobePartner;" id="adobepartner" size="30"
+								checked="false" hidden="true" />
+							<checkbox label="&AdobeNonFree;" id="adobenonfree" size="30"
+								checked="false" hidden="true" />
+							<checkbox label="&SystemPlugin;" id="systemplugin" size="30"
+								checked="false" hidden="true" />
+							<checkbox label="&SystemPluginF;" id="systempluginf"
+								size="30" checked="false" hidden="true" />
+							<checkbox label="&MozillaPlugins;" id="mozilla" size="30"
+								checked="false" hidden="true" />
+							<checkbox label="&OPTPlugins;" id="opt" size="30"
+								checked="false" hidden="true" />
+							<checkbox label="&FirefoxProfile;" id="firefox" size="30"
+								checked="false" hidden="true" />
+							<checkbox label="&Wine;" id="wine" size="30" checked="false"
+								hidden="true" />
+							<spacer height="10" flex="1" />
 						</vbox>
 					</tabpanel>
 					<tabpanel id="tweaks" flex="1">
 						<vbox>
-							<spacer height="5" flex="0"/>
-							<textbox id="tiptweaks" value="&TweakTips;" readonly="true" multiline="true" cols="80" rows="4" flex="0"/>
-							<spacer height="20" flex="0"/>
-							<checkbox label="&OverrideGPUValidation;" id="overridegpuvalidation" size="30" checked="false" hidden="true"/>
-							<checkbox label="&NpviewerTweak;" id="npviewer" size="30" checked="false" hidden="true"/>
-							<spacer height="10" flex="1"/>
+							<spacer height="5" flex="0" />
+							<textbox id="tiptweaks" value="&TweakTips;" readonly="true"
+								multiline="true" cols="80" rows="4" flex="0" />
+							<spacer height="20" flex="0" />
+							<checkbox label="&OverrideGPUValidation;" id="overridegpuvalidation"
+								size="30" checked="false" hidden="true" />
+							<checkbox label="&EnableLinuxHWVideoDecode;" id="enablelinuxhwvideodecode"
+								size="30" checked="false" hidden="true" />
+							<checkbox label="&NpviewerTweak;" id="npviewer" size="30"
+								checked="false" hidden="true" />
+							<spacer height="10" flex="1" />
 						</vbox>
 					</tabpanel>
 					<tabpanel id="preferences" flex="1">
 						<vbox>
-							<spacer height="10" flex="0"/>
-							<checkbox label="&CheckUpdates;" id="checkupdates" size="30" checked="true" onclick="flashaidRunner.prefUpdater('updatecheck');"/>
-							<spacer height="5" flex="0"/>
-							<textbox id="tipcheckupdates" value="&CheckUpdatesTips;" readonly="true" multiline="true" cols="80" rows="4" flex="0"/>
-							<spacer height="10" flex="0"/>
+							<spacer height="10" flex="0" />
+							<checkbox label="&CheckUpdates;" id="checkupdates" size="30"
+								checked="true" onclick="flashaidRunner.prefUpdater('updatecheck');" />
+							<spacer height="5" flex="0" />
+							<textbox id="tipcheckupdates" value="&CheckUpdatesTips;"
+								readonly="true" multiline="true" cols="80" rows="4" flex="0" />
+							<spacer height="10" flex="0" />
 							<caption label="&Terminal;" />
 							<hbox>
-								<textbox id="terminal" readonly="true" size="30"/>
+								<textbox id="terminal" readonly="true" size="30" />
 								<vbox>
-									<spacer height="1" flex="1"/>
-									<image width="24" height="24" src="chrome://flashaid/skin/search32.png" tooltiptext="&SelectProgram;" onclick="flashaidRunner.openFile('terminal','&SelectProgram;');"/>
-									<spacer height="1" flex="1"/>
+									<spacer height="1" flex="1" />
+									<image width="24" height="24"
+										src="chrome://flashaid/skin/search32.png" tooltiptext="&SelectProgram;"
+										onclick="flashaidRunner.openFile('terminal','&SelectProgram;');" />
+									<spacer height="1" flex="1" />
 								</vbox>
 								<vbox>
-									<spacer height="1" flex="1"/>
-									<image width="24" height="24" src="chrome://flashaid/skin/delete24.png" tooltiptext="&RestoreDefault;" onclick="flashaidRunner.resetPath('terminal');"/>
-									<spacer height="1" flex="1"/>
+									<spacer height="1" flex="1" />
+									<image width="24" height="24"
+										src="chrome://flashaid/skin/delete24.png" tooltiptext="&RestoreDefault;"
+										onclick="flashaidRunner.resetPath('terminal');" />
+									<spacer height="1" flex="1" />
 								</vbox>
 							</hbox>
-							<spacer height="5" flex="0"/>
-							<textbox id="tipterminalpath" value="&TerminalPathTips;" readonly="true" multiline="true" cols="80" rows="4" flex="0"/>
-							<spacer height="10" flex="1"/>
+							<spacer height="5" flex="0" />
+							<textbox id="tipterminalpath" value="&TerminalPathTips;"
+								readonly="true" multiline="true" cols="80" rows="4" flex="0" />
+							<spacer height="10" flex="1" />
 						</vbox>
 					</tabpanel>
 					<tabpanel id="help" flex="1">
 						<vbox flex="1">
-							<spacer height="5" flex="0"/>
-							<textbox id="tipreport" value="&ReportTip;" readonly="true" multiline="true" cols="80" rows="3" flex="0"/>
-							<spacer height="5" flex="1"/>
+							<spacer height="5" flex="0" />
+							<textbox id="tipreport" value="&ReportTip;" readonly="true"
+								multiline="true" cols="80" rows="3" flex="0" />
+							<spacer height="5" flex="1" />
 							<hbox>
-								<spacer width="10" flex="1"/>
-								<button id="reportbutton" orient="vertical" flex="0" label="&Report;" tooltiptext="&ReportTooltip;" oncommand="flashaidRunner.generateReport();"/>
-								<spacer width="10" flex="0"/>
-								<button id="supportbutton" orient="vertical" flex="0" label="&Support;" tooltiptext="&SupportTooltip;" oncommand="flashaidRunner.openLink('http://www.webgapps.org/support');"/>
-								<spacer width="10" flex="0"/>
-								<button id="docbutton" orient="vertical" flex="0" label="&Documentation;" tooltiptext="&DocumentationTooltip;" oncommand="flashaidRunner.openLink('http://www.webgapps.org/addons/flash-aid');"/>
-								<spacer width="10" flex="1"/>
+								<spacer width="10" flex="1" />
+								<button id="reportbutton" orient="vertical" flex="0"
+									label="&Report;" tooltiptext="&ReportTooltip;" oncommand="flashaidRunner.generateReport();" />
+								<spacer width="10" flex="0" />
+								<button id="supportbutton" orient="vertical" flex="0"
+									label="&Support;" tooltiptext="&SupportTooltip;"
+									oncommand="flashaidRunner.openLink('http://www.webgapps.org/support');" />
+								<spacer width="10" flex="0" />
+								<button id="docbutton" orient="vertical" flex="0"
+									label="&Documentation;" tooltiptext="&DocumentationTooltip;"
+									oncommand="flashaidRunner.openLink('http://www.webgapps.org/addons/flash-aid');" />
+								<spacer width="10" flex="1" />
 							</hbox>
-							<spacer height="5" flex="1"/>
+							<spacer height="5" flex="1" />
 						</vbox>
 					</tabpanel>
 				</tabpanels>
 			</tabbox>
-			<spacer height="5" flex="0"/>
+			<spacer height="5" flex="0" />
 			<hbox>
-				<checkbox label="&ExpertMode;" id="advanced" size="30" checked="false" onclick="flashaidRunner.optionsAdvanced();"/>
-				<spacer width="5" flex="0"/>
-				<checkbox label="&HideTips;" id="hidetips" size="30" hidden="true" checked="false" onclick="flashaidRunner.optionsToggleTips();"/>
+				<checkbox label="&ExpertMode;" id="advanced" size="30"
+					checked="false" onclick="flashaidRunner.optionsAdvanced();" />
+				<spacer width="5" flex="0" />
+				<checkbox label="&HideTips;" id="hidetips" size="30"
+					hidden="true" checked="false" onclick="flashaidRunner.optionsToggleTips();" />
 			</hbox>
-			<spacer height="40" flex="0"/>
+			<spacer height="40" flex="0" />
 		</vbox>
-		<spacer width="10" flex="0"/>
+		<spacer width="10" flex="0" />
 	</hbox>
 </window>

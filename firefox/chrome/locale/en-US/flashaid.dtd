@@ -9,9 +9,12 @@
 <!ENTITY Documentation "Documentation">
 <!ENTITY DocumentationTooltip "Visit Flash-Aid documentation web page at webgapps.org">
 <!ENTITY DoNotInstall "Do not install">
+<!ENTITY EnableLinuxHWVideoDecode "Enable Linux HWVideo Decode (allows flash to use vdpau hardware acceleration)">
 <!ENTITY Execute "Execute">
 <!ENTITY ExecuteTooltip "Execute the script to remove conflicting plugins, install flash and apply tweaks.">
 <!ENTITY ExpertMode "Expert Mode">
+<!ENTITY Export "Export">
+<!ENTITY ExportTooltip "Export the script to your desktop, so you can modify it or run it manually.">
 <!ENTITY FirefoxProfile "Firefox profile plugins folder (~/.mozilla/firefox/**/plugins)">
 <!ENTITY FLASHAIDPreferences "Flash-Aid Preferences">
 <!ENTITY FLASHAIDTITLE "Flash-Aid">
