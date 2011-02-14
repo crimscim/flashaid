@@ -3,17 +3,23 @@
 
 <!DOCTYPE overlay SYSTEM "chrome://flashaid/locale/flashaid.dtd">
 
-<overlay id="flashaid-overlay" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+<overlay id="flashaid-overlay"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-	<script type="application/x-javascript" src="chrome://flashaid/content/scripts/functions-firstrun.js"/>
-    
+	<script type="application/x-javascript"
+		src="chrome://flashaid/content/scripts/functions-firstrun.js" />
+
 	<window id="main-window">
 		<stringbundleset id="strbundles">
-			<stringbundle id="flashaidstrings" src="chrome://flashaid/locale/strings.properties"/>
+			<stringbundle id="flashaidstrings"
+				src="chrome://flashaid/locale/strings.properties" />
 		</stringbundleset>
 	</window>
-    
+
 	<toolbarpalette id="BrowserToolbarPalette">
-		<toolbarbutton id="flashaid-toolbar-button" label="&FLASHAIDTITLE;" tooltiptext="&FLASHAIDTITLE;" oncommand="window.open('chrome://flashaid/content/runner.xul', 'flashaid-runner', 'chrome,centerscreen,alwaysRaised');" class="toolbarbutton-1 chromeclass-toolbar-additional"/>
+		<toolbarbutton id="flashaid-toolbar-button" label="&FLASHAIDTITLE;"
+			tooltiptext="&FLASHAIDTITLE;"
+			oncommand="window.open('chrome://flashaid/content/runner.xul', 'flashaid-runner', 'chrome,centerscreen,alwaysRaised');"
+			class="toolbarbutton-1 chromeclass-toolbar-additional" />
 	</toolbarpalette>
 </overlay>
