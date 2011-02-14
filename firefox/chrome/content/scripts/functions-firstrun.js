@@ -212,10 +212,10 @@ var flashaidFirstrun = {
 							jsonObjectRemote = JSON.parse(req.responseText);
 
 							if(osString.match(/x86_64/)){
-								architecture = "Flash 10.2 64bit Square Preview";
+								architecture = "Flash 64bit";
 								remotetimestamp = jsonObjectRemote.flashbeta64;
 							}else{
-								architecture = "Flash 10.2 32bit Beta";
+								architecture = "Flash 32bit";
 								remotetimestamp = jsonObjectRemote.flashbeta32;
 							}
 
