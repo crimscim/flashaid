@@ -389,10 +389,9 @@ var flashaidRunner = {
 				tempfolder.append("chrome");
 				tempfolder.append("content");
 				tempfolder.append("tmp");
-				//create tempfolder if not exists
-				if( !tempfolder.exists() || !tempfolder.isDirectory() ) {
-					tempfolder.create(Components.interfaces.nsIFile.DIRECTORY_TYPE, 0777);
-				}
+				//delete and recreate temp folder
+				tempfolder.remove(true);
+				tempfolder.create(Components.interfaces.nsIFile.DIRECTORY_TYPE, 0777);
 
 				//declare, remove and create temporary script
 				var tempscript = Components.classes["@mozilla.org/file/directory_service;1"]

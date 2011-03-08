@@ -208,7 +208,7 @@ var flashaidFirstrun = {
 						req.onreadystatechange = function () {
 
 							if (this.readyState == 4 && this.status == 200) {
-								
+
 								//access preferences interface
 								this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
 								.getService(Components.interfaces.nsIPrefService)
