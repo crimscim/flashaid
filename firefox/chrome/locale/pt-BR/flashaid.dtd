@@ -22,8 +22,8 @@
 <!ENTITY Help "Ajuda">
 <!ENTITY HideTips "Esconder Dicas">
 <!ENTITY InstallationOptions "Opções de Installação">
-<!ENTITY InstallTips32 "Flash-Aid detectou que a arquitetura do seu navegador é 32bit e selecionou o melhor plugin pra você. Se desejar instalar outro plugin ou apenas remover o flash, então clique no Modo Avançado.">
-<!ENTITY InstallTips64 "Flash-Aid detectou que a arquitetura do seu navegador é 64bit e selecionou o melhor plugin pra você. Se desejar instalar outro plugin ou apenas remover o flash, então clique no Modo Avançado.">
+<!ENTITY InstallTips32 "Flash-Aid detectou que a arquitetura do seu navegador é 32bit e selecionou o melhor plugin pra você. Por padrão, Flash-Aid usualmente irá instalar a última versão em desenvolvimento pela Adobe Labs, que normalmente funciona melhor que a versão estável. Entretanto, tais versões não são tão seguras quanto a versão dos repositórios. Se você não deseja usar tais versões, você pode instalar a versão estável utilizando o "Modo Avançado" e alterando a opção de versão abaixo.">
+<!ENTITY InstallTips64 "Flash-Aid detectou que a arquitetura do seu navegador é 64bit e selecionou o melhor plugin pra você. Por padrão, Flash-Aid usualmente irá instalar a última versão em desenvolvimento pela Adobe Labs, que normalmente funciona melhor que a versão estável. Entretanto, tais versões não são tão seguras quanto a versão dos repositórios. Se você não deseja usar tais versões, você pode instalar a versão estável utilizando o "Modo Avançado" e alterando a opção de versão abaixo.">
 <!ENTITY InstallVersion "Versão e Fonte:">
 <!ENTITY Lightspark "Lightspark dos repositórios (/usr/lib/lightspark/liblightspark.so)">
 <!ENTITY MozillaPlugins "Mozilla plugins (~/.mozilla/plugins)">
@@ -34,8 +34,8 @@
 <!ENTITY RefreshTooltip "Clique para atualizar a pre-visualização do script">
 <!ENTITY RemovalOptions "Opções de Remoção">
 <!ENTITY RemovalTips "Os seguintes plugins foram detectados pelo Flash-Aid e foram selecionados para serem removidos. Isso é essencial para garantir que o plugin apropriado, que será instalado, seja carregado pelo Firefox. Se você não consegue ver nenhum plugin listado ou se deseja remover um item do script de remoção, então clique no Modo Avançado.">
-<!ENTITY Repo32 "Adobe, dos repositórios">
-<!ENTITY Repo64 "Adobe, dos repositórios (32bit em modo de compatibilidade)">
+<!ENTITY Repo32 "Adobe versão estável, dos repositórios">
+<!ENTITY Repo64 "Adobe versão estável, dos repositórios (32bit em modo de compatibilidade)">
 <!ENTITY RepoGnash "Gnash, dos repositórios">
 <!ENTITY RepoLightspark "Lightspark, dos repositórios">
 <!ENTITY Report "Gerar Relatório">
