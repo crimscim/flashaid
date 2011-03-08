@@ -64,7 +64,7 @@ var flashaidFirstrun = {
 					//initiate file					
 					var xfce4 = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
 					xfce4.initWithPath("/usr/bin/xfce4-terminal");
-					
+
 					if(gnometerminal.exists()){
 						this.prefs.setCharPref("terminal",gnometerminal.path);
 					}else{
@@ -202,39 +202,47 @@ var flashaidFirstrun = {
 						xmlsource = "http://www.webgapps.org/downloads/flash/beta/updates";
 
 						//get json document content
-						req = new XMLHttpRequest();  
-						req.open('GET', xmlsource, false);   
+						req = new XMLHttpRequest();   
+						req.open('GET', xmlsource, true);
 						req.channel.loadFlags |= Components.interfaces.nsIRequest.LOAD_BYPASS_CACHE;
-						req.send(null);  
-						if(req.status === 200) {//match if data has been downloaded and execute function
+						req.onreadystatechange = function () {
 
-							//parse json
-							jsonObjectRemote = JSON.parse(req.responseText);
+							if (this.readyState == 4 && this.status == 200) {
+								
+								//access preferences interface
+								this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
+								.getService(Components.interfaces.nsIPrefService)
+								.getBranch("extensions.flashaid.");
 
-							if(osString.match(/x86_64/)){
-								architecture = "Flash 64bit";
-								remotetimestamp = jsonObjectRemote.flashbeta64;
-							}else{
-								architecture = "Flash 32bit";
-								remotetimestamp = jsonObjectRemote.flashbeta32;
-							}
+								//parse json
+								jsonObjectRemote = JSON.parse(req.responseText);
 
-							if(remotetimestamp > localtimestamp){
-
-								//fetch message
-								message = strbundle.getFormattedString("flashbetaupdate", [ architecture ]);
-								//prompt user for confirmation
-								var prompts = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
-								.getService(Components.interfaces.nsIPromptService);
-								var result = prompts.confirm(window, messagetitle, message);
-
-								if(result == true){//execute if user confirm
-
-									window.open('chrome://flashaid/content/runner.xul', 'flashaid-runner', 'chrome,centerscreen,alwaysRaised');
+								if(osString.match(/x86_64/)){
+									architecture = "Flash 64bit";
+									remotetimestamp = jsonObjectRemote.flashbeta64;
+								}else{
+									architecture = "Flash 32bit";
+									remotetimestamp = jsonObjectRemote.flashbeta32;
 								}
-								this.prefs.setCharPref("flashbetaupdate",req.responseText);
+
+								if(remotetimestamp > localtimestamp){
+
+									//fetch message
+									message = strbundle.getFormattedString("flashbetaupdate", [ architecture ]);
+									//prompt user for confirmation
+									var prompts = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
+									.getService(Components.interfaces.nsIPromptService);
+									var result = prompts.confirm(window, messagetitle, message);
+
+									if(result == true){//execute if user confirm
+
+										window.open('chrome://flashaid/content/runner.xul', 'flashaid-runner', 'chrome,centerscreen,alwaysRaised');
+									}
+									this.prefs.setCharPref("flashbetaupdate",req.responseText);
+								}
 							}
-						}
+						};
+						req.send(null);
 					}catch(e){
 						//do nothing
 					}
