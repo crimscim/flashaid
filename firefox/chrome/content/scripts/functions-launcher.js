@@ -478,7 +478,10 @@ var flashaidRunner = {
 				if(aAction !== "preview"){
 					command = command+newline+"echo '"+updatecommands+"'";
 				}
-				command = command+newline+"sudo apt-get"+simulate+"update";
+				
+				if(flversion.match(/repo/)){
+					command = command+newline+"sudo apt-get"+simulate+"update";
+				}
 				if(aAction !== "preview"){
 					command = command+newline+"echo '"+installcommands+"'";
 				}
