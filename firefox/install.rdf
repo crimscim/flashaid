@@ -9,7 +9,7 @@
 		<em:optionsURL>chrome://flashaid/content/runner.xul</em:optionsURL>
 		<em:name>Flash-Aid</em:name>
 		<em:description>Remove conflicting flash installations and install the appropriate version according to Ubuntu system architecture</em:description>
-		<em:creator>lovinglinux</em:creator>
+		<em:creator>webgapps</em:creator>
 		<em:homepageURL>http://www.webgapps.org/addons/flash-aid</em:homepageURL>
 		<em:targetApplication>
 			<Description>
