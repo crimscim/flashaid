@@ -55,24 +55,40 @@ var flashaidFirstrun = {
 					this.prefs.setBoolPref("firstrun",false);
 					this.prefs.setCharPref("version",current);
 
-					//initiate file
-					var gnometerminal = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
-					gnometerminal.initWithPath("/usr/bin/gnome-terminal");
-					//initiate file
-					var konsole = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
-					konsole.initWithPath("/usr/bin/konsole");
-					//initiate file					
-					var xfce4 = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
-					xfce4.initWithPath("/usr/bin/xfce4-terminal");
+					//get paths from environment variables
+					var envpaths = Components.classes["@mozilla.org/process/environment;1"]
+					.getService(Components.interfaces.nsIEnvironment)
+					.get('PATH');
 
-					if(gnometerminal.exists()){
-						this.prefs.setCharPref("terminal",gnometerminal.path);
-					}else{
-						if(konsole.exists()){
-							this.prefs.setCharPref("terminal",konsole.path);
-						}else{
-							if(xfce4.exists()){
-								this.prefs.setCharPref("terminal",xfce4.path);
+					if(envpaths){
+
+						//split
+						newpath = envpaths.split(":");
+
+						//find
+						for(var i=0; i< newpath.length; i++){
+
+							//initiate file
+							var gnometerminal = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+							gnometerminal.initWithPath(newpath[i]+"/gnome-terminal");
+							if(gnometerminal.exists()){
+								this.prefs.setCharPref("terminal",gnometerminal.path);
+							}else{
+								//initiate file
+								var konsole = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+								konsole.initWithPath(newpath[i]+"/konsole");
+								if(konsole.exists()){
+									this.prefs.setCharPref("terminal",konsole.path);
+								}else{
+									//initiate file
+									var xfce4 = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+									xfce4.initWithPath(newpath[i]+"/xfce4-terminal");
+									if(xfce4.exists()){
+										this.prefs.setCharPref("terminal",xfce4.path);
+									}else{
+
+									}
+								}
 							}
 						}
 					}
@@ -102,7 +118,7 @@ var flashaidFirstrun = {
 			.createInstance(Components.interfaces.nsILocalFile);
 			sourcefile.initWithPath(sourcefile_path);
 
-			if(sourcefile.exists){
+			if(sourcefile.exists()){
 
 				//read sourcefile and fetch lines with release info
 				var istream = Components.classes["@mozilla.org/network/file-input-stream;1"].

@@ -8,9 +8,9 @@
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
 	<script type="application/x-javascript"
-		src="chrome://flashaid/content/scripts/functions-launcher.js" />
+		src="chrome://flashaid/content/scripts/launcher.js" />
 
-	<stringbundleset id="strbundles">
+	<stringbundleset id="flashaidstrbundles">
 		<stringbundle id="flashaidstrings"
 			src="chrome://flashaid/locale/strings.properties" />
 	</stringbundleset>

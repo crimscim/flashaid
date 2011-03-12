@@ -478,7 +478,7 @@ var flashaidRunner = {
 				if(aAction !== "preview"){
 					command = command+newline+"echo '"+updatecommands+"'";
 				}
-				
+
 				if(flversion.match(/repo/)){
 					command = command+newline+"sudo apt-get"+simulate+"update";
 				}
