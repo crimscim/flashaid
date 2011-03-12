@@ -1023,35 +1023,76 @@ var flashaidRunner = {
 			.getService(Components.interfaces.nsIPrefService)
 			.getBranch("extensions.flashaid.");
 
+			//fetch localization from strbundle
+			var strbundle = document.getElementById("flashaidstrings");
+
 			//reset field
 			if(aPref === "terminal"){
 
-				//initiate file
-				var gnometerminal = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
-				gnometerminal.initWithPath("/usr/bin/gnome-terminal");
-				//initiate file
-				var konsole = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
-				konsole.initWithPath("/usr/bin/konsole");
-				//initiate file					
-				var xfce4 = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
-				xfce4.initWithPath("/usr/bin/xfce4-terminal");
+				var terminalpath = false;
 
-				if(gnometerminal.exists()){
-					document.getElementById("terminal").value = gnometerminal.path;
-					this.prefs.setCharPref("terminal",gnometerminal.path);
-				}else{
-					if(konsole.exists()){
-						document.getElementById("terminal").value = konsole.path;
-						this.prefs.setCharPref("terminal",konsole.pat);
-					}else{
-						if(xfce4.exists()){
-							document.getElementById("terminal").value = xfce4.path;
-							this.prefs.setCharPref("terminal",xfce4.path);
+				//get paths from environment variables
+				var envpaths = Components.classes["@mozilla.org/process/environment;1"]
+				.getService(Components.interfaces.nsIEnvironment)
+				.get('PATH');
+
+				if(envpaths){
+
+					//split
+					newpath = envpaths.split(":");
+
+					//find
+					for(var i=0; i< newpath.length; i++){
+
+						//initiate file
+						var gnometerminal = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+						gnometerminal.initWithPath(newpath[i]+"/gnome-terminal");
+						if(gnometerminal.exists()){
+							document.getElementById("terminal").value = gnometerminal.path;
+							this.prefs.setCharPref("terminal",gnometerminal.path);
+							terminalpath = true;
 						}else{
-							document.getElementById("terminal").value = "/usr/bin/x-terminal-emulator";
-							this.prefs.setCharPref("terminal", "/usr/bin/x-terminal-emulator");
+							//initiate file
+							var konsole = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+							konsole.initWithPath(newpath[i]+"/konsole");
+							if(konsole.exists()){
+								document.getElementById("terminal").value = konsole.path;
+								this.prefs.setCharPref("terminal",konsole.path);
+								terminalpath = true;
+							}else{
+								//initiate file
+								var xfce4 = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+								xfce4.initWithPath(newpath[i]+"/xfce4-terminal");
+								if(xfce4.exists()){
+									document.getElementById("terminal").value = xfce4.path;
+									this.prefs.setCharPref("terminal",xfce4.path);
+									terminalpath = true;
+								}else{
+									//initiate file
+									var xterminal = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+									xterminal.initWithPath(newpath[i]+"/x-terminal-emulator");
+									if(xterminal.exists()){
+										document.getElementById("terminal").value = "/usr/bin/x-terminal-emulator";
+										this.prefs.setCharPref("terminal",xterminal.path);
+										terminalpath = true;
+									}
+								}
+							}
 						}
 					}
+				}
+				if(terminalpath === false){
+
+					//reset terminal path
+					document.getElementById("terminal").value = "";
+					this.prefs.setCharPref("terminal","");
+
+					//alert user
+					var message = strbundle.getString("noterminal");
+					var messagetitle = strbundle.getString("flashaidalert");
+					var prompts = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
+					.getService(Components.interfaces.nsIPromptService);
+					prompts.alert(window, messagetitle, message);
 				}
 			}
 			if(aPref === "customurlpath"){

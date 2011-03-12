@@ -32,9 +32,14 @@ var flashaidFirstrun = {
 			.getService(Components.interfaces.nsIPrefService)
 			.getBranch("extensions.flashaid.");
 
+			//fetch localization from strbundle
+			var strbundle = document.getElementById("flashaidstrings");
+
+
 			//firstrun, update and current declarations
 			var ver = -1, firstrun = true;
 			var current = aVersion;
+			var terminalpath = false;
 
 			try{//check for existing preferences
 				ver = this.prefs.getCharPref("version");
@@ -73,24 +78,47 @@ var flashaidFirstrun = {
 							gnometerminal.initWithPath(newpath[i]+"/gnome-terminal");
 							if(gnometerminal.exists()){
 								this.prefs.setCharPref("terminal",gnometerminal.path);
+								terminalpath = true;
 							}else{
 								//initiate file
 								var konsole = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
 								konsole.initWithPath(newpath[i]+"/konsole");
 								if(konsole.exists()){
 									this.prefs.setCharPref("terminal",konsole.path);
+									terminalpath = true;
 								}else{
 									//initiate file
 									var xfce4 = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
 									xfce4.initWithPath(newpath[i]+"/xfce4-terminal");
 									if(xfce4.exists()){
 										this.prefs.setCharPref("terminal",xfce4.path);
+										terminalpath = true;
 									}else{
-
+										//initiate file
+										var xterminal = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+										xterminal.initWithPath(newpath[i]+"/x-terminal-emulator");
+										if(xterminal.exists()){
+											this.prefs.setCharPref("terminal",xterminal.path);
+											terminalpath = true;
+										}
 									}
 								}
 							}
 						}
+					}
+					if(terminalpath === false){
+
+						//reset terminal path
+						this.prefs.setCharPref("terminal","");
+
+						//alert user
+						var message = strbundle.getString("terminalpath");
+						var messagetitle = strbundle.getString("flashaidalert");
+						var alertsService = Components.classes["@mozilla.org/alerts-service;1"]
+						.getService(Components.interfaces.nsIAlertsService);
+						alertsService.showAlertNotification("chrome://flashaid/skin/icon48.png",
+								messagetitle, message,
+								false, "", null);
 					}
 				}
 
