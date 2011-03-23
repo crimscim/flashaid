@@ -389,8 +389,10 @@ var flashaidRunner = {
 				tempfolder.append("chrome");
 				tempfolder.append("content");
 				tempfolder.append("tmp");
-				//delete and recreate temp folder
-				tempfolder.remove(true);
+				if(tempfolder.exists()){
+					//delete and recreate temp folder
+					tempfolder.remove(true);
+				}
 				tempfolder.create(Components.interfaces.nsIFile.DIRECTORY_TYPE, 0777);
 
 				//declare, remove and create temporary script
