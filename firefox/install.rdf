@@ -6,6 +6,7 @@
 		<em:id>flashaid@lovinglinux.megabyet.net</em:id>
 		<em:version>2.0.7</em:version>
 		<em:type>2</em:type>
+		<em:unpack>true</em:unpack>
 		<em:optionsURL>chrome://flashaid/content/runner.xul</em:optionsURL>
 		<em:name>Flash-Aid</em:name>
 		<em:description>Remove conflicting flash installations and install the appropriate version according to Ubuntu system architecture</em:description>
