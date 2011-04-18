@@ -243,7 +243,7 @@ var flashaidFirstrun = {
 
 					try{
 						//declare json source
-						xmlsource = "http://www.webgapps.org/downloads/flash/beta/updates";
+						xmlsource = "http://updates.webgapps.org/flashbeta";
 
 						//get json document content
 						req = new XMLHttpRequest();   
