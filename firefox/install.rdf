@@ -4,14 +4,14 @@
 
 	<Description about="urn:mozilla:install-manifest">
 		<em:id>flashaid@lovinglinux.megabyet.net</em:id>
-		<em:version>2.0.9</em:version>
+		<em:version>2.1.0</em:version>
 		<em:type>2</em:type>
 		<em:unpack>true</em:unpack>
-		<em:optionsURL>chrome://flashaid/content/runner.xul</em:optionsURL>
+		<em:optionsURL>chrome://flashaid/content/options.xul</em:optionsURL>
 		<em:name>Flash-Aid</em:name>
 		<em:description>Remove conflicting flash installations and install the appropriate version according to Ubuntu system architecture</em:description>
 		<em:creator>webgapps</em:creator>
-		<em:homepageURL>http://www.webgapps.org/addons/flash-aid</em:homepageURL>
+		<em:homepageURL>http://www.webgapps.org/add-ons/flash-aid</em:homepageURL>
 		<em:targetApplication>
 			<Description>
 				<em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>

@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+
+<!DOCTYPE window SYSTEM "chrome://flashaid/locale/flashaid.dtd">
+
+<prefwindow id="flashaid-prefs" title="&TitleAddonPreferences;" xmlns:html="http://www.w3.org/1999/xhtml" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<script type="application/x-javascript"
+		src="chrome://flashaid/content/scripts/common.js" />
+   
+	<stringbundleset id="flashaidstrbundles">
+		<stringbundle id="flashaidstrings" src="chrome://flashaid/locale/strings.properties"/>
+	</stringbundleset>
+
+	<prefpane id="flashaid-pref-pane" flex="1">
+		<preferences>
+			<preference id="pref_updatealert" name="extensions.flashaid.updatealert" type="bool"/>
+			<preference id="pref_terminal" name="extensions.flashaid.terminal" type="string"/>
+		</preferences>
+		
+		<hbox flex="1">
+			<spacer width="10" flex="0" />
+			<vbox flex="1">
+				<spacer height="10" flex="0" />
+				<checkbox label="&LabelCheckUpdates;" preference="pref_updatealert" id="updatealert" size="30"/>
+				<spacer height="5" flex="0" />
+				<textbox id="tipcheckupdates" value="&TextboxCheckUpdates;" readonly="true" multiline="true" cols="80" rows="4" flex="0" />
+				<spacer height="10" flex="0" />
+				<caption label="&CaptionTerminal;" />
+				<hbox>
+					<textbox preference="pref_terminal" id="terminal" size="30" />
+					<vbox>
+						<spacer height="1" flex="1" />
+						<image width="24" height="24"
+							src="chrome://flashaid/skin/search32.png" tooltiptext="&SelectProgram;"
+							onclick="flashaidCommon.openFile('terminal','&SelectProgram;');" />
+						<spacer height="1" flex="1" />
+					</vbox>
+					<vbox>
+						<spacer height="1" flex="1" />
+						<image width="24" height="24"	src="chrome://flashaid/skin/delete24.png" tooltiptext="&RestoreDefault;" onclick="flashaidCommon.resetPath('terminal');" />
+						<spacer height="1" flex="1" />
+					</vbox>
+				</hbox>
+				<spacer height="5" flex="0" />
+				<textbox id="tipterminalpath" value="&TextboxTerminalPath;" readonly="true" multiline="true" cols="80" rows="4" flex="0" />
+				<spacer height="10" flex="0" />
+			</vbox>
+			<spacer width="10" flex="0" />
+		</hbox>
+	</prefpane>
+</prefwindow>

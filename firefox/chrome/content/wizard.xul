@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="chrome://flashaid/skin/toolbar.css" type="text/css" ?>
+
+<!DOCTYPE overlay SYSTEM "chrome://flashaid/locale/flashaid.dtd">
+
+<wizard id="flashaid-wizard" title="&TitleWizard;" onwizardfinish="return flashaidWizard.scriptManager();"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+	
+	<script type="application/x-javascript"
+		src="chrome://flashaid/content/scripts/wizard.js" />
+	<script type="application/x-javascript"
+		src="chrome://flashaid/content/scripts/common.js" />
+
+	<stringbundleset id="flashaidstrbundles">
+		<stringbundle id="flashaidstrings"
+			src="chrome://flashaid/locale/strings.properties" />
+	</stringbundleset>
+
+	<wizardpage description="&CaptionInstallationOptions;">
+		<spacer height="10" flex="0" />
+		<label value="&QuestionVersion;"/>
+		<spacer height="5" flex="0" />
+		<menulist id="flversion" width="400" flex="0">
+			<menupopup id="flversionpop">
+				<menuitem id="repo32" tooltiptext="&TooltipOptionInstallStable;" label="&OptionInstallRepo32;" value="repo32" />
+				<menuitem id="repo64" tooltiptext="&TooltipOptionInstallStable;" label="&OptionInstallRepo64;" value="repo64" />
+				<menuitem id="beta" tooltiptext="&TooltipOptionInstallBeta;" label="&OptionInstallBeta;" value="beta"
+					selected="true" />
+				<menuitem id="googlechrome" tooltiptext="&TooltipOptionInstallChrome;" label="&OptionInstallChrome;" value="googlechrome" />
+			</menupopup>
+		</menulist>
+		<textbox id="installtip32" value="&TextboxInstall32;" readonly="true" multiline="true" cols="80" rows="4" flex="0" />
+		<textbox id="installtip64" value="&TextboxInstall64;" readonly="true" multiline="true" cols="80" rows="4" flex="0" />
+		<spacer height="10" flex="0" />
+	</wizardpage>
+	
+	<wizardpage description="&CaptionRemovalOptions;">
+		<spacer height="10" flex="0" />
+		<label value="&QuestionRemoval;"/>
+		<spacer height="5" flex="0" />
+		<checkbox label="&OptionRemovalLightspark;" id="lightspark" size="30"
+			checked="false" />
+		<checkbox label="&OptionRemovalGnash;" id="gnash" size="30" checked="false"
+			hidden="true" />
+		<checkbox label="&OptionRemovalSwfdec;" id="swfdec" size="30"
+			checked="false" />
+		<checkbox label="&OptionRemovalAdobeInstaller;" id="adobeinstaller"
+			size="30" checked="false" />
+		<checkbox label="&OptionRemovalAdobePartner;" id="adobepartner" size="30"
+			checked="false" />
+		<checkbox label="&OptionRemovalAdobeNonFree;" id="adobenonfree" size="30"
+			checked="false" />
+		<checkbox label="&OptionRemovalSystemPlugin;" id="systemplugin" size="30"
+			checked="false" />
+		<checkbox label="&OptionRemovalSystemPluginF;" id="systempluginf"
+			size="30" checked="false" />
+		<checkbox label="&OptionRemovalMozillaPlugins;" id="mozilla" size="30"
+			checked="false" />
+		<checkbox label="&OptionRemovaMinefieldPlugin;" id="opt" size="30"
+			checked="false" />
+		<checkbox label="&OptionRemovalFirefoxProfile;" id="firefox" size="30"
+			checked="false" />
+		<checkbox label="&OptionRemovalWine;" id="wine" size="30" checked="false" />
+		<spacer height="5" flex="0" />
+		<textbox value="&TextboxRemoval;" readonly="true" multiline="true" cols="80" rows="4" flex="0" />
+		<spacer height="10" flex="0" />
+	</wizardpage>
+	
+	<wizardpage description="&CaptionTweakingOptions;">
+		<spacer height="10" flex="0" />
+		<label value="&QuestionTweaks;"/>
+		<spacer height="5" flex="0" />
+		<checkbox label="&OptionTweakOverrideGPUValidation;" id="overridegpuvalidation"
+			size="30" checked="false" />
+		<checkbox label="&OptionTweakEnableLinuxHWVideoDecode;" id="enablelinuxhwvideodecode"
+			size="30" checked="false" />
+		<checkbox label="&OptionTweakNpviewerTweak;" id="npviewer" size="30"
+			checked="false" />
+		<spacer height="5" flex="0" />
+		<textbox value="&TextboxTweaks;" readonly="true" multiline="true" cols="80" rows="4" flex="0" />
+		<spacer height="10" flex="0" />
+	</wizardpage>
+	
+	<wizardpage description="&CaptionScriptOptions;">
+		<spacer height="10" flex="0" />
+		<textbox value="&TextboxScript;" readonly="true" multiline="true" cols="80" rows="6" flex="0" />
+		<spacer height="10" flex="0" />
+		<label value="&QuestionScript;"/>
+		<spacer height="5" flex="0" />
+		<menulist id="scriptmode" width="400" flex="0">
+			<menupopup id="scriptmodepop">
+				<menuitem tooltiptext="&TooltipButtonExport;" label="&ButtonExport;" value="export" />
+				<menuitem tooltiptext="&TooltipButtonExecute;" label="&ButtonExecute;" value="execute" selected="true" />
+			</menupopup>
+		</menulist>
+		<spacer height="10" flex="0" />
+		<checkbox tooltiptext="&TooltipOptionScriptDoNotConfirm;" label="&OptionScriptDoNotConfirm;" id="scriptdonotconfirm"
+			size="30" checked="false" />
+		<spacer height="10" flex="0" />
+	</wizardpage>
+</wizard>

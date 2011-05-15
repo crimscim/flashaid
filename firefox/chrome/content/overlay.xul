@@ -8,6 +8,14 @@
 
 	<script type="application/x-javascript"
 		src="chrome://flashaid/content/scripts/firstrun.js" />
+	<script type="application/x-javascript"
+		src="chrome://flashaid/content/scripts/common.js" />
+	<script type="application/x-javascript"
+		src="chrome://flashaid/content/scripts/overlay.js" />
+	<script type="application/x-javascript"
+		src="chrome://flashaid/content/scripts/quick.js" />
+	<script type="application/x-javascript"
+		src="chrome://flashaid/content/scripts/launcher.js" />
 
 	<window id="main-window">
 		<stringbundleset id="flashaidstrbundles">
@@ -17,9 +25,33 @@
 	</window>
 
 	<toolbarpalette id="BrowserToolbarPalette">
-		<toolbarbutton id="flashaid-toolbar-button" label="&FLASHAIDTITLE;"
-			tooltiptext="&FLASHAIDTITLE;"
-			oncommand="window.open('chrome://flashaid/content/runner.xul', 'flashaid-runner', 'chrome,centerscreen,alwaysRaised');"
+		<toolbarbutton id="flashaid-toolbar-button" label="&TitleAddon;"
+			tooltiptext="&TitleAddon;"
+			popup="flashaid-contextmenu" 
 			class="toolbarbutton-1 chromeclass-toolbar-additional" />
 	</toolbarpalette>
+
+	<popupset>
+		<menupopup id="flashaid-contextmenu" onpopupshowing="flashaidOverlay.showHideMenus();">
+			<menuitem id="flashaid-wizard" tooltiptext="&TooltipMenuItemModeWizard;" label="&MenuItemModeWizard;" class="menuitem-iconic" image="chrome://flashaid/skin/wizard16.png" oncommand="flashaidLauncher.scriptManager('wizard');"/>
+			<menu id="flashaid-quick" label="&MenuItemModeQuick;" class="menu-iconic" image="chrome://flashaid/skin/quick16.png" >
+				<menupopup id="flashaid-quick-popup">
+					<menuitem id="flashaid-quick-popup-stable" tooltiptext="&TooltipMenuItemModeQuickStable;" label="&MenuItemModeQuickStable;" class="menuitem-iconic" image="chrome://flashaid/skin/stable16.png" oncommand="flashaidLauncher.scriptManager('stable');"/>
+					<menuitem id="flashaid-quick-popup-beta" tooltiptext="&TooltipMenuItemModeQuickBeta;" label="&MenuItemModeQuickBeta;" class="menuitem-iconic" image="chrome://flashaid/skin/beta16.png" oncommand="flashaidLauncher.scriptManager('beta');"/>
+					<menuitem id="flashaid-quick-popup-chrome" tooltiptext="&TooltipMenuItemModeQuickChrome;" label="&MenuItemModeQuickChrome;" class="menuitem-iconic" image="chrome://flashaid/skin/chrome16.png" oncommand="flashaidLauncher.scriptManager('chrome');"/>
+				</menupopup>
+			</menu>
+			<menuitem id="flashaid-advanced" tooltiptext="&TooltipMenuItemModeAdvanced;" label="&MenuItemModeAdvanced;" class="menuitem-iconic" image="chrome://flashaid/skin/advanced16.png" oncommand="flashaidLauncher.scriptManager('advanced');"/>
+			<menuseparator id="flashaid-helper-separator"/>
+			<menu id="flashaid-helper" label="&MenuItemHelp;" class="menu-iconic" image="chrome://flashaid/skin/help16.png">
+				<menupopup id="flashaid-helper-popup">
+					<menuitem id="flashaid-helper-popup-support" tooltiptext="&TooltipMenuItemSupport;" label="&MenuItemSupport;" class="menuitem-iconic" image="chrome://flashaid/skin/support16.png" oncommand="flashaidCommon.openLink('support');"/>
+					<menuitem id="flashaid-helper-popup-docs" tooltiptext="&TooltipMenuItemDocumentation;" label="&MenuItemDocumentation;" class="menuitem-iconic" image="chrome://flashaid/skin/docs16.png" oncommand="flashaidCommon.openLink('docs');"/>
+					<menuitem id="flashaid-helper-popup-report" tooltiptext="&TooltipMenuItemReport;" label="&MenuItemReport;" class="menuitem-iconic" image="chrome://flashaid/skin/report16.png" oncommand="flashaidOverlay.generateReport();"/>
+				</menupopup>
+			</menu>
+			<menuseparator id="flashaid-prefs-separator"/>
+			<menuitem id="flashaid-preferences" tooltiptext="&TooltipMenuItemPreferences;" label="&MenuItemPreferences;" class="menuitem-iconic" image="chrome://flashaid/skin/settings16.png" oncommand="window.openDialog('chrome://flashaid/content/options.xul', 'flashaid-prefs', 'chrome,centerscreen,alwaysRaised');"/>
+		</menupopup>
+	</popupset>
 </overlay>

@@ -32,14 +32,17 @@ var flashaidFirstrun = {
 			.getService(Components.interfaces.nsIPrefService)
 			.getBranch("extensions.flashaid.");
 
+			//reset prefs
+			this.prefs.setBoolPref("sudo",false);
+			this.prefs.setBoolPref("apt",false);
+			this.prefs.setBoolPref("wget",false);
+
 			//fetch localization from strbundle
 			var strbundle = document.getElementById("flashaidstrings");
-
 
 			//firstrun, update and current declarations
 			var ver = -1, firstrun = true;
 			var current = aVersion;
-			var terminalpath = false;
 
 			try{//check for existing preferences
 				ver = this.prefs.getCharPref("version");
@@ -59,73 +62,83 @@ var flashaidFirstrun = {
 					//set preferences
 					this.prefs.setBoolPref("firstrun",false);
 					this.prefs.setCharPref("version",current);
-
-					//get paths from environment variables
-					var envpaths = Components.classes["@mozilla.org/process/environment;1"]
-					.getService(Components.interfaces.nsIEnvironment)
-					.get('PATH');
-
-					if(envpaths){
-
-						//split
-						newpath = envpaths.split(":");
-
-						//find
-						for(var i=0; i< newpath.length; i++){
-
-							//initiate file
-							var gnometerminal = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
-							gnometerminal.initWithPath(newpath[i]+"/gnome-terminal");
-							if(gnometerminal.exists()){
-								this.prefs.setCharPref("terminal",gnometerminal.path);
-								terminalpath = true;
-							}else{
-								//initiate file
-								var konsole = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
-								konsole.initWithPath(newpath[i]+"/konsole");
-								if(konsole.exists()){
-									this.prefs.setCharPref("terminal",konsole.path);
-									terminalpath = true;
-								}else{
-									//initiate file
-									var xfce4 = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
-									xfce4.initWithPath(newpath[i]+"/xfce4-terminal");
-									if(xfce4.exists()){
-										this.prefs.setCharPref("terminal",xfce4.path);
-										terminalpath = true;
-									}else{
-										//initiate file
-										var xterminal = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
-										xterminal.initWithPath(newpath[i]+"/x-terminal-emulator");
-										if(xterminal.exists()){
-											this.prefs.setCharPref("terminal",xterminal.path);
-											terminalpath = true;
-										}
-									}
-								}
-							}
-						}
-					}
-					if(terminalpath === false){
-
-						//reset terminal path
-						this.prefs.setCharPref("terminal","");
-
-						//alert user
-						var message = strbundle.getString("terminalpath");
-						var messagetitle = strbundle.getString("flashaidalert");
-						var alertsService = Components.classes["@mozilla.org/alerts-service;1"]
-						.getService(Components.interfaces.nsIAlertsService);
-						alertsService.showAlertNotification("chrome://flashaid/skin/icon48.png",
-								messagetitle, message,
-								false, "", null);
-					}
 				}
 
 				if(ver !== current && !firstrun){//actions specific for extension updates
 
 					//set preferences
 					this.prefs.setCharPref("version",current);
+				}
+
+				//initiate file
+				var apt = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+				apt.initWithPath("/etc/apt");
+				if(apt.exists()){
+					this.prefs.setBoolPref("apt",true);
+				}
+
+				//get paths from environment variables
+				var envpaths = Components.classes["@mozilla.org/process/environment;1"]
+				.getService(Components.interfaces.nsIEnvironment)
+				.get('PATH');
+
+				if(envpaths){
+
+					//split
+					newpath = envpaths.split(":");
+
+					//find
+					for(var i=0; i< newpath.length; i++){
+
+						if(firstrun){
+							//initiate file
+							var gnometerminal = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+							gnometerminal.initWithPath(newpath[i]+"/gnome-terminal");
+							if(gnometerminal.exists()){
+								this.prefs.setCharPref("terminal",gnometerminal.path);
+							}else{
+								//initiate file
+								var konsole = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+								konsole.initWithPath(newpath[i]+"/konsole");
+								if(konsole.exists()){
+									this.prefs.setCharPref("terminal",konsole.path);
+								}else{
+									//initiate file
+									var xfce4 = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+									xfce4.initWithPath(newpath[i]+"/xfce4-terminal");
+									if(xfce4.exists()){
+										this.prefs.setCharPref("terminal",xfce4.path);
+									}else{
+										//initiate file
+										var xterminal = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+										xterminal.initWithPath(newpath[i]+"/x-terminal-emulator");
+										if(xterminal.exists()){
+											this.prefs.setCharPref("terminal",xterminal.path);
+										}
+									}
+								}
+							}
+						}
+
+						//initiate file
+						var sudo = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+						sudo.initWithPath(newpath[i]+"/sudo");
+						if(sudo.exists()){
+							this.prefs.setBoolPref("sudo",true);
+						}
+						//initiate file
+						var wget = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+						wget.initWithPath(newpath[i]+"/wget");
+						if(wget.exists()){
+							this.prefs.setBoolPref("wget",true);
+						}
+						//initiate file
+						var apt = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+						apt.initWithPath(newpath[i]+"/apt");
+						if(apt.exists()){
+							this.prefs.setBoolPref("apt",true);
+						}
+					}
 				}
 			}
 		},
@@ -271,18 +284,16 @@ var flashaidFirstrun = {
 
 								if(remotetimestamp > localtimestamp){
 
+									this.prefs.setCharPref("flashbetaupdate",req.responseText);
+
 									//fetch message
 									message = strbundle.getFormattedString("flashbetaupdate", [ architecture ]);
-									//prompt user for confirmation
-									var prompts = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
-									.getService(Components.interfaces.nsIPromptService);
-									var result = prompts.confirm(window, messagetitle, message);
-
-									if(result == true){//execute if user confirm
-
-										window.open('chrome://flashaid/content/runner.xul', 'flashaid-runner', 'chrome,centerscreen,alwaysRaised');
-									}
-									this.prefs.setCharPref("flashbetaupdate",req.responseText);
+									//slert user
+									var alertsService = Components.classes["@mozilla.org/alerts-service;1"]
+									.getService(Components.interfaces.nsIAlertsService);
+									alertsService.showAlertNotification("chrome://flashaid/skin/icon32.png",
+											messagetitle, message,
+											false, "", null);
 								}
 							}
 						};

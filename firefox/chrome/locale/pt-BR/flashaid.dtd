@@ -1,63 +1,111 @@
-<!ENTITY AdobeInstaller "Adobe do repositório  (/usr/lib/flashplugin-installer/libflashplayer.so)">
-<!ENTITY AdobeNonFree "Adobe do repositório (/usr/lib/flashplugin-nonfree/libflashplayer.so)">
-<!ENTITY AdobePartner "Adobe from partner repositories (/usr/lib/adobe-flashplugin/libflashplayer.so)">
-<!ENTITY Beta "Adobe Beta, da Adobe Labs">
-<!ENTITY CheckUpdates "Checar por atualizações do flash">
-<!ENTITY CheckUpdatesTips "Quando selecionada a opção para checar por atualizações do flash, a extensão irá baixar um arquivo json bem pequeno de webgapps.org uma vez por dia. Este arquivo contém apenas a estampa de tempo das versões flash da Adobe, o que permite à extensão determinar se você possui a versão mais recente, para poder alertá-lo sobre atualizações disponíveis.">
-<!ENTITY Chrome "Google, from Chrome">
-<!ENTITY CustomURL "Personalizado (http url ou caminho local)">
-<!ENTITY Documentation "Documentação">
-<!ENTITY DocumentationTooltip "Visite a página de documentação do Flash-Aid no site webgapps.org (inglês)">
-<!ENTITY DoNotInstall "Não instalar">
-<!ENTITY EnableLinuxHWVideoDecode "Habilitar Linux HWVideo Decode (permite que o plugin flash use aceleração de hardware vdpau)">
-<!ENTITY Execute "Executar">
-<!ENTITY ExecuteTooltip "Execute o script para remover plugins conflitantes, instalar o flash e aplicar optimizações.">
-<!ENTITY ExpertMode "Modo Avançado">
-<!ENTITY Export "Exportar">
-<!ENTITY ExportTooltip "Exportar o script para seu desktop, de mode que possa editá-lo ou executá-lo manualmente.">
-<!ENTITY FirefoxProfile "Pasta do perfil do Firefox (~/.mozilla/firefox/**/plugins)">
-<!ENTITY FLASHAIDPreferences "Preferências Flash-Aid">
-<!ENTITY FLASHAIDTITLE "Flash-Aid">
-<!ENTITY Gnash "Gnash dos repositórios (/usr/lib/gnash/libgnashplugin.so)">
-<!ENTITY Help "Ajuda">
-<!ENTITY HideTips "Esconder Dicas">
-<!ENTITY InstallationOptions "Opções de Installação">
-<!ENTITY InstallTips32 "Flash-Aid detectou que a arquitetura do seu navegador é 32bit e selecionou o melhor plugin pra você. Por padrão, Flash-Aid usualmente irá instalar a última versão em desenvolvimento pela Adobe Labs, que normalmente funciona melhor que a versão estável. Entretanto, tais versões não são tão seguras quanto a versão dos repositórios. Se você não deseja usar tais versões, você pode instalar a versão estável utilizando o Modo Avançado e alterando a opção de versão abaixo.">
-<!ENTITY InstallTips64 "Flash-Aid detectou que a arquitetura do seu navegador é 64bit e selecionou o melhor plugin pra você. Por padrão, Flash-Aid usualmente irá instalar a última versão em desenvolvimento pela Adobe Labs, que normalmente funciona melhor que a versão estável. Entretanto, tais versões não são tão seguras quanto a versão dos repositórios. Se você não deseja usar tais versões, você pode instalar a versão estável utilizando o Modo Avançado e alterando a opção de versão abaixo.">
-<!ENTITY InstallVersion "Versão e Fonte:">
-<!ENTITY Lightspark "Lightspark dos repositórios (/usr/lib/lightspark/liblightspark.so)">
-<!ENTITY MozillaPlugins "Mozilla plugins (~/.mozilla/plugins)">
-<!ENTITY NpviewerTweak "Optimização do npviewer para sistemas 64bit com plugin 32bit">
-<!ENTITY OPTPlugins "Minefield plugins (/opt/firefox/plugins/libflashplayer.so)">
-<!ENTITY OverrideGPUValidation "Forçar validação de GPU (melhora performance e resolve problemas de tela cheia)">
-<!ENTITY Refresh "Atualizar">
-<!ENTITY RefreshTooltip "Clique para atualizar a pre-visualização do script">
-<!ENTITY RemovalOptions "Opções de Remoção">
-<!ENTITY RemovalTips "Os seguintes plugins foram detectados pelo Flash-Aid e foram selecionados para serem removidos. Isso é essencial para garantir que o plugin apropriado, que será instalado, seja carregado pelo Firefox. Se você não consegue ver nenhum plugin listado ou se deseja remover um item do script de remoção, então clique no Modo Avançado.">
-<!ENTITY Repo32 "Adobe versão estável, dos repositórios">
-<!ENTITY Repo64 "Adobe versão estável, dos repositórios (32bit em modo de compatibilidade)">
-<!ENTITY RepoGnash "Gnash, dos repositórios">
-<!ENTITY RepoLightspark "Lightspark, dos repositórios">
-<!ENTITY Report "Gerar Relatório">
-<!ENTITY ReportTip "O recurso de relatório é um script que coleta informações sobre seu sistema, navegador e plugin flash e produz um arquivo de texto que é salvo em seu desktop. Esse arquivo pode ser enviado ao desenvolvedor para ajudar na solução de problemas.">
-<!ENTITY ReportTooltip "Clique aqui para gerar um rlatório sobre seu sistema">
-<!ENTITY RepoSwfdec "Swfdec, dos repositórios">
+<!ENTITY ButtonExecute "Executar">
+<!ENTITY ButtonExport "Exportar">
+<!ENTITY ButtonTest "Testar">
+
+<!ENTITY TabOptions "Opções">
+<!ENTITY TabScript "Script">
+
+<!ENTITY LabelCheckUpdates "Checar por atualizações do flash">
+<!ENTITY LabelInstallVersion "Versão e Fonte:">
+
+<!ENTITY CaptionInstallationOptions "Opções de Instalação">
+<!ENTITY CaptionPreview "Previsão">
+<!ENTITY CaptionRemovalOptions "Opções de Remoção">
+<!ENTITY CaptionScriptOptions "Opções de Script">
+<!ENTITY CaptionTerminal "Caminho do Console">
+<!ENTITY CaptionTweakingOptions "Opções de Optimização">
+
+<!ENTITY MenuItemDocumentation "Documentação">
+<!ENTITY MenuItemModeAdvanced "Modo Avançado">
+<!ENTITY MenuItemModeQuick "Modo Rápido">
+<!ENTITY MenuItemModeQuickBeta "Instalar o flash beta">
+<!ENTITY MenuItemModeQuickChrome "Instalar o flash chrome">
+<!ENTITY MenuItemModeQuickStable "Instalar o flash oficial">
+<!ENTITY MenuItemModeWizard "Modo Assistente">
+<!ENTITY MenuItemReport "Gerar Relatório">
+<!ENTITY MenuItemHelp "Ajuda">
+<!ENTITY MenuItemPreferences "Preferences">
+<!ENTITY MenuItemSupport "Suporte">
+
+<!ENTITY TitleAddon "Flash-Aid">
+<!ENTITY TitleAddonPreferences "Preferências Flash-Aid">
+<!ENTITY TitleWizard "Assistente Flash-Aid">
+
+<!ENTITY OptionInstallBeta "Adobe Beta, da Adobe Labs">
+<!ENTITY OptionInstallRepo32 "Adobe versão estável, dos repositórios">
+<!ENTITY OptionInstallRepo64 "Adobe versão estável, dos repositórios (32bit em modo de compatibilidade)">
+<!ENTITY OptionInstallChrome "Google, do navegador Chrome">
+<!ENTITY OptionInstallRepoGnash "Gnash, dos repositórios">
+<!ENTITY OptionInstallRepoSwfdec "Swfdec, dos repositórios">
+<!ENTITY OptionInstallRepoLightspark "Lightspark, dos repositórios">
+<!ENTITY OptionInstallCustomURL "Personalizado (http url ou caminho local)">
+<!ENTITY OptionInstallDoNotInstall "Não instalar">
+
+<!ENTITY OptionRemovalAdobeInstaller "Adobe do repositório  (/usr/lib/flashplugin-installer/libflashplayer.so)">
+<!ENTITY OptionRemovalAdobeNonFree "Adobe do repositório (/usr/lib/flashplugin-nonfree/libflashplayer.so))">
+<!ENTITY OptionRemovalAdobePartner "Adobe do repositório de parceiros (/usr/lib/adobe-flashplugin/libflashplayer.so)">
+<!ENTITY OptionRemovalFirefoxProfile "Pasta do perfil do Firefox (~/.mozilla/firefox/**/plugins)">
+<!ENTITY OptionRemovalGnash "Gnash dos repositórios (/usr/lib/gnash/libgnashplugin.so)">
+<!ENTITY OptionRemovalSwfdec "Swfdec dos repositórios (/usr/lib/swfdec-mozilla/libswfdecmozilla.so)">
+<!ENTITY OptionRemovalLightspark "Lightspark dos repositórios (/usr/lib/lightspark/liblightspark.so)">
+<!ENTITY OptionRemovalMozillaPlugins "Mozilla plugins (~/.mozilla/plugins)">
+<!ENTITY OptionRemovaMinefieldPlugin "Minefield plugins (/opt/firefox/plugins/libflashplayer.so)">
+<!ENTITY OptionRemovalSystemPluginF "Plugin instalado manualmente (/usr/lib/firefox-addons/plugins/libflashplayer.so)">
+<!ENTITY OptionRemovalSystemPlugin "Plugin instalado manualmente (/usr/lib/mozilla/plugins/libflashplayer.so)">
+<!ENTITY OptionRemovalWine "Flash para Windows instalado pelo Wine (~/.wine/dosdevices/c:/windows/system32/Macromed/Flash)">
+
+<!ENTITY OptionTweakOverrideGPUValidation "Forçar validação de GPU (melhora performance e resolve problemas de tela cheia)">
+<!ENTITY OptionTweakEnableLinuxHWVideoDecode "Habilitar Linux HWVideo Decode (permite que o plugin flash use aceleração de hardware vdpau)">
+<!ENTITY OptionTweakNpviewerTweak "Optimização do npviewer para sistemas 64bit com plugin 32bit">
+
+<!ENTITY OptionScriptDoNotConfirm "Não perguntar antes de executar comandos">
+
+<!ENTITY QuestionVersion "Qual versão do flash você quer instalar?">
+<!ENTITY QuestionRemoval "Quais plugins instalados você deseja remover?">
+<!ENTITY QuestionTweaks "Quais otimizações você deseja aplicar?">
+<!ENTITY QuestionScript "O que deseja fazer?">
+
+<!ENTITY TextboxCheckUpdates "Quando selecionada a opção para checar por atualizações do flash, a extensão irá baixar um arquivo json bem pequeno de webgapps.org uma vez por dia. Este arquivo contém apenas a estampa de tempo das versões flash da Adobe, o que permite à extensão determinar se você possui a versão mais recente, para poder alertá-lo sobre atualizações disponíveis.">
+<!ENTITY TextboxInstall32 "Flash-Aid detectou que a arquitetura do seu navegador é 32bit e selecionou o melhor plugin pra você. Por padrão, Flash-Aid seleciona a última versão em desenvolvimento pela Adobe Labs, que normalmente funciona melhor que a versão estável. Entretanto, tal versão pode não ser tão segura quanto a versão dos repositórios.">
+<!ENTITY TextboxInstall64 "Flash-Aid detectou que a arquitetura do seu navegador é 64bit e selecionou o melhor plugin pra você. Por padrão, Flash-Aid seleciona a última versão em desenvolvimento pela Adobe Labs, que normalmente funciona melhor que a versão estável. Entretanto, tal versão npode não ser tão segura quanto a versão dos repositórios.">
+<!ENTITY TextboxRemoval "Fash-Aid detectou os plugins instalados e os selecionou para serem removidos. Isso é essencial para garantir que o novo plugin seja carregado pelo Firefox.">
+<!ENTITY TextboxScript "Flash-Aid gerou um shell script contendo os comandos necessários para realizar a manutenção necessária dos plugins. O script pode ser executado automaticamente pelo Flash-Aid ou pode ser exportado para seu Desktop, para que possa executá-lo manualmente. Quando o script é executado, seja atravpes do Flash-Aid ou manualmente, sua senha será requisitada, pois o processo requer privilégios administrativos.">
+<!ENTITY TextboxSelectPath "Selecione um arquivo local ou digite uma url (somente tar.gz é aceito)">
+<!ENTITY TextboxTerminalPath "O caminho para o terminal é requerido para que a extensão funcione. O padrão deve servir para a maioria dos sistemas, mas se encontrar algum error de processo ao tentar executar o script, então selecione um emulador de terminal como gnome-terminal ou konsole, localizados na pasta /usr/bin.">
+<!ENTITY TextboxTweaks "Flash-Aid selecionou automaticamente as optimizações disponíveis para seu sistema. Optimizações não selecionadas serão removidas, caso já tenham sido aplicadas.">
+
+<!ENTITY TooltipInstall32 "Flash-Aid detectou que a arquitetura do seu navegador é 32bit e selecionou o melhor plugin pra você. Por padrão, Flash-Aid seleciona a última versão em desenvolvimento pela Adobe Labs, que normalmente funciona melhor que a versão estável. Entretanto, tal versão pode não ser tão segura quanto a versão dos repositórios.">
+<!ENTITY TooltipInstall64 "Flash-Aid detectou que a arquitetura do seu navegador é 64bit e selecionou o melhor plugin pra você. Por padrão, Flash-Aid seleciona a última versão em desenvolvimento pela Adobe Labs, que normalmente funciona melhor que a versão estável. Entretanto, tal versão pode não ser tão segura quanto a versão dos repositórios.">
+<!ENTITY TooltipRemoval "Os seguintes plugins foram detectados pelo Flash-Aid e foram selecionados para serem removidos. Isso é essencial para garantir que o novo plugin seja carregado pelo Firefox.">
+<!ENTITY TooltipScript "Quando você clica no botão Executar, a extensão cria e roda um shell script em um terminal, para realizar a manutenção necessária do plugin flash. Sua senha será requisitada, pois o processo requer privilégios administrativos. Você precisará reiniciar o Firefox após executar o script, que pode ser pré-visualizado abaixo. A extensão detecta e usa as melhores opções para seu systema por padrão. Entretanto, é recomendado rodar um Teste antes de executar o script, para verificar se existe algum problema com dependẽncias.">
+<!ENTITY TooltipTweaks "Flash-Aid detectou que as seguintes optimizações de flash podem ser aplicadas ao seu sistema. Optimizações não selecionadas serão removidas, caso já tenham sido aplicadas.">
+
+<!ENTITY TooltipButtonTest "Execute o script em modo de simulação, para prever possíveis erros e problemas com dependências">
+<!ENTITY TooltipButtonExecute "Execute o script para remover plugins conflitantes, instalar o flash e aplicar optimizações">
+<!ENTITY TooltipButtonExport "Exportar o script para seu desktop, de mode que possa editá-lo ou executá-lo manualmente">
+
+<!ENTITY TooltipMenuItemDocumentation "Visite a página de documentação do Flash-Aid">
+<!ENTITY TooltipMenuItemModeAdvanced "Instalar o flash plugin de fontes personalizadas ou usando opções avançadas">
+<!ENTITY TooltipMenuItemModeQuickBeta "Remover todos os plugins flash, instalar a versão beta do laboratório da Adobe e aplicar optimizações de performance automaticamente">
+<!ENTITY TooltipMenuItemModeQuickChrome "Remove all flash plugins, copy flash version from Chrome browser and apply performance tweaks automatically">
+<!ENTITY TooltipMenuItemModeQuickStable "Remover todos os plugins flash, instalar a versão estável do repositório oficial e aplicar optimizações de performance automaticamente">
+<!ENTITY TooltipMenuItemModeWizard "Instalar o flash usando tutorial passo-a-passo assistido">
+<!ENTITY TooltipMenuItemPreferences "Flash-Aid Preferences">
+<!ENTITY TooltipMenuItemReport "Gerar um relatório sobre seu sistema">
+<!ENTITY TooltipMenuItemSupport "Visite a página de suporte do Flash-Aid">
+
+<!ENTITY TooltipOptionInstallBeta "Esta versão é fornecida pela Adobe Labs e atualizada apenas pelo Flash-Aid.">
+<!ENTITY TooltipOptionInstallChrome "Esta versão é fornecida e atualizada pelo navegador Google Chrome.">
+<!ENTITY TooltipOptionInstallCustom "Esta opção permite instalar o plugin de um arquivo tar.gz ou url.">
+<!ENTITY TooltipOptionInstallDoNotInstall "Esta opção permite remover o flash completamente, sem instalar nenhum versão.">
+<!ENTITY TooltipOptionInstallGnash "Esta versão é de um plugin alternativo de código aberto, fornecida e atualizada pelo gerenciador de pacotes.">
+<!ENTITY TooltipOptionInstallLightspark "Esta versão é de um plugin alternativo de código aberto, fornecida e atualizada pelo gerenciador de pacotes.">
+<!ENTITY TooltipOptionInstallStable "Esta versão é distribuída oficialmente através dos repositórios Ubuntu e é atualizada através do gerenciador de pacotes.">
+<!ENTITY TooltipOptionInstallSwfdec "Esta versão é de um plugin alternativo de código aberto, fornecida e atualizada pelo gerenciador de pacotes.">
+
+<!ENTITY TooltipOptionScriptDoNotConfirm "Quando esta opção é selecionada, o script será executado sem pedir confirmações de certos comandos. Portanto se você possui algum programa instalado que depende obrigatoriamente do flash, ele será removido automaticamente.">
+
 <!ENTITY Reset "Zerar">
 <!ENTITY RestoreDefault "Restaurar Padrão">
-<!ENTITY ScriptPreview "Prever Script">
-<!ENTITY ScriptWarning "Quando você clica no botão Executar, a extensão cria e roda um shell script em um terminal, para realizar a manutenção necessária do plugin flash. Sua senha será requisitada, pois o processo requer privilégios administrativos. Você precisará reiniciar o Firefox após executar o script, que pode ser pré-visualizado abaixo. A extensão detecta e usa as melhores opções para seu systema por padrão. Entretanto, é recomendado rodar um Teste antes de executar o script, para verificar se existe algum problema com dependẽncias. Se necessário, você pode alterar as opções do script através das outras abas, usando o Modo Avançado. ">
-<!ENTITY Search "Buscar">
-<!ENTITY SelectPathTip "Selecione um arquivo local ou digite uma url (somente tar.gz é aceito)">
+<!ENTITY Search "Search">
 <!ENTITY SelectProgram "Selecionar Programa">
-<!ENTITY Support "Obtenha Suporte">
-<!ENTITY SupportTooltip "Visite a área de suporte do site webgapps.org (inglês)">
-<!ENTITY Swfdec "Swfdec dos repositórios (/usr/lib/swfdec-mozilla/libswfdecmozilla.so)">
-<!ENTITY SystemPluginF "Plugin instalado manualmente (/usr/lib/firefox-addons/plugins/libflashplayer.so)">
-<!ENTITY SystemPlugin "Plugin instalado manualmente (/usr/lib/mozilla/plugins/libflashplayer.so)">
-<!ENTITY Terminal "Caminho do Console">
-<!ENTITY TerminalPathTips "O caminho para o terminal é requerido para que a extensão funcione. O padrão deve servir para a maioria dos sistemas, mas se encontrar algum error de processo ao tentar executar o script, então selecione um emulador de terminal como gnome-terminal ou konsole, localizados na pasta /usr/bin.">
-<!ENTITY Test "Testar">
-<!ENTITY TestTooltip "Execute o script em modo de simulação, para prever possíveis erros e problemas com dependências.">
-<!ENTITY TweakingOptions "Opções de Optimização">
-<!ENTITY TweakTips "Flash-Aid detectou que as seguintes optimizações de flash podem ser aplicadas ao seu sistema. Se deseja remover alguma dessas optimizações ou se deseja selecionar outras optimizações, então clique no Modo Avançado. Optimizações não selecionadas serão removidas, caso já tenham sido aplicadas.">
-<!ENTITY Wine "Flash para Windows instalado pelo Wine (~/.wine/dosdevices/c:/windows/system32/Macromed/Flash)">

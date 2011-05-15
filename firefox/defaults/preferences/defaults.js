@@ -1,8 +1,13 @@
-pref("extensions.flashaid.terminal", "/usr/bin/x-terminal-emulator");
+pref("extensions.flashaid.terminal", "");
+pref("extensions.flashaid.terminalalert", false);
+pref("extensions.flashaid.sudo", false);
+pref("extensions.flashaid.apt", false);
+pref("extensions.flashaid.wget", false);
+pref("extensions.flashaid.depoverride", false);
+pref("extensions.flashaid.depalert", false);
 pref("extensions.flashaid.needrestart", false);
 pref("extensions.flashaid.updatealert", true);
 pref("extensions.flashaid.flashbetaupdate", "{ \"flashbeta32\" : \"20110308\", \"flashbeta64\" : \"20101230\"}");
 pref("extensions.flashaid.lastflashupdate", 20110308);
-pref("extensions.flashaid.hidetips", false);
 pref("extensions.flashaid.osversion", "");
 pref("extensions.flashaid.oscodename", "");
