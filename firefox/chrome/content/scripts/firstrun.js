@@ -140,6 +140,18 @@ var flashaidFirstrun = {
 						}
 					}
 				}
+				
+				if(firstrun){//actions specific for first installation
+					
+					setTimeout(function () { 
+						//alert user
+						var message = strbundle.getString("firstinstall");
+						var messagetitle = strbundle.getString("flashaidalert");
+						var prompts = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
+						.getService(Components.interfaces.nsIPromptService);
+						prompts.alert(window, messagetitle, message);
+					}, 1500);
+				}
 			}
 		},
 
