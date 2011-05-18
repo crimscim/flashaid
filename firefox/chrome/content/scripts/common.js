@@ -167,22 +167,22 @@ var flashaidCommon = {
 				return "sudo ln -s /opt/google/chrome/libgcflashplayer.so /usr/lib/mozilla/plugins/libflashplayer.so";
 			}
 			if(aCommand === "beta64-install-test"){
-				return "cd \""+tempfolder.path+"\" && rm -f flashplayer64* && wget http://updates.webgapps.org/flashplayer64 && tar xvf flashplayer64 && rm -f libflashplayer.so && rm -f flashplayer64*";
+				return "cd \""+tempfolder.path+"\" && rm -f flashplayer* && wget http://updates.webgapps.org/flashplayer64 && tar xvf flashplayer* libflashplayer.so && rm -f libflashplayer.so && rm -f flashplayer*";
 			}
 			if(aCommand === "beta32-install-test"){
-				return "cd \""+tempfolder.path+"\" && rm -f flashplayer32* && wget http://updates.webgapps.org/flashplayer32 && tar xvf flashplayer32 && rm -f libflashplayer.so && rm -f flashplayer32*";
+				return "cd \""+tempfolder.path+"\" && rm -f flashplayer* && wget http://updates.webgapps.org/flashplayer32 && tar xvf flashplayer* libflashplayer.so && rm -f libflashplayer.so && rm -f flashplayer*";
 			}
 			if(aCommand === "beta64-install"){
-				return "cd \""+tempfolder.path+"\" && rm -f flashplayer64* && wget http://updates.webgapps.org/flashplayer64 && tar xvf flashplayer64 && sudo chown root:root libflashplayer.so && sudo chmod 0644 libflashplayer.so && sudo mv libflashplayer.so /usr/lib/mozilla/plugins/ && rm -f flashplayer64* && sudo ln -s /usr/lib/mozilla/plugins/libflashplayer.so /usr/lib/firefox-addons/plugins/libflashplayer.so";
+				return "cd \""+tempfolder.path+"\" && rm -f flashplayer* && wget http://updates.webgapps.org/flashplayer64 && tar xvf flashplayer* libflashplayer.so && sudo chown root:root libflashplayer.so && sudo chmod 0644 libflashplayer.so && sudo mv libflashplayer.so /usr/lib/mozilla/plugins/ && rm -f flashplayer* && sudo ln -s /usr/lib/mozilla/plugins/libflashplayer.so /usr/lib/firefox-addons/plugins/libflashplayer.so";
 			}
 			if(aCommand === "beta32-install"){
-				return "cd \""+tempfolder.path+"\" && rm -f flashplayer32* && wget http://updates.webgapps.org/flashplayer32 && tar xvf flashplayer32 && sudo chown root:root libflashplayer.so && sudo chmod 0644 libflashplayer.so && sudo mv libflashplayer.so /usr/lib/mozilla/plugins/ && rm -f flashplayer32* && sudo ln -s /usr/lib/mozilla/plugins/libflashplayer.so /usr/lib/firefox-addons/plugins/libflashplayer.so";
+				return "cd \""+tempfolder.path+"\" && rm -f flashplayer* && wget http://updates.webgapps.org/flashplayer32 && tar xvf flashplayer* libflashplayer.so && sudo chown root:root libflashplayer.so && sudo chmod 0644 libflashplayer.so && sudo mv libflashplayer.so /usr/lib/mozilla/plugins/ && rm -f flashplayer* && sudo ln -s /usr/lib/mozilla/plugins/libflashplayer.so /usr/lib/firefox-addons/plugins/libflashplayer.so";
 			}
 			if(aCommand === "beta64-install-x86_64-i686"){
-				return "cd \""+tempfolder.path+"\" && rm -f flashplayer64* && wget http://updates.webgapps.org/flashplayer64 && tar xvf flashplayer64 && sudo chown root:root libflashplayer.so && sudo chmod 0644 libflashplayer.so && sudo mv libflashplayer.so /usr/lib/mozilla/plugins/ && rm -f flashplayer64* && mkdir ~/.mozilla/plugins/ && sudo ln -s /usr/lib/mozilla/plugins/libflashplayer.so /usr/lib/firefox-addons/plugins/libflashplayer.so";
+				return "cd \""+tempfolder.path+"\" && rm -f flashplayer* && wget http://updates.webgapps.org/flashplayer64 && tar xvf flashplayer* libflashplayer.so && sudo chown root:root libflashplayer.so && sudo chmod 0644 libflashplayer.so && sudo mv libflashplayer.so /usr/lib/mozilla/plugins/ && rm -f flashplayer* && mkdir ~/.mozilla/plugins/ && sudo ln -s /usr/lib/mozilla/plugins/libflashplayer.so /usr/lib/firefox-addons/plugins/libflashplayer.so";
 			}
 			if(aCommand === "beta32-install-x86_64-i686"){
-				return "cd \""+tempfolder.path+"\" && rm -f flashplayer32* && wget http://updates.webgapps.org/flashplayer32 && tar xvf flashplayer32 && mv libflashplayer.so ~/.mozilla/plugins/ && rm -f flashplayer32*";
+				return "cd \""+tempfolder.path+"\" && rm -f flashplayer* && wget http://updates.webgapps.org/flashplayer32 && tar xvf flashplayer* libflashplayer.so && mv libflashplayer.so ~/.mozilla/plugins/ && rm -f flashplayer*";
 			}
 			//*****************************************symlinks********************************************
 			if(aCommand === "gnash-symlink-opt"){
