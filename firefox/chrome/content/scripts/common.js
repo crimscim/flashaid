@@ -120,7 +120,7 @@ var flashaidCommon = {
 				return "sudo apt-get"+skipuser+simulate+"purge swfdec-mozilla";
 			}
 			if(aCommand === "adobeinstaller-removal"){
-				return "sudo apt-get"+skipuser+simulate+"purge flashplugin-installer";
+				return "sudo apt-get"+skipuser+simulate+"purge flashplugin.*installer";
 			}
 			if(aCommand === "adobepartner-removal"){
 				return "sudo apt-get"+skipuser+simulate+"purge adobe-flashplugin";
