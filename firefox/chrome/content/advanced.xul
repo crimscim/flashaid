@@ -65,6 +65,7 @@
 										<spacer height="1" flex="1" />
 										<image id="customurlpathsearch" width="24" height="24"
 											src="chrome://flashaid/skin/search32.png" tooltiptext="&Search;"
+											onmouseover="this.style.cursor='pointer';"
 											onclick="flashaidCommon.openFile('customurlpath','&SelectProgram;');"
 											hidden="true" />
 										<spacer height="1" flex="1" />
@@ -73,6 +74,7 @@
 										<spacer height="1" flex="1" />
 										<image id="customurlpathreset" width="24" height="24"
 											src="chrome://flashaid/skin/delete24.png" tooltiptext="&Reset;"
+											onmouseover="this.style.cursor='pointer';"
 											onclick="flashaidCommon.resetPath('customurlpath');" />
 										<spacer height="1" flex="1" />
 									</vbox>
