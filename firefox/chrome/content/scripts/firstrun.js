@@ -37,9 +37,6 @@ var flashaidFirstrun = {
 			this.prefs.setBoolPref("apt",false);
 			this.prefs.setBoolPref("wget",false);
 
-			//fetch localization from strbundle
-			var strbundle = document.getElementById("flashaidstrings");
-
 			//firstrun, update and current declarations
 			var ver = -1, firstrun = true;
 			var current = aVersion;
@@ -142,17 +139,22 @@ var flashaidFirstrun = {
 				}
 				
 				if(firstrun){//actions specific for first installation
-					
-					setTimeout(function () { 
-						//alert user
-						var message = strbundle.getString("firstinstall");
-						var messagetitle = strbundle.getString("flashaidalert");
-						var prompts = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
-						.getService(Components.interfaces.nsIPromptService);
-						prompts.alert(window, messagetitle, message);
-					}, 1500);
+					setTimeout(function () {flashaidFirstrun.firstrunAlert();}, 1500);
 				}
 			}
+		},
+		
+		firstrunAlert: function(){
+			
+			//fetch localization from strbundle
+			var strbundle = document.getElementById("flashaidstrings");
+			
+			//alert user
+			var message = strbundle.getString("firstinstall");
+			var messagetitle = strbundle.getString("flashaidalert");
+			var prompts = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
+			.getService(Components.interfaces.nsIPromptService);
+			prompts.alert(window, messagetitle, message);
 		},
 
 		getSysInfo: function(){
