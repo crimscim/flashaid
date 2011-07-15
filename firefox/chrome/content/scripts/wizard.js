@@ -195,6 +195,8 @@ var flashaidWizard = {
 
 			if(version == "repo32"){
 				document.getElementById("flash-aid-wizard-info").hidden = false;
+				document.getElementById("flash-aid-wizard-info-version-label").hidden = true;
+				document.getElementById("flash-aid-wizard-info-version").hidden = true;
 				document.getElementById("flash-aid-wizard-info-hash-label").hidden = true;
 				document.getElementById("flash-aid-wizard-info-hash").hidden = true;
 				document.getElementById("flash-aid-wizard-info-release-label").hidden = true;
@@ -205,6 +207,8 @@ var flashaidWizard = {
 			}
 			if(version == "repo64"){
 				document.getElementById("flash-aid-wizard-info").hidden = false;
+				document.getElementById("flash-aid-wizard-info-version-label").hidden = true;
+				document.getElementById("flash-aid-wizard-info-version").hidden = true;
 				document.getElementById("flash-aid-wizard-info-hash-label").hidden = true;
 				document.getElementById("flash-aid-wizard-info-hash").hidden = true;
 				document.getElementById("flash-aid-wizard-info-release-label").hidden = true;
@@ -215,6 +219,8 @@ var flashaidWizard = {
 			}	
 			if(version == "beta"){
 				document.getElementById("flash-aid-wizard-info").hidden = false;
+				document.getElementById("flash-aid-wizard-info-version-label").hidden = false;
+				document.getElementById("flash-aid-wizard-info-version").hidden = false;
 				document.getElementById("flash-aid-wizard-info-hash-label").hidden = false;
 				document.getElementById("flash-aid-wizard-info-hash").hidden = false;
 				document.getElementById("flash-aid-wizard-info-release-label").hidden = false;
@@ -226,6 +232,8 @@ var flashaidWizard = {
 					var jsonObjectLocal = JSON.parse(datawebgapps);
 					var timestamp64 = jsonObjectLocal.flashbeta64[0].timestamp;
 					var timestamp32 = jsonObjectLocal.flashbeta32[0].timestamp;
+					var version64 = jsonObjectLocal.flashbeta64[0].version;
+					var version32 = jsonObjectLocal.flashbeta32[0].version;
 					var url64 = jsonObjectLocal.flashbeta64[0].url;
 					var url32 = jsonObjectLocal.flashbeta32[0].url;
 					var hash64 = jsonObjectLocal.flashbeta64[0].hash;
@@ -236,12 +244,14 @@ var flashaidWizard = {
 							document.getElementById("flash-aid-wizard-info-source").setAttribute('value',url32+" | "+url64);
 							document.getElementById("flash-aid-wizard-info-source").setAttribute('tooltiptext',url32+" | "+url64);
 							document.getElementById("flash-aid-wizard-info-architecture").setAttribute('value',"32bit | 64bit");
+							document.getElementById("flash-aid-wizard-info-version").setAttribute('value',version32+" | "+version64);
 							document.getElementById("flash-aid-wizard-info-hash").setAttribute('value',hash32+" | "+hash64);
 							document.getElementById("flash-aid-wizard-info-release").setAttribute('value',timestamp32+" | "+timestamp64);
 						}else{
 							document.getElementById("flash-aid-wizard-info-source").setAttribute('value',url64);
 							document.getElementById("flash-aid-wizard-info-source").setAttribute('tooltiptext',url64);
 							document.getElementById("flash-aid-wizard-info-architecture").setAttribute('value',"64bit");
+							document.getElementById("flash-aid-wizard-info-version").setAttribute('value',version64);
 							document.getElementById("flash-aid-wizard-info-hash").setAttribute('value',hash64);
 							document.getElementById("flash-aid-wizard-info-release").setAttribute('value',timestamp64);
 						}
@@ -249,6 +259,7 @@ var flashaidWizard = {
 						document.getElementById("flash-aid-wizard-info-source").setAttribute('value',url32);
 						document.getElementById("flash-aid-wizard-info-source").setAttribute('tooltiptext',url32);
 						document.getElementById("flash-aid-wizard-info-architecture").setAttribute('value',"32bit");
+						document.getElementById("flash-aid-wizard-info-version").setAttribute('value',version32);
 						document.getElementById("flash-aid-wizard-info-hash").setAttribute('value',hash32);
 						document.getElementById("flash-aid-wizard-info-release").setAttribute('value',timestamp32);
 					}
@@ -258,6 +269,8 @@ var flashaidWizard = {
 			}
 			if(version == "googlechrome"){
 				document.getElementById("flash-aid-wizard-info").hidden = false;
+				document.getElementById("flash-aid-wizard-info-version-label").hidden = true;
+				document.getElementById("flash-aid-wizard-info-version").hidden = true;
 				document.getElementById("flash-aid-wizard-info-hash-label").hidden = true;
 				document.getElementById("flash-aid-wizard-info-hash").hidden = true;
 				document.getElementById("flash-aid-wizard-info-release-label").hidden = true;

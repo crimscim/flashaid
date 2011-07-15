@@ -11,6 +11,7 @@
 <!ENTITY LabelArchitecture "Architecture">
 <!ENTITY LabelHash "Hash (md5)">
 <!ENTITY LabelRelease "Release Date">
+<!ENTITY LabelVersion "Version">
 
 <!ENTITY CaptionInstallationOptions "Installation Options">
 <!ENTITY CaptionPreview "Preview">

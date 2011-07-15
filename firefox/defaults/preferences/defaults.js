@@ -8,7 +8,7 @@ pref("extensions.flashaid.depoverride", false);
 pref("extensions.flashaid.depalert", false);
 pref("extensions.flashaid.needrestart", false);
 pref("extensions.flashaid.updatealert", true);
-pref("extensions.flashaid.datawebgapps", "{\"flashbeta32\":[{\"timestamp\":\"20110713\",\"url\":\"http://download.macromedia.com/pub/labs/flashplatformruntimes/flashplayer11/flashplayer11_b1_install_lin_32_071311.tar.gz\",\"hash\":\"8816dfa0bbb4210df5a37e061834c24a\"}],\"flashbeta64\":[{\"timestamp\":\"20110713\",\"url\":\"http://download.macromedia.com/pub/labs/flashplatformruntimes/flashplayer11/flashplayer11_b1_install_lin_64_071311.tar.gz\",\"hash\":\"806b348cfb27054568d9f63d13bee3fd\"}]}");
+pref("extensions.flashaid.datawebgapps", "{\"flashbeta32\":[{\"timestamp\":\"20110713\",\"version\":\"11.0.1.60b1\",\"url\":\"http://download.macromedia.com/pub/labs/flashplatformruntimes/flashplayer11/flashplayer11_b1_install_lin_32_071311.tar.gz\",\"hash\":\"8816dfa0bbb4210df5a37e061834c24a\"}],\"flashbeta64\":[{\"timestamp\":\"20110713\",\"version\":\"11.0.1.60b1\",\"url\":\"http://download.macromedia.com/pub/labs/flashplatformruntimes/flashplayer11/flashplayer11_b1_install_lin_64_071311.tar.gz\",\"hash\":\"806b348cfb27054568d9f63d13bee3fd\"}]}");
 pref("extensions.flashaid.dataupdate", 20110713);
 pref("extensions.flashaid.osversion", "");
 pref("extensions.flashaid.oscodename", "");
