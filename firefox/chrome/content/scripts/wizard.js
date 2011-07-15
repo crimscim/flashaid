@@ -174,6 +174,98 @@ var flashaidWizard = {
 				document.getElementById("npviewer").checked = true;
 			}
 		},
+		
+		infoUpdater: function(){
+			
+			//access preferences interface
+			this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
+			.getService(Components.interfaces.nsIPrefService)
+			.getBranch("extensions.flashaid.");
+
+			//get os architecture
+			var osString = Components.classes["@mozilla.org/network/protocol;1?name=http"]
+			.getService(Components.interfaces.nsIHttpProtocolHandler).oscpu;
+			
+			//fetch localization from strbundle
+			var strbundle = document.getElementById("flashaidstrings");
+			var strrepositories = strbundle.getString("repositories");
+			
+			var version = document.getElementById("flversion").value;
+
+			if(version == "repo32"){
+				document.getElementById("flash-aid-wizard-info").hidden = false;
+				document.getElementById("flash-aid-wizard-info-hash-label").hidden = true;
+				document.getElementById("flash-aid-wizard-info-hash").hidden = true;
+				document.getElementById("flash-aid-wizard-info-release-label").hidden = true;
+				document.getElementById("flash-aid-wizard-info-release").hidden = true;
+				document.getElementById("flash-aid-wizard-info-source").setAttribute('value',strrepositories);
+				document.getElementById("flash-aid-wizard-info-source").setAttribute('tooltiptext',strrepositories);
+				document.getElementById("flash-aid-wizard-info-architecture").setAttribute('value',"32bit");
+			}
+			if(version == "repo64"){
+				document.getElementById("flash-aid-wizard-info").hidden = false;
+				document.getElementById("flash-aid-wizard-info-hash-label").hidden = true;
+				document.getElementById("flash-aid-wizard-info-hash").hidden = true;
+				document.getElementById("flash-aid-wizard-info-release-label").hidden = true;
+				document.getElementById("flash-aid-wizard-info-release").hidden = true;
+				document.getElementById("flash-aid-wizard-info-source").setAttribute('value',strrepositories);
+				document.getElementById("flash-aid-wizard-info-source").setAttribute('tooltiptext',strrepositories);
+				document.getElementById("flash-aid-wizard-info-architecture").setAttribute('value',"64bit");
+			}	
+			if(version == "beta"){
+				document.getElementById("flash-aid-wizard-info").hidden = false;
+				document.getElementById("flash-aid-wizard-info-hash-label").hidden = false;
+				document.getElementById("flash-aid-wizard-info-hash").hidden = false;
+				document.getElementById("flash-aid-wizard-info-release-label").hidden = false;
+				document.getElementById("flash-aid-wizard-info-release").hidden = false;
+				
+				try{
+					//parse json data
+					var datawebgapps = this.prefs.getCharPref("datawebgapps");
+					var jsonObjectLocal = JSON.parse(datawebgapps);
+					var timestamp64 = jsonObjectLocal.flashbeta64[0].timestamp;
+					var timestamp32 = jsonObjectLocal.flashbeta32[0].timestamp;
+					var url64 = jsonObjectLocal.flashbeta64[0].url;
+					var url32 = jsonObjectLocal.flashbeta32[0].url;
+					var hash64 = jsonObjectLocal.flashbeta64[0].hash;
+					var hash32 = jsonObjectLocal.flashbeta32[0].hash;
+					
+					if(osString.match(/x86_64/)){
+						if(osString.match(/i686/)){
+							document.getElementById("flash-aid-wizard-info-source").setAttribute('value',url32+" | "+url64);
+							document.getElementById("flash-aid-wizard-info-source").setAttribute('tooltiptext',url32+" | "+url64);
+							document.getElementById("flash-aid-wizard-info-architecture").setAttribute('value',"32bit | 64bit");
+							document.getElementById("flash-aid-wizard-info-hash").setAttribute('value',hash32+" | "+hash64);
+							document.getElementById("flash-aid-wizard-info-release").setAttribute('value',timestamp32+" | "+timestamp64);
+						}else{
+							document.getElementById("flash-aid-wizard-info-source").setAttribute('value',url64);
+							document.getElementById("flash-aid-wizard-info-source").setAttribute('tooltiptext',url64);
+							document.getElementById("flash-aid-wizard-info-architecture").setAttribute('value',"64bit");
+							document.getElementById("flash-aid-wizard-info-hash").setAttribute('value',hash64);
+							document.getElementById("flash-aid-wizard-info-release").setAttribute('value',timestamp64);
+						}
+					}else{
+						document.getElementById("flash-aid-wizard-info-source").setAttribute('value',url32);
+						document.getElementById("flash-aid-wizard-info-source").setAttribute('tooltiptext',url32);
+						document.getElementById("flash-aid-wizard-info-architecture").setAttribute('value',"32bit");
+						document.getElementById("flash-aid-wizard-info-hash").setAttribute('value',hash32);
+						document.getElementById("flash-aid-wizard-info-release").setAttribute('value',timestamp32);
+					}
+				}catch(e){
+					document.getElementById("flash-aid-wizard-info").hidden = true;
+				}
+			}
+			if(version == "googlechrome"){
+				document.getElementById("flash-aid-wizard-info").hidden = false;
+				document.getElementById("flash-aid-wizard-info-hash-label").hidden = true;
+				document.getElementById("flash-aid-wizard-info-hash").hidden = true;
+				document.getElementById("flash-aid-wizard-info-release-label").hidden = true;
+				document.getElementById("flash-aid-wizard-info-release").hidden = true;
+				document.getElementById("flash-aid-wizard-info-source").setAttribute('value',"/opt/google/chrome/libgcflashplayer.so");
+				document.getElementById("flash-aid-wizard-info-source").setAttribute('tooltiptext',"/opt/google/chrome/libgcflashplayer.so");
+				document.getElementById("flash-aid-wizard-info-architecture").setAttribute('value',"32bit");
+			}
+		},
 
 		scriptManager: function(){
 

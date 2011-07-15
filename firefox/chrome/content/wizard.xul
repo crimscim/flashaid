@@ -20,7 +20,7 @@
 		<spacer height="10" flex="0" />
 		<label value="&QuestionVersion;"/>
 		<spacer height="5" flex="0" />
-		<menulist id="flversion" width="400" flex="0">
+		<menulist id="flversion" width="400" flex="0" onselect="flashaidWizard.infoUpdater();">
 			<menupopup id="flversionpop">
 				<menuitem id="repo32" tooltiptext="&TooltipOptionInstallStable;" label="&OptionInstallRepo32;" value="repo32" />
 				<menuitem id="repo64" tooltiptext="&TooltipOptionInstallStable;" label="&OptionInstallRepo64;" value="repo64" />
@@ -31,6 +31,32 @@
 		</menulist>
 		<textbox id="installtip32" value="&TextboxInstall32;" readonly="true" multiline="true" cols="80" rows="4" flex="0" />
 		<textbox id="installtip64" value="&TextboxInstall64;" readonly="true" multiline="true" cols="80" rows="4" flex="0" />
+		<spacer height="30" flex="0" />
+		<groupbox id="flash-aid-wizard-info">
+			<caption label="&CaptionTechnicalInfo;"/>
+			<spacer height="5" flex="0" />
+			<hbox>
+				<label id="flash-aid-wizard-info-source-label" value="&LabelSource;: "/>
+				<arrowscrollbox id="flash-aid-wizard-info-source-arrowscrollbox" orient="horizontal" flex="1">
+					<label id="flash-aid-wizard-info-source" value=""/>
+				</arrowscrollbox>
+			</hbox>
+			<spacer height="5" flex="0" />
+			<hbox>
+				<label id="flash-aid-wizard-info-architecture-label" value="&LabelArchitecture;: "/>
+				<label id="flash-aid-wizard-info-architecture" value=""/>
+			</hbox>
+			<spacer height="5" flex="0" />
+			<hbox>
+				<label id="flash-aid-wizard-info-hash-label" value="&LabelHash;: "/>
+				<label id="flash-aid-wizard-info-hash" value=""/>
+			</hbox>
+			<spacer height="5" flex="0" />
+			<hbox>
+				<label id="flash-aid-wizard-info-release-label" value="&LabelRelease;: "/>
+				<label id="flash-aid-wizard-info-release" value=""/>
+			</hbox>
+		</groupbox>
 		<spacer height="10" flex="0" />
 	</wizardpage>
 	

@@ -7,12 +7,17 @@
 
 <!ENTITY LabelUpdateAlerts "Receive alerts about flash updates">
 <!ENTITY LabelInstallVersion "Version and Source:">
+<!ENTITY LabelSource "Source">
+<!ENTITY LabelArchitecture "Architecture">
+<!ENTITY LabelHash "Hash (md5)">
+<!ENTITY LabelRelease "Release Date">
 
 <!ENTITY CaptionInstallationOptions "Installation Options">
 <!ENTITY CaptionPreview "Preview">
 <!ENTITY CaptionRemovalOptions "Removal Options">
 <!ENTITY CaptionScriptOptions "Script Options">
 <!ENTITY CaptionTerminal "Terminal Path">
+<!ENTITY CaptionTechnicalInfo "Plugin Info">
 <!ENTITY CaptionTweakingOptions "Tweaking Options">
 
 <!ENTITY MenuItemDocumentation "Documentation">
