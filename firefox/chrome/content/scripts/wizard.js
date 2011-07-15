@@ -189,6 +189,7 @@ var flashaidWizard = {
 			//fetch localization from strbundle
 			var strbundle = document.getElementById("flashaidstrings");
 			var strrepositories = strbundle.getString("repositories");
+			var strwrapper = strbundle.getString("wrapper");
 			
 			var version = document.getElementById("flversion").value;
 
@@ -210,7 +211,7 @@ var flashaidWizard = {
 				document.getElementById("flash-aid-wizard-info-release").hidden = true;
 				document.getElementById("flash-aid-wizard-info-source").setAttribute('value',strrepositories);
 				document.getElementById("flash-aid-wizard-info-source").setAttribute('tooltiptext',strrepositories);
-				document.getElementById("flash-aid-wizard-info-architecture").setAttribute('value',"64bit");
+				document.getElementById("flash-aid-wizard-info-architecture").setAttribute('value',strwrapper);
 			}	
 			if(version == "beta"){
 				document.getElementById("flash-aid-wizard-info").hidden = false;
