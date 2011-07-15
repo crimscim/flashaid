@@ -5,7 +5,7 @@
 <!ENTITY TabOptions "Opções">
 <!ENTITY TabScript "Script">
 
-<!ENTITY LabelCheckUpdates "Checar por atualizações do flash">
+<!ENTITY LabelUpdateAlerts "Receber alertas de novas versões do flash">
 <!ENTITY LabelInstallVersion "Versão e Fonte:">
 
 <!ENTITY CaptionInstallationOptions "Opções de Instalação">
@@ -65,7 +65,6 @@
 <!ENTITY QuestionTweaks "Quais otimizações você deseja aplicar?">
 <!ENTITY QuestionScript "O que deseja fazer?">
 
-<!ENTITY TextboxCheckUpdates "Quando selecionada a opção para checar por atualizações do flash, a extensão irá baixar um arquivo json bem pequeno de webgapps.org uma vez por dia. Este arquivo contém apenas a estampa de tempo das versões flash da Adobe, o que permite à extensão determinar se você possui a versão mais recente, para poder alertá-lo sobre atualizações disponíveis.">
 <!ENTITY TextboxInstall32 "Flash-Aid detectou que a arquitetura do seu navegador é 32bit e selecionou o melhor plugin pra você. Por padrão, Flash-Aid seleciona a última versão em desenvolvimento pela Adobe Labs, que normalmente funciona melhor que a versão estável. Entretanto, tal versão pode não ser tão segura quanto a versão dos repositórios.">
 <!ENTITY TextboxInstall64 "Flash-Aid detectou que a arquitetura do seu navegador é 64bit e selecionou o melhor plugin pra você. Por padrão, Flash-Aid seleciona a última versão em desenvolvimento pela Adobe Labs, que normalmente funciona melhor que a versão estável. Entretanto, tal versão npode não ser tão segura quanto a versão dos repositórios.">
 <!ENTITY TextboxRemoval "Flash-Aid detectou os plugins instalados e os selecionou para serem removidos. Isso é essencial para garantir que o novo plugin seja carregado pelo Firefox.">

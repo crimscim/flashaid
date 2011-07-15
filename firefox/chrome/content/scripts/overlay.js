@@ -11,6 +11,7 @@ var flashaidOverlay = {
 			var sudo = this.prefs.getBoolPref("sudo");
 			var apt = this.prefs.getBoolPref("apt");
 			var wget = this.prefs.getBoolPref("wget");
+			var md5sum = this.prefs.getBoolPref("md5sum");
 			var terminal = this.prefs.getCharPref("terminal");
 			var terminalalert = this.prefs.getBoolPref("terminalalert");
 			var depoverride = this.prefs.getBoolPref("depoverride");
@@ -35,7 +36,7 @@ var flashaidOverlay = {
 				googlechrome = false;
 			}
 
-			if(sudo === false || apt === false || wget === false){
+			if(sudo === false || apt === false || wget === false || md5sum === false){
 
 				if(depoverride === true ){
 

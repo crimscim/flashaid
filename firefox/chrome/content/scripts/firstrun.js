@@ -135,26 +135,34 @@ var flashaidFirstrun = {
 						if(apt.exists()){
 							this.prefs.setBoolPref("apt",true);
 						}
+						//initiate file
+						var md5sum = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+						md5sum.initWithPath(newpath[i]+"/md5sum");
+						if(md5sum.exists()){
+							this.prefs.setBoolPref("md5sum",true);
+						}
 					}
 				}
-				
+
 				if(firstrun){//actions specific for first installation
 					setTimeout(function () {flashaidFirstrun.firstrunAlert();}, 1500);
 				}
 			}
 		},
-		
+
 		firstrunAlert: function(){
-			
+
 			//fetch localization from strbundle
 			var strbundle = document.getElementById("flashaidstrings");
-			
+
 			//alert user
 			var message = strbundle.getString("firstinstall");
 			var messagetitle = strbundle.getString("flashaidalert");
-			var prompts = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
-			.getService(Components.interfaces.nsIPromptService);
-			prompts.alert(window, messagetitle, message);
+			var alertsService = Components.classes["@mozilla.org/alerts-service;1"]
+			.getService(Components.interfaces.nsIAlertsService);
+			alertsService.showAlertNotification("chrome://flashaid/skin/icon32.png",
+					messagetitle, message,
+					false, "", null);
 		},
 
 		getSysInfo: function(){
@@ -215,7 +223,8 @@ var flashaidFirstrun = {
 			.getBranch("extensions.flashaid.");
 
 			var updatealert = this.prefs.getBoolPref("updatealert");
-			var lastflashupdate = this.prefs.getIntPref("lastflashupdate");
+			var dataupdate = this.prefs.getIntPref("dataupdate");
+			var sslenabled = this.prefs.getBoolPref("sslenabled");
 
 			//get date and time
 			var currentDate = new Date();
@@ -229,94 +238,185 @@ var flashaidFirstrun = {
 			var YYYY = currentDate.getFullYear();
 			var currenttimestamp = YYYY+MM+DD;
 
-			if(updatealert === true){
+			if(currenttimestamp > dataupdate){
 
-				if(currenttimestamp > lastflashupdate){
+				//change dataupdate to current timestamp
+				this.prefs.setIntPref("dataupdate",currenttimestamp);
 
-					//change lastflashupdate to current timestamp
-					this.prefs.setIntPref("lastflashupdate",currenttimestamp);
+				//fetch localization from strbundle
+				var strbundle = document.getElementById("flashaidstrings");
+				var messagetitle = strbundle.getString("flashaidalert");
 
-					//fetch localization from strbundle
-					var strbundle = document.getElementById("flashaidstrings");
-					var messagetitle = strbundle.getString("flashaidalert");
+				var datawebgapps, xmlsource, jsonObjectLocal, jsonObjectRemote, JSONtimestamp, req, localtimestamp, remotetimestamp, message, architecture;
 
-					var flashbetajson, xmlsource, jsonObjectLocal, jsonObjectRemote, JSONtimestamp, req, localtimestamp, remotetimestamp, message, architecture;
+				try{
+					//get current timestamp
+					datawebgapps = this.prefs.getCharPref("datawebgapps");
 
-					try{
-						//get current timestamp
-						flashbetajson = this.prefs.getCharPref("flashbetaupdate");
-					}catch(e){
+					//get current timestamp from  prefs
+					jsonObjectLocal = JSON.parse(datawebgapps);
 
-						flashbetajson = {};
-						flashbetajson.flashbeta32 = currenttimestamp;
-						flashbetajson.flashbeta64 = currenttimestamp;
-						JSONtimestamp = JSON.stringify(flashbetajson);
-
-						//set timestamp
-						this.prefs.setCharPref("flashbetaupdate",JSONtimestamp);
-						localtimestamp = currenttimestamp;
-
-					}finally{
-
-						//get current timestamp from  prefs
-						jsonObjectLocal = JSON.parse(flashbetajson);
-
-						if(osString.match(/x86_64/)){
-							localtimestamp = jsonObjectLocal.flashbeta64;
-						}else{
-							localtimestamp = jsonObjectLocal.flashbeta32;
-						}
+					if(osString.match(/x86_64/)){
+						localtimestamp = jsonObjectLocal.flashbeta64[0].timestamp;
+					}else{
+						localtimestamp = jsonObjectLocal.flashbeta32[0].timestamp;
 					}
+				}catch(e){
+					localtimestamp = "0";
+				}
 
-					try{
-						//declare json source
-						xmlsource = "http://updates.webgapps.org/flashbeta";
+				try{
 
-						//get json document content
-						req = new XMLHttpRequest();   
-						req.open('GET', xmlsource, true);
-						req.channel.loadFlags |= Components.interfaces.nsIRequest.LOAD_BYPASS_CACHE;
-						req.onreadystatechange = function () {
+					var httpRequest = Components.classes["@mozilla.org/xmlextras/xmlhttprequest;1"].createInstance();
+					// Disable alert popups on SSL error
+					httpRequest.mozBackgroundRequest = true;
+					httpRequest.open("GET", "https://updates.webgapps.org/", true); 	
+					httpRequest.onreadystatechange = function (aEvt) {  
+						if (httpRequest.readyState == 4) {
 
-							if (this.readyState == 4 && this.status == 200) {
+							//validate SSL
+							var auhtentication = flashaidFirstrun.flashBetaUpdateSSL(httpRequest.channel);
 
-								//access preferences interface
-								this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
-								.getService(Components.interfaces.nsIPrefService)
-								.getBranch("extensions.flashaid.");
+							if(auhtentication === "ok" || sslenabled === false){
 
-								//parse json
-								jsonObjectRemote = JSON.parse(req.responseText);
+								//get json document content
+								req = Components.classes["@mozilla.org/xmlextras/xmlhttprequest;1"].createInstance();
+								req.open('GET', "https://updates.webgapps.org/flashbetassl", true);
+								req.channel.loadFlags |= Components.interfaces.nsIRequest.LOAD_BYPASS_CACHE;
+								req.onreadystatechange = function () {
 
-								if(osString.match(/x86_64/)){
-									architecture = "Flash 64bit";
-									remotetimestamp = jsonObjectRemote.flashbeta64;
-								}else{
-									architecture = "Flash 32bit";
-									remotetimestamp = jsonObjectRemote.flashbeta32;
-								}
+									if (this.readyState == 4 && this.status == 200) {
 
-								if(remotetimestamp > localtimestamp){
+										//access preferences interface
+										this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
+										.getService(Components.interfaces.nsIPrefService)
+										.getBranch("extensions.flashaid.");
 
-									this.prefs.setCharPref("flashbetaupdate",req.responseText);
+										//parse json
+										jsonObjectRemote = JSON.parse(req.responseText);
 
-									//fetch message
-									message = strbundle.getFormattedString("flashbetaupdate", [ architecture ]);
-									//slert user
-									var alertsService = Components.classes["@mozilla.org/alerts-service;1"]
-									.getService(Components.interfaces.nsIAlertsService);
-									alertsService.showAlertNotification("chrome://flashaid/skin/icon32.png",
-											messagetitle, message,
-											false, "", null);
-								}
+										if(osString.match(/x86_64/)){
+											architecture = "Flash 64bit";
+											remotetimestamp = jsonObjectRemote.flashbeta64[0].timestamp;
+										}else{
+											architecture = "Flash 32bit";
+											remotetimestamp = jsonObjectRemote.flashbeta32[0].timestamp;
+										}
+
+										if(remotetimestamp > localtimestamp){
+
+											this.prefs.setCharPref("datawebgapps",req.responseText);
+
+											if(updatealert === true){
+												//fetch message
+												message = strbundle.getFormattedString("flashbetaupdate", [ architecture ]);
+												//alert user
+												var alertsService = Components.classes["@mozilla.org/alerts-service;1"]
+												.getService(Components.interfaces.nsIAlertsService);
+												alertsService.showAlertNotification("chrome://flashaid/skin/icon32.png",
+														messagetitle, message,
+														false, "", null);
+											}
+										}
+									}
+								};
+								req.send(null);
+							}else{
+								//fetch message
+								message = strbundle.getString("sslerror");
+								//slert user
+								var alertsService = Components.classes["@mozilla.org/alerts-service;1"]
+								.getService(Components.interfaces.nsIAlertsService);
+								alertsService.showAlertNotification("chrome://flashaid/skin/icon32.png",
+										messagetitle, message,
+										false, "", null);
 							}
-						};
-						req.send(null);
-					}catch(e){
-						//do nothing
-					}
+						}
+					};
+					httpRequest.send(null);
+				}catch(e){
+					//do nothing
 				}
 			}
+		},
+
+		flashBetaUpdateSSL: function(channel){
+
+			var security;
+			var auhtentication = false;
+
+			try {
+				const Ci = Components.interfaces;
+
+				//invalid channel
+				if (! channel instanceof  Ci.nsIChannel) {
+					return auhtentication;
+				}
+
+				//security check
+				var secInfo = channel.securityInfo;
+				if (secInfo instanceof Ci.nsITransportSecurityInfo) {
+
+					secInfo.QueryInterface(Ci.nsITransportSecurityInfo);
+
+					// Check security state flags
+					if ((secInfo.securityState & Ci.nsIWebProgressListener.STATE_IS_SECURE) == Ci.nsIWebProgressListener.STATE_IS_SECURE){
+						security = "secure";
+					}else if ((secInfo.securityState & Ci.nsIWebProgressListener.STATE_IS_INSECURE) == Ci.nsIWebProgressListener.STATE_IS_INSECURE){
+						security = "insecure";
+					}else if ((secInfo.securityState & Ci.nsIWebProgressListener.STATE_IS_BROKEN) == Ci.nsIWebProgressListener.STATE_IS_BROKEN){
+						security = "unknown";
+					}
+				}
+				else {
+					security = "unknown";
+				}
+
+				if(security === "secure"){
+
+					//return SSL certificate details
+					if (secInfo instanceof Ci.nsISSLStatusProvider) {
+
+						var cert = secInfo.QueryInterface(Ci.nsISSLStatusProvider).
+						SSLStatus.QueryInterface(Ci.nsISSLStatus).serverCert;
+
+						var verificationResult = cert.verifyForUsage(Ci.nsIX509Cert.CERT_USAGE_SSLServer);
+
+						switch (verificationResult) {
+						case Ci.nsIX509Cert.VERIFIED_OK:
+							auhtentication = "ok";
+							break;
+						case Ci.nsIX509Cert.NOT_VERIFIED_UNKNOWN:
+							auhtentication = "not verfied/unknown";
+							break;
+						case Ci.nsIX509Cert.CERT_REVOKED:
+							auhtentication = "revoked";
+							break;
+						case Ci.nsIX509Cert.CERT_EXPIRED:
+							auhtentication = "expired";
+							break;
+						case Ci.nsIX509Cert.CERT_NOT_TRUSTED:
+							auhtentication = "not trusted";
+							break;
+						case Ci.nsIX509Cert.ISSUER_NOT_TRUSTED:
+							auhtentication = "issuer not trusted";
+							break;
+						case Ci.nsIX509Cert.ISSUER_UNKNOWN:
+							auhtentication = "issuer unknown";
+							break;
+						case Ci.nsIX509Cert.INVALID_CA:
+							auhtentication = "invalid CA";
+							break;
+						default:
+							auhtentication = "unexpected failure";
+						break;
+						}
+					}
+				}
+			} catch(e) {
+				//do nothing
+			}
+			return auhtentication;
 		},
 
 		resetNeedRestart: function(){

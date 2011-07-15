@@ -85,6 +85,26 @@ var flashaidCommon = {
 		},
 
 		scriptManager: function(aAction,aCommand){
+			
+			//fetch localization from strbundle
+			var strbundle = document.getElementById("flashaidstrings");
+			var hashnotmatch32 = strbundle.getString("hashnotmatch32");
+			var hashnotmatch64 = strbundle.getString("hashnotmatch64");
+			
+			//access preferences interface
+			this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
+			.getService(Components.interfaces.nsIPrefService)
+			.getBranch("extensions.flashaid.");
+			
+			if(aCommand.match("beta.*")){
+				//parse json data
+				var datawebgapps = this.prefs.getCharPref("datawebgapps");
+				var jsonObjectLocal = JSON.parse(datawebgapps);
+				var url64 = jsonObjectLocal.flashbeta64[0].url;
+				var url32 = jsonObjectLocal.flashbeta32[0].url;
+				var hash64 = jsonObjectLocal.flashbeta64[0].hash;
+				var hash32 = jsonObjectLocal.flashbeta32[0].hash;
+			}
 
 			//declare temp folder
 			var tempfolder = Components.classes["@mozilla.org/file/directory_service;1"]
@@ -167,22 +187,22 @@ var flashaidCommon = {
 				return "sudo ln -s /opt/google/chrome/libgcflashplayer.so /usr/lib/mozilla/plugins/libflashplayer.so";
 			}
 			if(aCommand === "beta64-install-test"){
-				return "cd \""+tempfolder.path+"\" && rm -f *flash* && wget http://updates.webgapps.org/flashplayer64 && tar xvf *flash* libflashplayer.so && rm -f libflashplayer.so && rm -f *flash*";
+				return "cd \""+tempfolder.path+"\" && rm -f *flash* && wget "+url64+"\nNEWHASH64=$(md5sum *flash* | sed 's/ .*//g')\nif [ \"${NEWHASH64}\" == '"+hash64+"' ];then\ntar xvf *flash* libflashplayer.so && rm -f libflashplayer.so && rm -f *flash*\nelse\necho '"+hashnotmatch64+"'\nrm -f *flash*\nfi";
 			}
 			if(aCommand === "beta32-install-test"){
-				return "cd \""+tempfolder.path+"\" && rm -f *flash* && wget http://updates.webgapps.org/flashplayer32 && tar xvf *flash* libflashplayer.so && rm -f libflashplayer.so && rm -f *flash*";
+				return "cd \""+tempfolder.path+"\" && rm -f *flash* && wget "+url32+"\nNEWHASH32=$(md5sum *flash* | sed 's/ .*//g')\nif [ \"${NEWHASH32}\" == '"+hash32+"' ];then\ntar xvf *flash* libflashplayer.so && rm -f libflashplayer.so && rm -f *flash*\nelse\necho '"+hashnotmatch32+"'\nrm -f *flash*\nfi";
 			}
 			if(aCommand === "beta64-install"){
-				return "cd \""+tempfolder.path+"\" && rm -f *flash* && wget http://updates.webgapps.org/flashplayer64 && tar xvf *flash* libflashplayer.so && sudo chown root:root libflashplayer.so && sudo chmod 0644 libflashplayer.so && sudo mv libflashplayer.so /usr/lib/mozilla/plugins/ && rm -f *flash* && sudo ln -s /usr/lib/mozilla/plugins/libflashplayer.so /usr/lib/firefox-addons/plugins/libflashplayer.so";
+				return "cd \""+tempfolder.path+"\" && rm -f *flash* && wget "+url64+"\nNEWHASH64=$(md5sum *flash* | sed 's/ .*//g')\nif [ \"${NEWHASH64}\" == '"+hash64+"' ];then\ntar xvf *flash* libflashplayer.so && sudo chown root:root libflashplayer.so && sudo chmod 0644 libflashplayer.so && sudo mv libflashplayer.so /usr/lib/mozilla/plugins/ && sudo ln -s /usr/lib/mozilla/plugins/libflashplayer.so /usr/lib/firefox-addons/plugins/libflashplayer.so && rm -f *flash*\nelse\necho '"+hashnotmatch64+"'\nrm -f *flash*\nfi";
 			}
 			if(aCommand === "beta32-install"){
-				return "cd \""+tempfolder.path+"\" && rm -f *flash* && wget http://updates.webgapps.org/flashplayer32 && tar xvf *flash* libflashplayer.so && sudo chown root:root libflashplayer.so && sudo chmod 0644 libflashplayer.so && sudo mv libflashplayer.so /usr/lib/mozilla/plugins/ && rm -f *flash* && sudo ln -s /usr/lib/mozilla/plugins/libflashplayer.so /usr/lib/firefox-addons/plugins/libflashplayer.so";
+				return "cd \""+tempfolder.path+"\" && rm -f *flash* && wget "+url32+"\nNEWHASH32=$(md5sum *flash* | sed 's/ .*//g')\nif [ \"${NEWHASH32}\" == '"+hash32+"' ];then\ntar xvf *flash* libflashplayer.so && sudo chown root:root libflashplayer.so && sudo chmod 0644 libflashplayer.so && sudo mv libflashplayer.so /usr/lib/mozilla/plugins/ && sudo ln -s /usr/lib/mozilla/plugins/libflashplayer.so /usr/lib/firefox-addons/plugins/libflashplayer.so && rm -f *flash*\nelse\necho '"+hashnotmatch32+"'\nrm -f *flash*\nfi";
 			}
 			if(aCommand === "beta64-install-x86_64-i686"){
-				return "cd \""+tempfolder.path+"\" && rm -f *flash* && wget http://updates.webgapps.org/flashplayer64 && tar xvf *flash* libflashplayer.so && sudo chown root:root libflashplayer.so && sudo chmod 0644 libflashplayer.so && sudo mv libflashplayer.so /usr/lib/mozilla/plugins/ && rm -f *flash* && mkdir ~/.mozilla/plugins/ && sudo ln -s /usr/lib/mozilla/plugins/libflashplayer.so /usr/lib/firefox-addons/plugins/libflashplayer.so";
+				return "cd \""+tempfolder.path+"\" && rm -f *flash* && wget "+url64+"\nNEWHASH64=$(md5sum *flash* | sed 's/ .*//g')\nif [ \"${NEWHASH64}\" == '"+hash64+"' ];then\ntar xvf *flash* libflashplayer.so && sudo chown root:root libflashplayer.so && sudo chmod 0644 libflashplayer.so && sudo mv libflashplayer.so /usr/lib/mozilla/plugins/ && sudo ln -s /usr/lib/mozilla/plugins/libflashplayer.so /usr/lib/firefox-addons/plugins/libflashplayer.so && rm -f *flash* && mkdir ~/.mozilla/plugins/\nelse\necho '"+hashnotmatch64+"'\nrm -f *flash* && mkdir ~/.mozilla/plugins/\nfi";
 			}
 			if(aCommand === "beta32-install-x86_64-i686"){
-				return "cd \""+tempfolder.path+"\" && rm -f *flash* && wget http://updates.webgapps.org/flashplayer32 && tar xvf *flash* libflashplayer.so && mv libflashplayer.so ~/.mozilla/plugins/ && rm -f *flash*";
+				return "cd \""+tempfolder.path+"\" && rm -f *flash* && wget "+url32+"\nNEWHASH32=$(md5sum *flash* | sed 's/ .*//g')\nif [ \"${NEWHASH32}\" == '"+hash32+"' ];then\ntar xvf *flash* libflashplayer.so && mv libflashplayer.so ~/.mozilla/plugins/ && rm -f *flash*\nelse\necho '"+hashnotmatch32+"'\nrm -f *flash*\nfi";
 			}
 			//*****************************************symlinks********************************************
 			if(aCommand === "gnash-symlink-opt"){
@@ -213,7 +233,7 @@ var flashaidCommon = {
 				return "if test -f \"${NPVIEWER}\";then";
 			}
 			if(aCommand === "npviewer-tweak-add3"){
-				return "TWEAK=$(cat /usr/lib/nspluginwrapper/i386/linux/npviewer | grep  'GDK_NATIVE_WINDOWS=1')";
+				return "TWEAK=$(cat /usr/lib/nspluginwrapper/i386/linux/npviewer | grep 'GDK_NATIVE_WINDOWS=1')";
 			}
 			if(aCommand === "npviewer-tweak-add4"){
 				return "if test -z \"${TWEAK}\";then";

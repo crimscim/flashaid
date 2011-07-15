@@ -22,9 +22,7 @@
 			<spacer width="10" flex="0" />
 			<vbox flex="1">
 				<spacer height="10" flex="0" />
-				<checkbox label="&LabelCheckUpdates;" preference="pref_updatealert" id="updatealert" size="30"/>
-				<spacer height="5" flex="0" />
-				<textbox id="tipcheckupdates" value="&TextboxCheckUpdates;" readonly="true" multiline="true" cols="80" rows="4" flex="0" />
+				<checkbox label="&LabelUpdateAlerts;" preference="pref_updatealert" id="updatealert" size="30"/>
 				<spacer height="10" flex="0" />
 				<caption label="&CaptionTerminal;" />
 				<hbox>
@@ -33,13 +31,13 @@
 						<spacer height="1" flex="1" />
 						<image width="24" height="24"
 							src="chrome://flashaid/skin/search32.png" tooltiptext="&SelectProgram;"
-							onmouseover="this.style.cursor='pointer';"
+							style="cursor:pointer;"
 							onclick="flashaidCommon.openFile('terminal','&SelectProgram;');" />
 						<spacer height="1" flex="1" />
 					</vbox>
 					<vbox>
 						<spacer height="1" flex="1" />
-						<image width="24" height="24"	src="chrome://flashaid/skin/delete24.png" tooltiptext="&RestoreDefault;" onmouseover="this.style.cursor='pointer';" onclick="flashaidCommon.resetPath('terminal');" />
+						<image width="24" height="24" src="chrome://flashaid/skin/delete24.png" tooltiptext="&RestoreDefault;" style="cursor:pointer;" onclick="flashaidCommon.resetPath('terminal');" />
 						<spacer height="1" flex="1" />
 					</vbox>
 				</hbox>
