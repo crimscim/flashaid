@@ -4,7 +4,8 @@
 <!DOCTYPE overlay SYSTEM "chrome://flashaid/locale/flashaid.dtd">
 
 <wizard id="flashaid-wizard" title="&TitleWizard;" onwizardfinish="return flashaidWizard.scriptManager();"
-	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+	style="width:640px;height:480px;overflow:auto;" flex="1">
 	
 	<script type="application/x-javascript"
 		src="chrome://flashaid/content/scripts/wizard.js" />
