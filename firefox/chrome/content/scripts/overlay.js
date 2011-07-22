@@ -27,12 +27,16 @@ var flashaidOverlay = {
 			document.getElementById("flashaid-wizard").hidden = true;
 			document.getElementById("flashaid-helper-separator").hidden = true;
 
-			//check chrome
-			var googlechrome = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
-			googlechrome.initWithPath("/opt/google/chrome/libgcflashplayer.so");
-			if(googlechrome.exists()){
-				googlechrome = true;
-			}else{
+			try{
+				//check chrome
+				var googlechrome = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+				googlechrome.initWithPath("/opt/google/chrome/libgcflashplayer.so");
+				if(googlechrome.exists()){
+					googlechrome = true;
+				}else{
+					googlechrome = false;
+				}	
+			}catch(e){
 				googlechrome = false;
 			}
 

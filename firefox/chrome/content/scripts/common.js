@@ -73,12 +73,16 @@ var flashaidCommon = {
 					itempath = "/etc/adobe";
 				}
 
-				//initiate file with path
-				item = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
-				item.initWithPath(itempath);
-				if(item.exists()){
-					return true;
-				}else{
+				try{
+					//initiate file with path
+					item = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+					item.initWithPath(itempath);
+					if(item.exists()){
+						return true;
+					}else{
+						return false;
+					}					
+				}catch(e){
 					return false;
 				}
 			}
@@ -387,19 +391,36 @@ var flashaidCommon = {
 				if(envpaths){
 
 					//split
-					newpath = envpaths.split(":");
+					var newpath = envpaths.split(":");
 
 					//find
 					for(var i=0; i< newpath.length; i++){
 
-						//initiate file
-						var gnometerminal = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
-						gnometerminal.initWithPath(newpath[i]+"/gnome-terminal");
-						if(gnometerminal.exists()){
-							document.getElementById("terminal").value = gnometerminal.path;
-							this.prefs.setCharPref("terminal",gnometerminal.path);
-							terminalpath = true;
-						}else{
+						try{
+							//initiate file
+							var xterminal = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+							xterminal.initWithPath(newpath[i]+"/x-terminal-emulator");
+							if(xterminal.exists()){
+								document.getElementById("terminal").value = "/usr/bin/x-terminal-emulator";
+								this.prefs.setCharPref("terminal",xterminal.path);
+								terminalpath = true;
+							}
+						}catch(e){
+							//do nothing
+						}
+						try{
+							//initiate file
+							var xfce4 = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+							xfce4.initWithPath(newpath[i]+"/xfce4-terminal");
+							if(xfce4.exists()){
+								document.getElementById("terminal").value = xfce4.path;
+								this.prefs.setCharPref("terminal",xfce4.path);
+								terminalpath = true;
+							}
+						}catch(e){
+							//do nothing
+						}
+						try{
 							//initiate file
 							var konsole = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
 							konsole.initWithPath(newpath[i]+"/konsole");
@@ -407,25 +428,21 @@ var flashaidCommon = {
 								document.getElementById("terminal").value = konsole.path;
 								this.prefs.setCharPref("terminal",konsole.path);
 								terminalpath = true;
-							}else{
-								//initiate file
-								var xfce4 = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
-								xfce4.initWithPath(newpath[i]+"/xfce4-terminal");
-								if(xfce4.exists()){
-									document.getElementById("terminal").value = xfce4.path;
-									this.prefs.setCharPref("terminal",xfce4.path);
-									terminalpath = true;
-								}else{
-									//initiate file
-									var xterminal = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
-									xterminal.initWithPath(newpath[i]+"/x-terminal-emulator");
-									if(xterminal.exists()){
-										document.getElementById("terminal").value = "/usr/bin/x-terminal-emulator";
-										this.prefs.setCharPref("terminal",xterminal.path);
-										terminalpath = true;
-									}
-								}
 							}
+						}catch(e){
+							//do nothing
+						}
+						try{
+							//initiate file
+							var gnometerminal = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+							gnometerminal.initWithPath(newpath[i]+"/gnome-terminal");
+							if(gnometerminal.exists()){
+								document.getElementById("terminal").value = gnometerminal.path;
+								this.prefs.setCharPref("terminal",gnometerminal.path);
+								terminalpath = true;
+							}
+						}catch(e){
+							//do nothing
 						}
 					}
 				}

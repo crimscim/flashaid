@@ -2,6 +2,8 @@ var flashaidFirstrun = {
 
 		init: function(){//get current version from extension manager
 
+			"use strict";
+
 			try {// Firefox <= 3.6
 
 				//get current version from extension manager
@@ -26,6 +28,8 @@ var flashaidFirstrun = {
 		},
 
 		updateInstall: function(aVersion){//check version and perform updates
+
+			"use strict";
 
 			//access preferences interface
 			this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
@@ -67,11 +71,15 @@ var flashaidFirstrun = {
 					this.prefs.setCharPref("version",current);
 				}
 
-				//initiate file
-				var apt = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
-				apt.initWithPath("/etc/apt");
-				if(apt.exists()){
-					this.prefs.setBoolPref("apt",true);
+				try{
+					//initiate file
+					var apt = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+					apt.initWithPath("/etc/apt");
+					if(apt.exists()){
+						this.prefs.setBoolPref("apt",true);
+					}
+				}catch(e){
+					//do nothing
 				}
 
 				//get paths from environment variables
@@ -82,64 +90,93 @@ var flashaidFirstrun = {
 				if(envpaths){
 
 					//split
-					newpath = envpaths.split(":");
+					var newpath = envpaths.split(":");
 
 					//find
 					for(var i=0; i< newpath.length; i++){
 
 						if(firstrun){
-							//initiate file
-							var gnometerminal = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
-							gnometerminal.initWithPath(newpath[i]+"/gnome-terminal");
-							if(gnometerminal.exists()){
-								this.prefs.setCharPref("terminal",gnometerminal.path);
-							}else{
+							
+							try{
+								//initiate file
+								var xterminal = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+								xterminal.initWithPath(newpath[i]+"/x-terminal-emulator");
+								if(xterminal.exists()){
+									this.prefs.setCharPref("terminal",xterminal.path);
+								}
+							}catch(e){
+								//do nothing
+							}
+							try{
+								//initiate file
+								var xfce4 = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+								xfce4.initWithPath(newpath[i]+"/xfce4-terminal");
+								if(xfce4.exists()){
+									this.prefs.setCharPref("terminal",xfce4.path);
+								}
+							}catch(e){
+								//do nothing
+							}
+							try{
 								//initiate file
 								var konsole = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
 								konsole.initWithPath(newpath[i]+"/konsole");
 								if(konsole.exists()){
 									this.prefs.setCharPref("terminal",konsole.path);
-								}else{
-									//initiate file
-									var xfce4 = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
-									xfce4.initWithPath(newpath[i]+"/xfce4-terminal");
-									if(xfce4.exists()){
-										this.prefs.setCharPref("terminal",xfce4.path);
-									}else{
-										//initiate file
-										var xterminal = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
-										xterminal.initWithPath(newpath[i]+"/x-terminal-emulator");
-										if(xterminal.exists()){
-											this.prefs.setCharPref("terminal",xterminal.path);
-										}
-									}
 								}
+							}catch(e){
+								//do nothing
+							}
+							try{
+								//initiate file
+								var gnometerminal = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+								gnometerminal.initWithPath(newpath[i]+"/gnome-terminal");
+								if(gnometerminal.exists()){
+									this.prefs.setCharPref("terminal",gnometerminal.path);
+								}
+							}catch(e){
+								//do nothing
 							}
 						}
-
-						//initiate file
-						var sudo = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
-						sudo.initWithPath(newpath[i]+"/sudo");
-						if(sudo.exists()){
-							this.prefs.setBoolPref("sudo",true);
+						try{
+							//initiate file
+							var sudo = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+							sudo.initWithPath(newpath[i]+"/sudo");
+							if(sudo.exists()){
+								this.prefs.setBoolPref("sudo",true);
+							}
+						}catch(e){
+							//do nothing
 						}
-						//initiate file
-						var wget = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
-						wget.initWithPath(newpath[i]+"/wget");
-						if(wget.exists()){
-							this.prefs.setBoolPref("wget",true);
+						try{
+							//initiate file
+							var wget = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+							wget.initWithPath(newpath[i]+"/wget");
+							if(wget.exists()){
+								this.prefs.setBoolPref("wget",true);
+							}
+						}catch(e){
+							//do nothing
 						}
-						//initiate file
-						var apt = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
-						apt.initWithPath(newpath[i]+"/apt");
-						if(apt.exists()){
-							this.prefs.setBoolPref("apt",true);
+						try{
+							//initiate file
+							var apt = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+							apt.initWithPath(newpath[i]+"/apt");
+							if(apt.exists()){
+								this.prefs.setBoolPref("apt",true);
+							}
+						}catch(e){
+							//do nothing
 						}
-						//initiate file
-						var md5sum = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
-						md5sum.initWithPath(newpath[i]+"/md5sum");
-						if(md5sum.exists()){
-							this.prefs.setBoolPref("md5sum",true);
+						try{
+							//initiate file
+							var md5sum = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+							md5sum.initWithPath(newpath[i]+"/md5sum");
+							if(md5sum.exists()){
+								this.prefs.setBoolPref("md5sum",true);
+							}
+						}catch(e){
+							//do nothing
 						}
 					}
 				}
@@ -151,6 +188,8 @@ var flashaidFirstrun = {
 		},
 
 		firstrunAlert: function(){
+
+			"use strict";
 
 			//fetch localization from strbundle
 			var strbundle = document.getElementById("flashaidstrings");
@@ -167,6 +206,8 @@ var flashaidFirstrun = {
 
 		getSysInfo: function(){
 
+			"use strict";
+
 			//declare release info
 			var version, codename;
 
@@ -174,44 +215,50 @@ var flashaidFirstrun = {
 			this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
 			.getService(Components.interfaces.nsIPrefService)
 			.getBranch("extensions.flashaid.");
+			
+			try{
+				//declare and inititate sourcefile with release info
+				var sourcefile_path = "/etc/lsb-release";
+				var sourcefile = Components.classes["@mozilla.org/file/local;1"]
+				.createInstance(Components.interfaces.nsILocalFile);
+				sourcefile.initWithPath(sourcefile_path);
+				
+				if(sourcefile.exists()){
 
-			//declare and inititate sourcefile with release info
-			var sourcefile_path = "/etc/lsb-release";
-			var sourcefile = Components.classes["@mozilla.org/file/local;1"]
-			.createInstance(Components.interfaces.nsILocalFile);
-			sourcefile.initWithPath(sourcefile_path);
+					//read sourcefile and fetch lines with release info
+					var istream = Components.classes["@mozilla.org/network/file-input-stream;1"].
+					createInstance(Components.interfaces.nsIFileInputStream);
+					istream.init(sourcefile, -1, 0, 0);
+					istream.QueryInterface(Components.interfaces.nsILineInputStream);
 
-			if(sourcefile.exists()){
+					var line = {}, lines = [], hasmore;
+					do {
+						hasmore = istream.readLine(line);
+						lines.push(line.value);
 
-				//read sourcefile and fetch lines with release info
-				var istream = Components.classes["@mozilla.org/network/file-input-stream;1"].
-				createInstance(Components.interfaces.nsIFileInputStream);
-				istream.init(sourcefile, 0x01, 0444, 0);
-				istream.QueryInterface(Components.interfaces.nsILineInputStream);
+						var matchversion = /DISTRIB_RELEASE=/.test(line.value);
+						var matchcodename = /DISTRIB_CODENAME=/.test(line.value);
 
-				var line = {}, lines = [], hasmore;
-				do {
-					hasmore = istream.readLine(line);
-					lines.push(line.value);
+						if (matchversion == true) {
+							version = line.value.replace(/DISTRIB_RELEASE=/g, "");
+							this.prefs.setCharPref("osversion",version);
+						}
+						if (matchcodename == true) {
+							var codename = line.value.replace(/DISTRIB_CODENAME=/g, "");
+							this.prefs.setCharPref("oscodename",codename);
+						}
 
-					var matchversion = /DISTRIB_RELEASE=/.test(line.value);
-					var matchcodename = /DISTRIB_CODENAME=/.test(line.value);
-
-					if (matchversion == true) {
-						version = line.value.replace(/DISTRIB_RELEASE=/g, "");
-						this.prefs.setCharPref("osversion",version);
-					}
-					if (matchcodename == true) {
-						var codename = line.value.replace(/DISTRIB_CODENAME=/g, "");
-						this.prefs.setCharPref("oscodename",codename);
-					}
-
-				} while(hasmore);
-				istream.close();
+					} while(hasmore);
+					istream.close();
+				}
+			}catch(e){
+				//do nothing
 			}
 		},
 
 		flashBetaUpdate: function(){
+
+			"use strict";
 
 			//get os architecture
 			var osString = Components.classes["@mozilla.org/network/protocol;1?name=http"]
@@ -342,6 +389,8 @@ var flashaidFirstrun = {
 
 		flashBetaUpdateSSL: function(channel){
 
+			"use strict";
+
 			var security;
 			var auhtentication = false;
 
@@ -420,6 +469,9 @@ var flashaidFirstrun = {
 		},
 
 		resetNeedRestart: function(){
+
+			"use strict";
+
 			//access preferences interface
 			this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
 			.getService(Components.interfaces.nsIPrefService)

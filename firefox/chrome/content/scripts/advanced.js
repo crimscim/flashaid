@@ -488,23 +488,27 @@ var flashaidAdvanced = {
 							}
 							if(customurl.match(/\/home\/.*/) && !customurl.match(/http:\/\/.*/) && !customurl.match(/ftp:\/\/.*/)){
 
-								//initialize terminal with path
-								customfile = Components.classes["@mozilla.org/file/local;1"]
-								.createInstance(Components.interfaces.nsILocalFile);
-								customfile.initWithPath(customurl);
+								try{
+									//initialize terminal with path
+									customfile = Components.classes["@mozilla.org/file/local;1"]
+									.createInstance(Components.interfaces.nsILocalFile);
+									customfile.initWithPath(customurl);
 
-								if(customfile.exists() && !customfile.isDirectory()){
+									if(customfile.exists() && !customfile.isDirectory()){
 
-									if(aAction === "test"){
-										command = command+newline+"cd \""+tempfolder.path+"\" && rm -f *.tar.gz* && cp \""+customurl+"\" \""+tempfolder.path+"\" && tar xvf \""+tarball+"\" && sudo chown root:root libflashplayer.so && sudo chmod 0644 libflashplayer.so && rm -f libflashplayer.so && rm -f *.tar.gz*";
-									}else{
-										command = command+newline+"cd \""+tempfolder.path+"\" && rm -f *.tar.gz* && cp \""+customurl+"\" \""+tempfolder.path+"\" && tar xvf \""+tarball+"\" && sudo chown root:root libflashplayer.so && sudo chmod 0644 libflashplayer.so && sudo mv libflashplayer.so /usr/lib/mozilla/plugins/ && rm -f *.tar.gz* && sudo ln -s /usr/lib/mozilla/plugins/libflashplayer.so /usr/lib/firefox-addons/plugins/libflashplayer.so";
-									}
-									if(opt === true){
-										if(aAction !== "test"){
-											command = command+newline+flashaidCommon.scriptManager(aAction,"beta-symlink-opt");
+										if(aAction === "test"){
+											command = command+newline+"cd \""+tempfolder.path+"\" && rm -f *.tar.gz* && cp \""+customurl+"\" \""+tempfolder.path+"\" && tar xvf \""+tarball+"\" && sudo chown root:root libflashplayer.so && sudo chmod 0644 libflashplayer.so && rm -f libflashplayer.so && rm -f *.tar.gz*";
+										}else{
+											command = command+newline+"cd \""+tempfolder.path+"\" && rm -f *.tar.gz* && cp \""+customurl+"\" \""+tempfolder.path+"\" && tar xvf \""+tarball+"\" && sudo chown root:root libflashplayer.so && sudo chmod 0644 libflashplayer.so && sudo mv libflashplayer.so /usr/lib/mozilla/plugins/ && rm -f *.tar.gz* && sudo ln -s /usr/lib/mozilla/plugins/libflashplayer.so /usr/lib/firefox-addons/plugins/libflashplayer.so";
+										}
+										if(opt === true){
+											if(aAction !== "test"){
+												command = command+newline+flashaidCommon.scriptManager(aAction,"beta-symlink-opt");
+											}
 										}
 									}
+								}catch(e){
+									//do nothing
 								}
 							}
 						}
