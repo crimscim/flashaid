@@ -2,8 +2,6 @@ var flashaidFirstrun = {
 
 		init: function(){//get current version from extension manager
 
-			"use strict";
-
 			try {// Firefox <= 3.6
 
 				//get current version from extension manager
@@ -28,8 +26,6 @@ var flashaidFirstrun = {
 		},
 
 		updateInstall: function(aVersion){//check version and perform updates
-
-			"use strict";
 
 			//access preferences interface
 			this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
@@ -189,8 +185,6 @@ var flashaidFirstrun = {
 
 		firstrunAlert: function(){
 
-			"use strict";
-
 			//fetch localization from strbundle
 			var strbundle = document.getElementById("flashaidstrings");
 
@@ -205,8 +199,6 @@ var flashaidFirstrun = {
 		},
 
 		getSysInfo: function(){
-
-			"use strict";
 
 			//declare release info
 			var version, codename;
@@ -257,8 +249,6 @@ var flashaidFirstrun = {
 		},
 
 		flashBetaUpdate: function(){
-
-			"use strict";
 
 			//get os architecture
 			var osString = Components.classes["@mozilla.org/network/protocol;1?name=http"]
@@ -389,8 +379,6 @@ var flashaidFirstrun = {
 
 		flashBetaUpdateSSL: function(channel){
 
-			"use strict";
-
 			var security;
 			var auhtentication = false;
 
@@ -469,8 +457,6 @@ var flashaidFirstrun = {
 		},
 
 		resetNeedRestart: function(){
-
-			"use strict";
 
 			//access preferences interface
 			this.prefs = Components.classes["@mozilla.org/preferences-service;1"]

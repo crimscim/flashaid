@@ -5,15 +5,20 @@ var flashaidCommon = {
 			var item, itempath;
 
 			if(aItem === "firefox"){
-				//initiate file
-				item = Components.classes["@mozilla.org/file/directory_service;1"]
-				.getService(Components.interfaces.nsIProperties)
-				.get("ProfD", Components.interfaces.nsIFile);
-				item.append("plugins");
-				item.append("libflashplayer.so");
-				if(item.exists()){
-					return true;
-				}else{
+				
+				try{
+					//initiate file
+					item = Components.classes["@mozilla.org/file/directory_service;1"]
+					.getService(Components.interfaces.nsIProperties)
+					.get("ProfD", Components.interfaces.nsIFile);
+					item.append("plugins");
+					item.append("libflashplayer.so");
+					if(item.exists()){
+						return true;
+					}else{
+						return false;
+					}
+				}catch(e){
 					return false;
 				}
 			}else{
@@ -89,7 +94,7 @@ var flashaidCommon = {
 		},
 
 		scriptManager: function(aAction,aCommand){
-			
+
 			//fetch localization from strbundle
 			var strbundle = document.getElementById("flashaidstrings");
 			var hashnotmatch32 = strbundle.getString("hashnotmatch32");
@@ -119,9 +124,12 @@ var flashaidCommon = {
 			tempfolder.append("chrome");
 			tempfolder.append("content");
 			tempfolder.append("tmp");
+			
+			var tempfolderpath = tempfolder.path.replace(/[\\"$]/g, "\\$&").quote();
 
 			var simulate,skipuser;
 			var newline = "\n";
+			var newcommand;
 
 			if(aAction === "test"){
 				simulate = " --dry-run ";
@@ -135,181 +143,182 @@ var flashaidCommon = {
 			}
 			//*****************************************removal********************************************
 			if(aCommand === "lightspark-removal"){
-				return "sudo apt-get"+skipuser+simulate+"purge lightspark-common";
+				newcommand = "sudo apt-get"+skipuser+simulate+"purge lightspark-common";
 			}
 			if(aCommand === "gnash-removal"){
-				return "sudo apt-get"+skipuser+simulate+"purge mozilla-plugin-gnash"+newline+"sudo apt-get"+skipuser+simulate+"purge browser-plugin-gnash";
+				newcommand = "sudo apt-get"+skipuser+simulate+"purge mozilla-plugin-gnash"+newline+"sudo apt-get"+skipuser+simulate+"purge browser-plugin-gnash";
 			}
 			if(aCommand === "swfdec-removal"){
-				return "sudo apt-get"+skipuser+simulate+"purge swfdec-mozilla";
+				newcommand = "sudo apt-get"+skipuser+simulate+"purge swfdec-mozilla";
 			}
 			if(aCommand === "adobeinstaller-removal"){
-				return "sudo apt-get"+skipuser+simulate+"purge flashplugin.*installer";
+				newcommand = "sudo apt-get"+skipuser+simulate+"purge flashplugin.*installer";
 			}
 			if(aCommand === "adobepartner-removal"){
-				return "sudo apt-get"+skipuser+simulate+"purge adobe-flashplugin";
+				newcommand = "sudo apt-get"+skipuser+simulate+"purge adobe-flashplugin";
 			}
 			if(aCommand === "adobenonfree-removal"){
-				return "sudo apt-get"+skipuser+simulate+"purge flashplugin-nonfree";
+				newcommand = "sudo apt-get"+skipuser+simulate+"purge flashplugin-nonfree";
 			}
 			if(aCommand === "mozilla-removal"){
-				return "sudo rm -f ~/.mozilla/plugins/*flash*so";
+				newcommand = "sudo rm -f ~/.mozilla/plugins/*flash*so";
 			}
 			if(aCommand === "opt-removal"){
-				return "sudo rm -f /opt/firefox/plugins/*flash*so";
+				newcommand = "sudo rm -f /opt/firefox/plugins/*flash*so";
 			}
 			if(aCommand === "firefox-removal"){
-				return "sudo rm -f ~/.mozilla/firefox/**/plugins/*flash*so";
+				newcommand = "sudo rm -f ~/.mozilla/firefox/**/plugins/*flash*so";
 			}
 			if(aCommand === "wine-removal"){
-				return "sudo rm -rf ~/.wine/dosdevices/c:/windows/system32/Macromed/Flash";
+				newcommand = "sudo rm -rf ~/.wine/dosdevices/c:/windows/system32/Macromed/Flash";
 			}
 			if(aCommand === "systemplugin-removal"){
-				return "sudo rm -f /usr/lib/mozilla/plugins/libflashplayer.so";
+				newcommand = "sudo rm -f /usr/lib/mozilla/plugins/libflashplayer.so";
 			}
 			if(aCommand === "systempluginf-removal"){
-				return "sudo rm -f /usr/lib/firefox-addons/plugins/libflashplayer.so";
+				newcommand = "sudo rm -f /usr/lib/firefox-addons/plugins/libflashplayer.so";
 			}
 			//*****************************************update********************************************
 			if(aCommand === "update"){
-				return "sudo apt-get"+simulate+"update";
+				newcommand = "sudo apt-get"+simulate+"update";
 			}
 			//*****************************************install********************************************
 			if(aCommand === "gnash-install"){
-				return "sudo apt-get"+skipuser+simulate+"install mozilla-plugin-gnash";
+				newcommand = "sudo apt-get"+skipuser+simulate+"install mozilla-plugin-gnash";
 			}
 			if(aCommand === "swfdec-install"){
-				return "sudo apt-get"+skipuser+simulate+"install swfdec-mozilla";
+				newcommand = "sudo apt-get"+skipuser+simulate+"install swfdec-mozilla";
 			}
 			if(aCommand === "lightspark-install"){
-				return "sudo apt-get"+skipuser+simulate+"install lightspark";
+				newcommand = "sudo apt-get"+skipuser+simulate+"install lightspark";
 			}
 			if(aCommand === "flashplugin-nonfree-install"){
-				return "sudo apt-get"+skipuser+simulate+"install flashplugin-nonfree";
+				newcommand = "sudo apt-get"+skipuser+simulate+"install flashplugin-nonfree";
 			}
 			if(aCommand === "googlechrome-install"){
-				return "sudo ln -s /opt/google/chrome/libgcflashplayer.so /usr/lib/mozilla/plugins/libflashplayer.so";
+				newcommand = "sudo ln -s /opt/google/chrome/libgcflashplayer.so /usr/lib/mozilla/plugins/libflashplayer.so";
 			}
 			if(aCommand === "beta64-install-test"){
-				return "cd \""+tempfolder.path+"\" && rm -f *flash* && wget "+url64+"\nNEWHASH64=$(md5sum *flash* | sed 's/ .*//g')\nif [ \"${NEWHASH64}\" == '"+hash64+"' ];then\ntar xvf *flash* libflashplayer.so && rm -f libflashplayer.so && rm -f *flash*\nelse\necho '"+hashnotmatch64+"'\nrm -f *flash*\nfi";
+				newcommand = "cd "+tempfolderpath+" && rm -f *flash* && wget "+url64+"\nNEWHASH64=$(md5sum *flash* | sed 's/ .*//g')\nif [ \"${NEWHASH64}\" == '"+hash64+"' ];then\ntar xvf *flash* libflashplayer.so && rm -f libflashplayer.so && rm -f *flash*\nelse\necho '"+hashnotmatch64+"'\nrm -f *flash*\nfi";
 			}
 			if(aCommand === "beta32-install-test"){
-				return "cd \""+tempfolder.path+"\" && rm -f *flash* && wget "+url32+"\nNEWHASH32=$(md5sum *flash* | sed 's/ .*//g')\nif [ \"${NEWHASH32}\" == '"+hash32+"' ];then\ntar xvf *flash* libflashplayer.so && rm -f libflashplayer.so && rm -f *flash*\nelse\necho '"+hashnotmatch32+"'\nrm -f *flash*\nfi";
+				newcommand = "cd "+tempfolderpath+" && rm -f *flash* && wget "+url32+"\nNEWHASH32=$(md5sum *flash* | sed 's/ .*//g')\nif [ \"${NEWHASH32}\" == '"+hash32+"' ];then\ntar xvf *flash* libflashplayer.so && rm -f libflashplayer.so && rm -f *flash*\nelse\necho '"+hashnotmatch32+"'\nrm -f *flash*\nfi";
 			}
 			if(aCommand === "beta64-install"){
-				return "cd \""+tempfolder.path+"\" && rm -f *flash* && wget "+url64+"\nNEWHASH64=$(md5sum *flash* | sed 's/ .*//g')\nif [ \"${NEWHASH64}\" == '"+hash64+"' ];then\ntar xvf *flash* libflashplayer.so && sudo chown root:root libflashplayer.so && sudo chmod 0644 libflashplayer.so && sudo mv libflashplayer.so /usr/lib/mozilla/plugins/ && sudo ln -s /usr/lib/mozilla/plugins/libflashplayer.so /usr/lib/firefox-addons/plugins/libflashplayer.so && rm -f *flash*\nelse\necho '"+hashnotmatch64+"'\nrm -f *flash*\nfi";
+				newcommand = "cd "+tempfolderpath+" && rm -f *flash* && wget "+url64+"\nNEWHASH64=$(md5sum *flash* | sed 's/ .*//g')\nif [ \"${NEWHASH64}\" == '"+hash64+"' ];then\ntar xvf *flash* libflashplayer.so && sudo chown root:root libflashplayer.so && sudo chmod 0644 libflashplayer.so && sudo mv libflashplayer.so /usr/lib/mozilla/plugins/ && sudo ln -s /usr/lib/mozilla/plugins/libflashplayer.so /usr/lib/firefox-addons/plugins/libflashplayer.so && rm -f *flash*\nelse\necho '"+hashnotmatch64+"'\nrm -f *flash*\nfi";
 			}
 			if(aCommand === "beta32-install"){
-				return "cd \""+tempfolder.path+"\" && rm -f *flash* && wget "+url32+"\nNEWHASH32=$(md5sum *flash* | sed 's/ .*//g')\nif [ \"${NEWHASH32}\" == '"+hash32+"' ];then\ntar xvf *flash* libflashplayer.so && sudo chown root:root libflashplayer.so && sudo chmod 0644 libflashplayer.so && sudo mv libflashplayer.so /usr/lib/mozilla/plugins/ && sudo ln -s /usr/lib/mozilla/plugins/libflashplayer.so /usr/lib/firefox-addons/plugins/libflashplayer.so && rm -f *flash*\nelse\necho '"+hashnotmatch32+"'\nrm -f *flash*\nfi";
+				newcommand = "cd "+tempfolderpath+" && rm -f *flash* && wget "+url32+"\nNEWHASH32=$(md5sum *flash* | sed 's/ .*//g')\nif [ \"${NEWHASH32}\" == '"+hash32+"' ];then\ntar xvf *flash* libflashplayer.so && sudo chown root:root libflashplayer.so && sudo chmod 0644 libflashplayer.so && sudo mv libflashplayer.so /usr/lib/mozilla/plugins/ && sudo ln -s /usr/lib/mozilla/plugins/libflashplayer.so /usr/lib/firefox-addons/plugins/libflashplayer.so && rm -f *flash*\nelse\necho '"+hashnotmatch32+"'\nrm -f *flash*\nfi";
 			}
 			if(aCommand === "beta64-install-x86_64-i686"){
-				return "cd \""+tempfolder.path+"\" && rm -f *flash* && wget "+url64+"\nNEWHASH64=$(md5sum *flash* | sed 's/ .*//g')\nif [ \"${NEWHASH64}\" == '"+hash64+"' ];then\ntar xvf *flash* libflashplayer.so && sudo chown root:root libflashplayer.so && sudo chmod 0644 libflashplayer.so && sudo mv libflashplayer.so /usr/lib/mozilla/plugins/ && sudo ln -s /usr/lib/mozilla/plugins/libflashplayer.so /usr/lib/firefox-addons/plugins/libflashplayer.so && rm -f *flash* && mkdir ~/.mozilla/plugins/\nelse\necho '"+hashnotmatch64+"'\nrm -f *flash* && mkdir ~/.mozilla/plugins/\nfi";
+				newcommand = "cd "+tempfolderpath+" && rm -f *flash* && wget "+url64+"\nNEWHASH64=$(md5sum *flash* | sed 's/ .*//g')\nif [ \"${NEWHASH64}\" == '"+hash64+"' ];then\ntar xvf *flash* libflashplayer.so && sudo chown root:root libflashplayer.so && sudo chmod 0644 libflashplayer.so && sudo mv libflashplayer.so /usr/lib/mozilla/plugins/ && sudo ln -s /usr/lib/mozilla/plugins/libflashplayer.so /usr/lib/firefox-addons/plugins/libflashplayer.so && rm -f *flash* && mkdir ~/.mozilla/plugins/\nelse\necho '"+hashnotmatch64+"'\nrm -f *flash* && mkdir ~/.mozilla/plugins/\nfi";
 			}
 			if(aCommand === "beta32-install-x86_64-i686"){
-				return "cd \""+tempfolder.path+"\" && rm -f *flash* && wget "+url32+"\nNEWHASH32=$(md5sum *flash* | sed 's/ .*//g')\nif [ \"${NEWHASH32}\" == '"+hash32+"' ];then\ntar xvf *flash* libflashplayer.so && mv libflashplayer.so ~/.mozilla/plugins/ && rm -f *flash*\nelse\necho '"+hashnotmatch32+"'\nrm -f *flash*\nfi";
+				newcommand = "cd "+tempfolderpath+" && rm -f *flash* && wget "+url32+"\nNEWHASH32=$(md5sum *flash* | sed 's/ .*//g')\nif [ \"${NEWHASH32}\" == '"+hash32+"' ];then\ntar xvf *flash* libflashplayer.so && mv libflashplayer.so ~/.mozilla/plugins/ && rm -f *flash*\nelse\necho '"+hashnotmatch32+"'\nrm -f *flash*\nfi";
 			}
 			//*****************************************symlinks********************************************
 			if(aCommand === "gnash-symlink-opt"){
-				return "sudo ln -s /usr/lib/gnash/libgnashplugin.so /opt/firefox/plugins/libflashplayer.so";
+				newcommand = "sudo ln -s /usr/lib/gnash/libgnashplugin.so /opt/firefox/plugins/libflashplayer.so";
 			}
 			if(aCommand === "swfdec-symlink-opt"){
-				return "sudo ln -s /usr/lib/swfdec-mozilla/libswfdecmozilla.so /opt/firefox/plugins/libflashplayer.so";
+				newcommand = "sudo ln -s /usr/lib/swfdec-mozilla/libswfdecmozilla.so /opt/firefox/plugins/libflashplayer.so";
 			}
 			if(aCommand === "lightspark-symlink-opt"){
-				return "sudo ln -s /usr/lib/lightspark/lightspark.so /opt/firefox/plugins/libflashplayer.so";
+				newcommand = "sudo ln -s /usr/lib/lightspark/lightspark.so /opt/firefox/plugins/libflashplayer.so";
 			}
 			if(aCommand === "googlechrome-symlink-opt"){
-				return "sudo ln -s /usr/lib/mozilla/plugins/libflashplayer.so /opt/firefox/plugins/libflashplayer.so";
+				newcommand = "sudo ln -s /usr/lib/mozilla/plugins/libflashplayer.so /opt/firefox/plugins/libflashplayer.so";
 			}		
 			if(aCommand === "flashplugin-nonfree-symlink-opt"){
-				return "sudo ln -s /usr/lib/mozilla/plugins/flashplugin-alternative.so /opt/firefox/plugins/libflashplayer.so";
+				newcommand = "sudo ln -s /usr/lib/mozilla/plugins/flashplugin-alternative.so /opt/firefox/plugins/libflashplayer.so";
 			}
 			if(aCommand === "beta-symlink-opt"){
-				return "sudo ln -s /usr/lib/mozilla/plugins/libflashplayer.so /opt/firefox/plugins/libflashplayer.so";
+				newcommand = "sudo ln -s /usr/lib/mozilla/plugins/libflashplayer.so /opt/firefox/plugins/libflashplayer.so";
 			}
 			//*****************************************tweaks********************************************
 
 			//***********************npviewer tweak********************
 			if(aCommand === "npviewer-tweak-add1"){
-				return "NPVIEWER=/usr/lib/nspluginwrapper/i386/linux/npviewer";
+				newcommand = "NPVIEWER=/usr/lib/nspluginwrapper/i386/linux/npviewer";
 			}
 			if(aCommand === "npviewer-tweak-add2"){
-				return "if test -f \"${NPVIEWER}\";then";
+				newcommand = "if test -f \"${NPVIEWER}\";then";
 			}
 			if(aCommand === "npviewer-tweak-add3"){
-				return "TWEAK=$(cat /usr/lib/nspluginwrapper/i386/linux/npviewer | grep 'GDK_NATIVE_WINDOWS=1')";
+				newcommand = "TWEAK=$(cat /usr/lib/nspluginwrapper/i386/linux/npviewer | grep 'GDK_NATIVE_WINDOWS=1')";
 			}
 			if(aCommand === "npviewer-tweak-add4"){
-				return "if test -z \"${TWEAK}\";then";
+				newcommand = "if test -z \"${TWEAK}\";then";
 			}
 			if(aCommand === "npviewer-tweak-add5"){
-				return "echo '#!/bin/sh' | sudo tee /usr/lib/nspluginwrapper/i386/linux/npviewer";
+				newcommand = "echo '#!/bin/sh' | sudo tee /usr/lib/nspluginwrapper/i386/linux/npviewer";
 			}
 			if(aCommand === "npviewer-tweak-add6"){
-				return "echo 'TARGET_OS=linux' | sudo tee -a /usr/lib/nspluginwrapper/i386/linux/npviewer";
+				newcommand = "echo 'TARGET_OS=linux' | sudo tee -a /usr/lib/nspluginwrapper/i386/linux/npviewer";
 			}
 			if(aCommand === "npviewer-tweak-add7"){
-				return "echo 'TARGET_ARCH=i386' | sudo tee -a /usr/lib/nspluginwrapper/i386/linux/npviewer";
+				newcommand = "echo 'TARGET_ARCH=i386' | sudo tee -a /usr/lib/nspluginwrapper/i386/linux/npviewer";
 			}
 			if(aCommand === "npviewer-tweak-add8"){
-				return "echo 'case \"$*\" in' | sudo tee -a /usr/lib/nspluginwrapper/i386/linux/npviewer";
+				newcommand = "echo 'case \"$*\" in' | sudo tee -a /usr/lib/nspluginwrapper/i386/linux/npviewer";
 			}
 			if(aCommand === "npviewer-tweak-add9"){
-				return "echo '*libflashplayer*)' | sudo tee -a /usr/lib/nspluginwrapper/i386/linux/npviewer";
+				newcommand = "echo '*libflashplayer*)' | sudo tee -a /usr/lib/nspluginwrapper/i386/linux/npviewer";
 			}
 			if(aCommand === "npviewer-tweak-add10"){
-				return "echo '	export GDK_NATIVE_WINDOWS=1' | sudo tee -a /usr/lib/nspluginwrapper/i386/linux/npviewer";
+				newcommand = "echo '	export GDK_NATIVE_WINDOWS=1' | sudo tee -a /usr/lib/nspluginwrapper/i386/linux/npviewer";
 			}
 			if(aCommand === "npviewer-tweak-add11"){
-				return "echo '	;;' | sudo tee -a /usr/lib/nspluginwrapper/i386/linux/npviewer";
+				newcommand = "echo '	;;' | sudo tee -a /usr/lib/nspluginwrapper/i386/linux/npviewer";
 			}
 			if(aCommand === "npviewer-tweak-add12"){
-				return "echo 'esac' | sudo tee -a /usr/lib/nspluginwrapper/i386/linux/npviewer";
+				newcommand = "echo 'esac' | sudo tee -a /usr/lib/nspluginwrapper/i386/linux/npviewer";
 			}
 			if(aCommand === "npviewer-tweak-add13"){
-				return "echo '. /usr/lib/nspluginwrapper/noarch/npviewer' | sudo tee -a /usr/lib/nspluginwrapper/i386/linux/npviewer";
+				newcommand = "echo '. /usr/lib/nspluginwrapper/noarch/npviewer' | sudo tee -a /usr/lib/nspluginwrapper/i386/linux/npviewer";
 			}
 			if(aCommand === "npviewer-tweak-add14"){
-				return "fi";
+				newcommand = "fi";
 			}
 			if(aCommand === "npviewer-tweak-add15"){
-				return "fi";
+				newcommand = "fi";
 			}
 			if(aCommand === "npviewer-tweak-remove"){
-				return "cat /usr/lib/nspluginwrapper/i386/linux/npviewer | sed '/export GDK_NATIVE_WINDOWS=1/d' | sudo tee /usr/lib/nspluginwrapper/i386/linux/npviewer";
+				newcommand = "cat /usr/lib/nspluginwrapper/i386/linux/npviewer | sed '/export GDK_NATIVE_WINDOWS=1/d' | sudo tee /usr/lib/nspluginwrapper/i386/linux/npviewer";
 			}
 			//***********************vdpau tweak********************
 			if(aCommand === "vdpau-tweak-add1"){
-				return "TWEAK=$(cat /etc/adobe/mms.cfg | grep 'EnableLinuxHWVideoDecode')";
+				newcommand = "TWEAK=$(cat /etc/adobe/mms.cfg | grep 'EnableLinuxHWVideoDecode')";
 			}
 			if(aCommand === "vdpau-tweak-add2"){
-				return "if test -z \"${TWEAK}\";then";
+				newcommand = "if test -z \"${TWEAK}\";then";
 			}
 			if(aCommand === "vdpau-tweak-add3"){
-				return "echo 'EnableLinuxHWVideoDecode=1' | sudo tee -a /etc/adobe/mms.cfg";
+				newcommand = "echo 'EnableLinuxHWVideoDecode=1' | sudo tee -a /etc/adobe/mms.cfg";
 			}
 			if(aCommand === "vdpau-tweak-add4"){
-				return "fi";
+				newcommand = "fi";
 			}
 			if(aCommand === "vdpau-tweak-remove"){
-				return "cat /etc/adobe/mms.cfg | sed '/EnableLinuxHWVideoDecode=1/d' | sudo tee /etc/adobe/mms.cfg";
+				newcommand = "cat /etc/adobe/mms.cfg | sed '/EnableLinuxHWVideoDecode=1/d' | sudo tee /etc/adobe/mms.cfg";
 			}
 			//***********************gpu overrride tweak********************
 			if(aCommand === "gpuoverride-tweak-add1"){
-				return "TWEAK=$(cat /etc/adobe/mms.cfg | grep 'OverrideGPUValidation')";
+				newcommand = "TWEAK=$(cat /etc/adobe/mms.cfg | grep 'OverrideGPUValidation')";
 			}
 			if(aCommand === "gpuoverride-tweak-add2"){
-				return "if test -z \"${TWEAK}\";then";
+				newcommand = "if test -z \"${TWEAK}\";then";
 			}
 			if(aCommand === "gpuoverride-tweak-add3"){
-				return "echo 'OverrideGPUValidation=true' | sudo tee -a /etc/adobe/mms.cfg";
+				newcommand = "echo 'OverrideGPUValidation=true' | sudo tee -a /etc/adobe/mms.cfg";
 			}
 			if(aCommand === "gpuoverride-tweak-add4"){
-				return "fi";
+				newcommand = "fi";
 			}
 			if(aCommand === "gpuoverride-tweak-remove"){
-				return "cat /etc/adobe/mms.cfg | sed '/OverrideGPUValidation=true/d' | sudo tee /etc/adobe/mms.cfg";
+				newcommand = "cat /etc/adobe/mms.cfg | sed '/OverrideGPUValidation=true/d' | sudo tee /etc/adobe/mms.cfg";
 			}
+			return newcommand;
 		},
 
 		openLink : function(aSite) {

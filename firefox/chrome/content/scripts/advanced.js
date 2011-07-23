@@ -254,10 +254,10 @@ var flashaidAdvanced = {
 			//declare basic shell script lines
 			var bashline = "#!/bin/bash";
 			var newline = "\n";
-			var command;
 			var pleasewait = "echo \""+pleasewaitmessage+"\"";
 			var endlinemessage = strbundle.getString("done");
 			var endline = "echo -n \""+endlinemessage+"\" && read";
+			var command, simulate, runscript, tarball;
 
 			//check terminal binary existance
 			try{
@@ -278,9 +278,6 @@ var flashaidAdvanced = {
 			}catch(e){
 				terminalok = false;
 			}
-
-			//declare variables
-			var simulate, runscript, tarball;
 
 			if(terminalok === true){//match if terminal binary exist, generates and run the script
 
@@ -471,14 +468,17 @@ var flashaidAdvanced = {
 
 						if(customurl.match(/flashplayer.*\.tar\.gz/)){
 
-							tarball = customurl.replace(/.*\//g,"");
+							//escape path strings
+							var tempfolderpath = tempfolder.path.replace(/[\\"$]/g, "\\$&").quote();
+							var customurlpath = customurl.replace(/[\\"$]/g, "\\$&").quote();
+							var tarball = customurl.replace(/.*\//g,"").quote();
 
 							if(customurl.match(/http:\/\/.*/) || customurl.match(/ftp:\/\/.*/)){
 
 								if(aAction === "test"){
-									command = command+newline+"cd \""+tempfolder.path+"\" && rm -f *.tar.gz* && wget \""+customurl+"\" && tar xvf \""+tarball+"\" && sudo chown root:root libflashplayer.so && sudo chmod 0644 libflashplayer.so && rm -f libflashplayer.so && rm -f *.tar.gz*";
+									command = command+newline+"cd "+tempfolderpath+" && rm -f *.tar.gz* && wget "+customurlpath+" && tar xvf "+tarball+" && sudo chown root:root libflashplayer.so && sudo chmod 0644 libflashplayer.so && rm -f libflashplayer.so && rm -f *.tar.gz*";
 								}else{
-									command = command+newline+"cd \""+tempfolder.path+"\" && rm -f *.tar.gz* && wget \""+customurl+"\" && tar xvf \""+tarball+"\" && sudo chown root:root libflashplayer.so && sudo chmod 0644 libflashplayer.so && sudo mv libflashplayer.so /usr/lib/mozilla/plugins/ && rm -f *.tar.gz* && sudo ln -s /usr/lib/mozilla/plugins/libflashplayer.so /usr/lib/firefox-addons/plugins/libflashplayer.so";
+									command = command+newline+"cd "+tempfolderpath+" && rm -f *.tar.gz* && wget "+customurlpath+" && tar xvf "+tarball+" && sudo chown root:root libflashplayer.so && sudo chmod 0644 libflashplayer.so && sudo mv libflashplayer.so /usr/lib/mozilla/plugins/ && rm -f *.tar.gz* && sudo ln -s /usr/lib/mozilla/plugins/libflashplayer.so /usr/lib/firefox-addons/plugins/libflashplayer.so";
 								}
 								if(opt === true){
 									if(aAction !== "test"){
@@ -497,9 +497,9 @@ var flashaidAdvanced = {
 									if(customfile.exists() && !customfile.isDirectory()){
 
 										if(aAction === "test"){
-											command = command+newline+"cd \""+tempfolder.path+"\" && rm -f *.tar.gz* && cp \""+customurl+"\" \""+tempfolder.path+"\" && tar xvf \""+tarball+"\" && sudo chown root:root libflashplayer.so && sudo chmod 0644 libflashplayer.so && rm -f libflashplayer.so && rm -f *.tar.gz*";
+											command = command+newline+"cd "+tempfolderpath+" && rm -f *.tar.gz* && cp "+customurlpath+" "+tempfolderpath+" && tar xvf "+tarball+" && sudo chown root:root libflashplayer.so && sudo chmod 0644 libflashplayer.so && rm -f libflashplayer.so && rm -f *.tar.gz*";
 										}else{
-											command = command+newline+"cd \""+tempfolder.path+"\" && rm -f *.tar.gz* && cp \""+customurl+"\" \""+tempfolder.path+"\" && tar xvf \""+tarball+"\" && sudo chown root:root libflashplayer.so && sudo chmod 0644 libflashplayer.so && sudo mv libflashplayer.so /usr/lib/mozilla/plugins/ && rm -f *.tar.gz* && sudo ln -s /usr/lib/mozilla/plugins/libflashplayer.so /usr/lib/firefox-addons/plugins/libflashplayer.so";
+											command = command+newline+"cd "+tempfolderpath+" && rm -f *.tar.gz* && cp "+customurlpath+" "+tempfolderpath+" && tar xvf "+tarball+" && sudo chown root:root libflashplayer.so && sudo chmod 0644 libflashplayer.so && sudo mv libflashplayer.so /usr/lib/mozilla/plugins/ && rm -f *.tar.gz* && sudo ln -s /usr/lib/mozilla/plugins/libflashplayer.so /usr/lib/firefox-addons/plugins/libflashplayer.so";
 										}
 										if(opt === true){
 											if(aAction !== "test"){
@@ -608,8 +608,8 @@ var flashaidAdvanced = {
 						var process = Components.classes['@mozilla.org/process/util;1']
 						.createInstance(Components.interfaces.nsIProcess);
 						process.init(terminal);
-						var arguments = ["-e","'"+tempscript.path+"'"];
-						process.run(false, arguments, arguments.length);
+						var args = ["-e","'"+tempscript.path+"'"];
+						process.run(false, args, args.length);
 					}
 					if(aAction === "export"){
 						//declare and remove export script
