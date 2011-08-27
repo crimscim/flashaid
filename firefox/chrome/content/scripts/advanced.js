@@ -2,6 +2,8 @@ var flashaidAdvanced = {
 
 		flashaidOnLoad: function(){
 
+			"use strict";
+
 			//get os architecture
 			var osString = Components.classes["@mozilla.org/network/protocol;1?name=http"]
 			.getService(Components.interfaces.nsIHttpProtocolHandler).oscpu;
@@ -202,6 +204,8 @@ var flashaidAdvanced = {
 
 		scriptManager: function(aAction){
 
+			"use strict";
+
 			//hide script action buttons after executing
 			if(aAction === "execute"){
 				document.getElementById("executebutton").hidden = true;
@@ -285,21 +289,6 @@ var flashaidAdvanced = {
 				document.getElementById("executebutton").disabled = false;
 				document.getElementById("exportbutton").disabled = false;
 
-				//declare temp folder
-				var tempfolder = Components.classes["@mozilla.org/file/directory_service;1"]
-				.getService(Components.interfaces.nsIProperties)
-				.get("ProfD", Components.interfaces.nsIFile);
-				tempfolder.append("extensions");
-				tempfolder.append("flashaid@lovinglinux.megabyet.net");
-				tempfolder.append("chrome");
-				tempfolder.append("content");
-				tempfolder.append("tmp");
-				if(tempfolder.exists()){
-					//delete and recreate temp folder
-					tempfolder.remove(true);
-				}
-				tempfolder.create(Components.interfaces.nsIFile.DIRECTORY_TYPE, 0777);
-
 				//declare, remove and create temporary script
 				var tempscript = Components.classes["@mozilla.org/file/directory_service;1"]
 				.getService(Components.interfaces.nsIProperties)
@@ -310,10 +299,7 @@ var flashaidAdvanced = {
 				tempscript.append("content");
 				tempscript.append("tmp");
 				tempscript.append("flashaid.sh");
-				if(tempscript.exists()) {
-					tempscript.remove(false);
-				}
-				tempscript.createUnique(Components.interfaces.nsIFile.NORMAL_FILE_TYPE, 0777);
+				flashaidCommon.fileManager("resettempscript");
 
 				//declare desktop folder
 				var desktop = Components.classes['@mozilla.org/file/directory_service;1']
@@ -591,7 +577,7 @@ var flashaidAdvanced = {
 					//write command lines to temporary script
 					var foStream = Components.classes["@mozilla.org/network/file-output-stream;1"]
 					.createInstance(Components.interfaces.nsIFileOutputStream);
-					foStream.init(tempscript, 0x02 | 0x10 , 0777, 0);
+					foStream.init(tempscript, -1 , 0, 0);
 
 					var converter = Components.classes["@mozilla.org/intl/converter-output-stream;1"]
 					.createInstance(Components.interfaces.nsIConverterOutputStream);
@@ -622,7 +608,7 @@ var flashaidAdvanced = {
 						}
 						tempscript.copyTo(desktop,"flashaid.sh");
 						//alert user
-						alertsService = Components.classes["@mozilla.org/alerts-service;1"]
+						var alertsService = Components.classes["@mozilla.org/alerts-service;1"]
 						.getService(Components.interfaces.nsIAlertsService);
 						alertsService.showAlertNotification("chrome://flashaid/skin/icon32.png",
 								messagetitle, exported,
@@ -645,6 +631,8 @@ var flashaidAdvanced = {
 		},
 
 		optionsInstall: function(){
+
+			"use strict";
 
 			//get os architecture
 			var osString = Components.classes["@mozilla.org/network/protocol;1?name=http"]
@@ -674,7 +662,9 @@ var flashaidAdvanced = {
 			}
 		},
 
-		cleanUpTempFiles: function () {//delete temporary files when the extension dialog is closed
+		cleanUpTempFiles: function() {//delete temporary files when the extension dialog is closed
+
+			"use strict";
 
 			//delete temporary script
 			var tempscript = Components.classes["@mozilla.org/file/directory_service;1"]
@@ -689,7 +679,6 @@ var flashaidAdvanced = {
 			if(tempscript.exists()) {
 				tempscript.remove(false);
 			}
-
 		}
 };
 window.addEventListener("load", function(e) { flashaidAdvanced.flashaidOnLoad(); }, false);

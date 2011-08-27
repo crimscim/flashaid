@@ -2,6 +2,8 @@ var flashaidOverlay = {
 
 		showHideMenus: function () {//show and hide context menus
 
+			"use strict";
+
 			//access preferences interface
 			this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
 			.getService(Components.interfaces.nsIPrefService)
@@ -92,6 +94,8 @@ var flashaidOverlay = {
 
 		generateReport: function(){
 
+			"use strict";
+
 			//declare, remove and create temporary script
 			var tempscript = Components.classes["@mozilla.org/file/directory_service;1"]
 			.getService(Components.interfaces.nsIProperties)
@@ -102,10 +106,7 @@ var flashaidOverlay = {
 			tempscript.append("content");
 			tempscript.append("tmp");
 			tempscript.append("flashaid.sh");
-			if(tempscript.exists()) {
-				tempscript.remove(false);
-			}
-			tempscript.createUnique(Components.interfaces.nsIFile.NORMAL_FILE_TYPE, 0777);
+			flashaidCommon.fileManager("resettempscript");
 
 			//declare basic shell script lines
 			var bashline = "#!/bin/bash";
@@ -174,7 +175,7 @@ var flashaidOverlay = {
 			//write command lines to temporary script
 			var foStream = Components.classes["@mozilla.org/network/file-output-stream;1"]
 			.createInstance(Components.interfaces.nsIFileOutputStream);
-			foStream.init(tempscript, 0x02 | 0x10 , 0777, 0);
+			foStream.init(tempscript, -1 , 0, 0);
 
 			var converter = Components.classes["@mozilla.org/intl/converter-output-stream;1"]
 			.createInstance(Components.interfaces.nsIConverterOutputStream);
@@ -190,7 +191,7 @@ var flashaidOverlay = {
 			var process = Components.classes['@mozilla.org/process/util;1']
 			.createInstance(Components.interfaces.nsIProcess);
 			process.init(tempscript);
-			var arguments = [];
-			process.run(false, arguments, arguments.length);
+			var args = [];
+			process.run(false, args, args.length);
 		}
 };

@@ -2,6 +2,8 @@ var flashaidQuick = {
 
 		scriptManager: function(aAction){
 
+			"use strict";
+
 			//fetch localization from strbundle
 			var strbundle = document.getElementById("flashaidstrings");
 			var messagetitle = strbundle.getString("flashaidalert");
@@ -94,21 +96,6 @@ var flashaidQuick = {
 
 			if(terminalok === true){//match if terminal binary exist, generates and run the script
 
-				//declare temp folder
-				var tempfolder = Components.classes["@mozilla.org/file/directory_service;1"]
-				.getService(Components.interfaces.nsIProperties)
-				.get("ProfD", Components.interfaces.nsIFile);
-				tempfolder.append("extensions");
-				tempfolder.append("flashaid@lovinglinux.megabyet.net");
-				tempfolder.append("chrome");
-				tempfolder.append("content");
-				tempfolder.append("tmp");
-				if(tempfolder.exists()){
-					//delete and recreate temp folder
-					tempfolder.remove(true);
-				}
-				tempfolder.create(Components.interfaces.nsIFile.DIRECTORY_TYPE, 0777);
-
 				//declare, remove and create temporary script
 				var tempscript = Components.classes["@mozilla.org/file/directory_service;1"]
 				.getService(Components.interfaces.nsIProperties)
@@ -119,10 +106,7 @@ var flashaidQuick = {
 				tempscript.append("content");
 				tempscript.append("tmp");
 				tempscript.append("flashaid.sh");
-				if(tempscript.exists()) {
-					tempscript.remove(false);
-				}
-				tempscript.createUnique(Components.interfaces.nsIFile.NORMAL_FILE_TYPE, 0777);
+				flashaidCommon.fileManager("resettempscript");
 
 				//declare commands
 				command = bashline+newline+pleasewait+newline+"sudo -k";
@@ -249,7 +233,7 @@ var flashaidQuick = {
 				//write command lines to temporary script
 				var foStream = Components.classes["@mozilla.org/network/file-output-stream;1"]
 				.createInstance(Components.interfaces.nsIFileOutputStream);
-				foStream.init(tempscript, 0x02 | 0x10 , 0777, 0);
+				foStream.init(tempscript, -1 , 0, 0);
 
 				var converter = Components.classes["@mozilla.org/intl/converter-output-stream;1"]
 				.createInstance(Components.interfaces.nsIConverterOutputStream);
@@ -270,8 +254,8 @@ var flashaidQuick = {
 					var process = Components.classes['@mozilla.org/process/util;1']
 					.createInstance(Components.interfaces.nsIProcess);
 					process.init(terminal);
-					var arguments = ["-e","'"+tempscript.path+"'"];
-					process.run(false, arguments, arguments.length);
+					var args = ["-e","'"+tempscript.path+"'"];
+					process.run(false, args, args.length);
 
 					//set restart pref to force restart
 					this.prefs.setBoolPref("needrestart",true);

@@ -1,6 +1,86 @@
 var flashaidCommon = {
 
+		fileManager:function(aAction){
+			
+			if(aAction === "resettempscript"){
+				//declare temp folder
+				var tempfolder = Components.classes["@mozilla.org/file/directory_service;1"]
+				.getService(Components.interfaces.nsIProperties)
+				.get("ProfD", Components.interfaces.nsIFile);
+				tempfolder.append("extensions");
+				tempfolder.append("flashaid@lovinglinux.megabyet.net");
+				tempfolder.append("chrome");
+				tempfolder.append("content");
+				tempfolder.append("tmp");
+				if(tempfolder.exists()){
+					//delete and recreate temp folder
+					tempfolder.remove(true);
+				}
+				tempfolder.create(Components.interfaces.nsIFile.DIRECTORY_TYPE, 0777);
+		
+				//declare, remove and create temporary script
+				var tempscript = Components.classes["@mozilla.org/file/directory_service;1"]
+				.getService(Components.interfaces.nsIProperties)
+				.get("ProfD", Components.interfaces.nsIFile);
+				tempscript.append("extensions");
+				tempscript.append("flashaid@lovinglinux.megabyet.net");
+				tempscript.append("chrome");
+				tempscript.append("content");
+				tempscript.append("tmp");
+				tempscript.append("flashaid.sh");
+				if(tempscript.exists()) {
+					tempscript.remove(false);
+				}
+				tempscript.createUnique(Components.interfaces.nsIFile.NORMAL_FILE_TYPE, 0777);
+			}
+		},
+	
+		dateManager:function(aType) {
+
+			"use strict";
+
+			//get selected date and time
+			var currentDate = new Date();
+			var cmonth = currentDate.getMonth();
+			var month = cmonth+1;
+			var MM = "0" + month;
+			MM = MM.substring(MM.length-2, MM.length);
+			var day = currentDate.getDate();
+			var DD = "0" + day;
+			DD = DD.substring(DD.length-2, DD.length);
+			var hours = currentDate.getHours();
+			var HH = "0" + hours;
+			HH = HH.substring(HH.length-2, HH.length);
+			var minutes = currentDate.getMinutes();
+			var MI = "0" + minutes;
+			MI = MI.substring(MI.length-2, MI.length);
+			var seconds = currentDate.getSeconds();
+			var SS = "0" + seconds;
+			SS = SS.substring(SS.length-2, SS.length);
+			var YYYY = currentDate.getFullYear();
+	
+			var currentdate = YYYY+"-"+MM+"-"+DD;
+			var currenttime = HH+":"+MI+":"+SS;
+			var currentdatestamp = YYYY+MM+DD;
+			var currenttimestamp = HH+MI+SS;
+			
+			if(aType === "date"){
+				return currentdate;
+			}
+			if(aType === "time"){
+				return currenttime;
+			}
+			if(aType === "datestamp"){
+				return currentdatestamp;
+			}
+			if(aType === "timestamp"){
+				return currenttimestamp;
+			}
+		},
+
 		checkItem: function(aItem){
+
+			"use strict";
 
 			var item, itempath;
 
@@ -95,6 +175,8 @@ var flashaidCommon = {
 
 		scriptManager: function(aAction,aCommand){
 
+			"use strict";
+
 			//fetch localization from strbundle
 			var strbundle = document.getElementById("flashaidstrings");
 			var hashnotmatch32 = strbundle.getString("hashnotmatch32");
@@ -104,7 +186,7 @@ var flashaidCommon = {
 			this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
 			.getService(Components.interfaces.nsIPrefService)
 			.getBranch("extensions.flashaid.");
-			
+
 			if(aCommand.match("beta.*")){
 				//parse json data
 				var datawebgapps = this.prefs.getCharPref("datawebgapps");
@@ -199,22 +281,46 @@ var flashaidCommon = {
 				newcommand = "sudo ln -s /opt/google/chrome/libgcflashplayer.so /usr/lib/mozilla/plugins/libflashplayer.so";
 			}
 			if(aCommand === "beta64-install-test"){
-				newcommand = "cd "+tempfolderpath+" && rm -f *flash* && wget "+url64+"\nNEWHASH64=$(md5sum *flash* | sed 's/ .*//g')\nif [ \"${NEWHASH64}\" == '"+hash64+"' ];then\ntar xvf *flash* libflashplayer.so && rm -f libflashplayer.so && rm -f *flash*\nelse\necho '"+hashnotmatch64+"'\nrm -f *flash*\nfi";
+				if(hash64 === "*"){
+					newcommand = "cd "+tempfolderpath+" && rm -f *flash* && wget "+url64+"\ntar xvf *flash* libflashplayer.so && rm -f libflashplayer.so && rm -f *flash*";
+				}else{
+					newcommand = "cd "+tempfolderpath+" && rm -f *flash* && wget "+url64+"\nNEWHASH64=$(md5sum *flash* | sed 's/ .*//g')\nif [ \"${NEWHASH64}\" == '"+hash64+"' ];then\ntar xvf *flash* libflashplayer.so && rm -f libflashplayer.so && rm -f *flash*\nelse\necho '"+hashnotmatch64+"'\nrm -f *flash*\nfi";
+				}
 			}
 			if(aCommand === "beta32-install-test"){
-				newcommand = "cd "+tempfolderpath+" && rm -f *flash* && wget "+url32+"\nNEWHASH32=$(md5sum *flash* | sed 's/ .*//g')\nif [ \"${NEWHASH32}\" == '"+hash32+"' ];then\ntar xvf *flash* libflashplayer.so && rm -f libflashplayer.so && rm -f *flash*\nelse\necho '"+hashnotmatch32+"'\nrm -f *flash*\nfi";
+				if(hash32 === "*"){
+					newcommand = "cd "+tempfolderpath+" && rm -f *flash* && wget "+url32+"\ntar xvf *flash* libflashplayer.so && rm -f libflashplayer.so && rm -f *flash*";
+				}else{
+					newcommand = "cd "+tempfolderpath+" && rm -f *flash* && wget "+url32+"\nNEWHASH32=$(md5sum *flash* | sed 's/ .*//g')\nif [ \"${NEWHASH32}\" == '"+hash32+"' ];then\ntar xvf *flash* libflashplayer.so && rm -f libflashplayer.so && rm -f *flash*\nelse\necho '"+hashnotmatch32+"'\nrm -f *flash*\nfi";
+				}
 			}
 			if(aCommand === "beta64-install"){
-				newcommand = "cd "+tempfolderpath+" && rm -f *flash* && wget "+url64+"\nNEWHASH64=$(md5sum *flash* | sed 's/ .*//g')\nif [ \"${NEWHASH64}\" == '"+hash64+"' ];then\ntar xvf *flash* libflashplayer.so && sudo chown root:root libflashplayer.so && sudo chmod 0644 libflashplayer.so && sudo mv libflashplayer.so /usr/lib/mozilla/plugins/ && sudo ln -s /usr/lib/mozilla/plugins/libflashplayer.so /usr/lib/firefox-addons/plugins/libflashplayer.so && rm -f *flash*\nelse\necho '"+hashnotmatch64+"'\nrm -f *flash*\nfi";
+				if(hash64 === "*"){
+					newcommand = "cd "+tempfolderpath+" && rm -f *flash* && wget "+url64+"\ntar xvf *flash* libflashplayer.so && sudo chown root:root libflashplayer.so && sudo chmod 0644 libflashplayer.so && sudo mv libflashplayer.so /usr/lib/mozilla/plugins/ && sudo ln -s /usr/lib/mozilla/plugins/libflashplayer.so /usr/lib/firefox-addons/plugins/libflashplayer.so && rm -f *flash*";
+				}else{
+					newcommand = "cd "+tempfolderpath+" && rm -f *flash* && wget "+url64+"\nNEWHASH64=$(md5sum *flash* | sed 's/ .*//g')\nif [ \"${NEWHASH64}\" == '"+hash64+"' ];then\ntar xvf *flash* libflashplayer.so && sudo chown root:root libflashplayer.so && sudo chmod 0644 libflashplayer.so && sudo mv libflashplayer.so /usr/lib/mozilla/plugins/ && sudo ln -s /usr/lib/mozilla/plugins/libflashplayer.so /usr/lib/firefox-addons/plugins/libflashplayer.so && rm -f *flash*\nelse\necho '"+hashnotmatch64+"'\nrm -f *flash*\nfi";
+				}
 			}
 			if(aCommand === "beta32-install"){
-				newcommand = "cd "+tempfolderpath+" && rm -f *flash* && wget "+url32+"\nNEWHASH32=$(md5sum *flash* | sed 's/ .*//g')\nif [ \"${NEWHASH32}\" == '"+hash32+"' ];then\ntar xvf *flash* libflashplayer.so && sudo chown root:root libflashplayer.so && sudo chmod 0644 libflashplayer.so && sudo mv libflashplayer.so /usr/lib/mozilla/plugins/ && sudo ln -s /usr/lib/mozilla/plugins/libflashplayer.so /usr/lib/firefox-addons/plugins/libflashplayer.so && rm -f *flash*\nelse\necho '"+hashnotmatch32+"'\nrm -f *flash*\nfi";
+				if(hash32 === "*"){
+					newcommand = "cd "+tempfolderpath+" && rm -f *flash* && wget "+url32+"\ntar xvf *flash* libflashplayer.so && sudo chown root:root libflashplayer.so && sudo chmod 0644 libflashplayer.so && sudo mv libflashplayer.so /usr/lib/mozilla/plugins/ && sudo ln -s /usr/lib/mozilla/plugins/libflashplayer.so /usr/lib/firefox-addons/plugins/libflashplayer.so && rm -f *flash*";
+				}else{
+					newcommand = "cd "+tempfolderpath+" && rm -f *flash* && wget "+url32+"\nNEWHASH32=$(md5sum *flash* | sed 's/ .*//g')\nif [ \"${NEWHASH32}\" == '"+hash32+"' ];then\ntar xvf *flash* libflashplayer.so && sudo chown root:root libflashplayer.so && sudo chmod 0644 libflashplayer.so && sudo mv libflashplayer.so /usr/lib/mozilla/plugins/ && sudo ln -s /usr/lib/mozilla/plugins/libflashplayer.so /usr/lib/firefox-addons/plugins/libflashplayer.so && rm -f *flash*\nelse\necho '"+hashnotmatch32+"'\nrm -f *flash*\nfi";
+				}
 			}
 			if(aCommand === "beta64-install-x86_64-i686"){
-				newcommand = "cd "+tempfolderpath+" && rm -f *flash* && wget "+url64+"\nNEWHASH64=$(md5sum *flash* | sed 's/ .*//g')\nif [ \"${NEWHASH64}\" == '"+hash64+"' ];then\ntar xvf *flash* libflashplayer.so && sudo chown root:root libflashplayer.so && sudo chmod 0644 libflashplayer.so && sudo mv libflashplayer.so /usr/lib/mozilla/plugins/ && sudo ln -s /usr/lib/mozilla/plugins/libflashplayer.so /usr/lib/firefox-addons/plugins/libflashplayer.so && rm -f *flash* && mkdir ~/.mozilla/plugins/\nelse\necho '"+hashnotmatch64+"'\nrm -f *flash* && mkdir ~/.mozilla/plugins/\nfi";
+				if(hash64 === "*"){
+					newcommand = "cd "+tempfolderpath+" && rm -f *flash* && wget "+url64+"\ntar xvf *flash* libflashplayer.so && sudo chown root:root libflashplayer.so && sudo chmod 0644 libflashplayer.so && sudo mv libflashplayer.so /usr/lib/mozilla/plugins/ && sudo ln -s /usr/lib/mozilla/plugins/libflashplayer.so /usr/lib/firefox-addons/plugins/libflashplayer.so && rm -f *flash* && mkdir ~/.mozilla/plugins/";
+				}else{
+					newcommand = "cd "+tempfolderpath+" && rm -f *flash* && wget "+url64+"\nNEWHASH64=$(md5sum *flash* | sed 's/ .*//g')\nif [ \"${NEWHASH64}\" == '"+hash64+"' ];then\ntar xvf *flash* libflashplayer.so && sudo chown root:root libflashplayer.so && sudo chmod 0644 libflashplayer.so && sudo mv libflashplayer.so /usr/lib/mozilla/plugins/ && sudo ln -s /usr/lib/mozilla/plugins/libflashplayer.so /usr/lib/firefox-addons/plugins/libflashplayer.so && rm -f *flash* && mkdir ~/.mozilla/plugins/\nelse\necho '"+hashnotmatch64+"'\nrm -f *flash* && mkdir ~/.mozilla/plugins/\nfi";
+				}
 			}
 			if(aCommand === "beta32-install-x86_64-i686"){
-				newcommand = "cd "+tempfolderpath+" && rm -f *flash* && wget "+url32+"\nNEWHASH32=$(md5sum *flash* | sed 's/ .*//g')\nif [ \"${NEWHASH32}\" == '"+hash32+"' ];then\ntar xvf *flash* libflashplayer.so && mv libflashplayer.so ~/.mozilla/plugins/ && rm -f *flash*\nelse\necho '"+hashnotmatch32+"'\nrm -f *flash*\nfi";
+				if(hash32 === "*"){
+					newcommand = "cd "+tempfolderpath+" && rm -f *flash* && wget "+url32+"\ntar xvf *flash* libflashplayer.so && mv libflashplayer.so ~/.mozilla/plugins/ && rm -f *flash*";
+				}else{
+					newcommand = "cd "+tempfolderpath+" && rm -f *flash* && wget "+url32+"\nNEWHASH32=$(md5sum *flash* | sed 's/ .*//g')\nif [ \"${NEWHASH32}\" == '"+hash32+"' ];then\ntar xvf *flash* libflashplayer.so && mv libflashplayer.so ~/.mozilla/plugins/ && rm -f *flash*\nelse\necho '"+hashnotmatch32+"'\nrm -f *flash*\nfi";
+				}
 			}
 			//*****************************************symlinks********************************************
 			if(aCommand === "gnash-symlink-opt"){
@@ -323,6 +429,8 @@ var flashaidCommon = {
 
 		openLink : function(aSite) {
 
+			"use strict";
+
 			var url;
 
 			if (aSite == "docs") {
@@ -352,6 +460,8 @@ var flashaidCommon = {
 
 		openFile : function(aPref,aText) {
 
+			"use strict";
+
 			//access preferences interface
 			this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
 			.getService(Components.interfaces.nsIPrefService)
@@ -378,6 +488,8 @@ var flashaidCommon = {
 		},
 
 		resetPath : function(aPref) {
+
+			"use strict";
 
 			//access preferences interface
 			this.prefs = Components.classes["@mozilla.org/preferences-service;1"]

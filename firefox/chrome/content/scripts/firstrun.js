@@ -2,22 +2,21 @@ var flashaidFirstrun = {
 
 		init: function(){//get current version from extension manager
 
+			"use strict";
+
 			try {// Firefox <= 3.6
 
 				//get current version from extension manager
 				var gExtensionManager = Components.classes["@mozilla.org/extensions/manager;1"]
 				.getService(Components.interfaces.nsIExtensionManager);
 				var current = gExtensionManager.getItemForID("flashaid@lovinglinux.megabyet.net").version;
-
 				flashaidFirstrun.updateInstall(current);
 			}
 			catch(e){// Firefox >=4.0
 
 				//get current version from extension manager
 				Components.utils.import("resource://gre/modules/AddonManager.jsm");
-
 				AddonManager.getAddonByID("flashaid@lovinglinux.megabyet.net", function(addon) {
-
 					var current = addon.version;
 					flashaidFirstrun.updateInstall(current);
 				});
@@ -26,6 +25,8 @@ var flashaidFirstrun = {
 		},
 
 		updateInstall: function(aVersion){//check version and perform updates
+			
+			"use strict";
 
 			//access preferences interface
 			this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
@@ -36,6 +37,7 @@ var flashaidFirstrun = {
 			this.prefs.setBoolPref("sudo",false);
 			this.prefs.setBoolPref("apt",false);
 			this.prefs.setBoolPref("wget",false);
+			this.prefs.setBoolPref("md5sum",false);
 
 			//firstrun, update and current declarations
 			var ver = -1, firstrun = true;
@@ -50,6 +52,7 @@ var flashaidFirstrun = {
 
 				if(firstrun){//actions specific for first installation
 
+					//add toolbar button
 					var navbar = document.getElementById("nav-bar");
 					var newset = navbar.currentSet + ",flashaid-toolbar-button";
 					navbar.currentSet = newset;
@@ -185,6 +188,8 @@ var flashaidFirstrun = {
 
 		firstrunAlert: function(){
 
+			"use strict";
+
 			//fetch localization from strbundle
 			var strbundle = document.getElementById("flashaidstrings");
 
@@ -193,12 +198,12 @@ var flashaidFirstrun = {
 			var messagetitle = strbundle.getString("flashaidalert");
 			var alertsService = Components.classes["@mozilla.org/alerts-service;1"]
 			.getService(Components.interfaces.nsIAlertsService);
-			alertsService.showAlertNotification("chrome://flashaid/skin/icon32.png",
-					messagetitle, message,
-					false, "", null);
+			alertsService.showAlertNotification("chrome://flashaid/skin/icon32.png", messagetitle, message,	false, "", null);
 		},
 
 		getSysInfo: function(){
+
+			"use strict";
 
 			//declare release info
 			var version, codename;
@@ -250,6 +255,8 @@ var flashaidFirstrun = {
 
 		flashBetaUpdate: function(){
 
+			"use strict";
+
 			//get os architecture
 			var osString = Components.classes["@mozilla.org/network/protocol;1?name=http"]
 			.getService(Components.interfaces.nsIHttpProtocolHandler).oscpu;
@@ -261,24 +268,15 @@ var flashaidFirstrun = {
 
 			var updatealert = this.prefs.getBoolPref("updatealert");
 			var dataupdate = this.prefs.getIntPref("dataupdate");
-			var sslenabled = this.prefs.getBoolPref("sslenabled");
 
 			//get date and time
-			var currentDate = new Date();
-			var cmonth = currentDate.getMonth();
-			var month = cmonth+1;
-			var MM = "0" + month;
-			MM = MM.substring(MM.length-2, MM.length);
-			var day = currentDate.getDate();
-			var DD = "0" + day;
-			DD = DD.substring(DD.length-2, DD.length);
-			var YYYY = currentDate.getFullYear();
-			var currenttimestamp = YYYY+MM+DD;
+			var currenttimestamp = flashaidCommon.dateManager('datestamp');
 
 			if(currenttimestamp > dataupdate){
 
 				//change dataupdate to current timestamp
 				this.prefs.setIntPref("dataupdate",currenttimestamp);
+				this.prefs.setBoolPref("ssl",false);
 
 				//fetch localization from strbundle
 				var strbundle = document.getElementById("flashaidstrings");
@@ -314,7 +312,7 @@ var flashaidFirstrun = {
 							//validate SSL
 							var auhtentication = flashaidFirstrun.flashBetaUpdateSSL(httpRequest.channel);
 
-							if(auhtentication === "ok" || sslenabled === false){
+							if(auhtentication === "ok"){
 
 								//get json document content
 								req = Components.classes["@mozilla.org/xmlextras/xmlhttprequest;1"].createInstance();
@@ -328,10 +326,14 @@ var flashaidFirstrun = {
 										this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
 										.getService(Components.interfaces.nsIPrefService)
 										.getBranch("extensions.flashaid.");
+										
+										//set pref
+										this.prefs.setBoolPref("ssl",true);
 
 										//parse json
 										jsonObjectRemote = JSON.parse(req.responseText);
-
+										this.prefs.setCharPref("datawebgapps",req.responseText);
+										
 										if(osString.match(/x86_64/)){
 											architecture = "Flash 64bit";
 											remotetimestamp = jsonObjectRemote.flashbeta64[0].timestamp;
@@ -340,33 +342,17 @@ var flashaidFirstrun = {
 											remotetimestamp = jsonObjectRemote.flashbeta32[0].timestamp;
 										}
 
-										if(remotetimestamp > localtimestamp){
-
-											this.prefs.setCharPref("datawebgapps",req.responseText);
-
-											if(updatealert === true){
-												//fetch message
-												message = strbundle.getFormattedString("flashbetaupdate", [ architecture ]);
-												//alert user
-												var alertsService = Components.classes["@mozilla.org/alerts-service;1"]
-												.getService(Components.interfaces.nsIAlertsService);
-												alertsService.showAlertNotification("chrome://flashaid/skin/icon32.png",
-														messagetitle, message,
-														false, "", null);
-											}
+										if(remotetimestamp > localtimestamp && updatealert === true){
+											//fetch message
+											message = strbundle.getFormattedString("flashbetaupdate", [ architecture ]);
+											//alert user
+											var alertsService = Components.classes["@mozilla.org/alerts-service;1"]
+											.getService(Components.interfaces.nsIAlertsService);
+											alertsService.showAlertNotification("chrome://flashaid/skin/icon32.png", messagetitle, message,	false, "", null);
 										}
 									}
 								};
 								req.send(null);
-							}else{
-								//fetch message
-								message = strbundle.getString("sslerror");
-								//slert user
-								var alertsService = Components.classes["@mozilla.org/alerts-service;1"]
-								.getService(Components.interfaces.nsIAlertsService);
-								alertsService.showAlertNotification("chrome://flashaid/skin/icon32.png",
-										messagetitle, message,
-										false, "", null);
 							}
 						}
 					};
@@ -378,6 +364,8 @@ var flashaidFirstrun = {
 		},
 
 		flashBetaUpdateSSL: function(channel){
+
+			"use strict";
 
 			var security;
 			var auhtentication = false;
@@ -457,6 +445,8 @@ var flashaidFirstrun = {
 		},
 
 		resetNeedRestart: function(){
+
+			"use strict";
 
 			//access preferences interface
 			this.prefs = Components.classes["@mozilla.org/preferences-service;1"]

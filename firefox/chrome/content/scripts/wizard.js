@@ -2,6 +2,8 @@ var flashaidWizard = {
 
 		flashaidOnLoad: function(){
 
+			"use strict";
+
 			//get os architecture
 			var osString = Components.classes["@mozilla.org/network/protocol;1?name=http"]
 			.getService(Components.interfaces.nsIHttpProtocolHandler).oscpu;
@@ -176,6 +178,8 @@ var flashaidWizard = {
 		},
 		
 		infoUpdater: function(){
+
+			"use strict";
 			
 			//access preferences interface
 			this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
@@ -283,6 +287,8 @@ var flashaidWizard = {
 
 		scriptManager: function(){
 
+			"use strict";
+
 			//fetch localization from strbundle
 			var strbundle = document.getElementById("flashaidstrings");
 			var pleasewaitmessage = strbundle.getString("pleasewait");
@@ -355,21 +361,6 @@ var flashaidWizard = {
 
 			if(terminalok === true){//match if terminal binary exist, generates and run the script
 
-				//declare temp folder
-				var tempfolder = Components.classes["@mozilla.org/file/directory_service;1"]
-				.getService(Components.interfaces.nsIProperties)
-				.get("ProfD", Components.interfaces.nsIFile);
-				tempfolder.append("extensions");
-				tempfolder.append("flashaid@lovinglinux.megabyet.net");
-				tempfolder.append("chrome");
-				tempfolder.append("content");
-				tempfolder.append("tmp");
-				if(tempfolder.exists()){
-					//delete and recreate temp folder
-					tempfolder.remove(true);
-				}
-				tempfolder.create(Components.interfaces.nsIFile.DIRECTORY_TYPE, 0777);
-
 				//declare, remove and create temporary script
 				var tempscript = Components.classes["@mozilla.org/file/directory_service;1"]
 				.getService(Components.interfaces.nsIProperties)
@@ -380,10 +371,7 @@ var flashaidWizard = {
 				tempscript.append("content");
 				tempscript.append("tmp");
 				tempscript.append("flashaid.sh");
-				if(tempscript.exists()) {
-					tempscript.remove(false);
-				}
-				tempscript.createUnique(Components.interfaces.nsIFile.NORMAL_FILE_TYPE, 0777);
+				flashaidCommon.fileManager("resettempscript");
 
 				//declare desktop folder
 				var desktop = Components.classes['@mozilla.org/file/directory_service;1']
@@ -528,7 +516,7 @@ var flashaidWizard = {
 				//write command lines to temporary script
 				var foStream = Components.classes["@mozilla.org/network/file-output-stream;1"]
 				.createInstance(Components.interfaces.nsIFileOutputStream);
-				foStream.init(tempscript, 0x02 | 0x10 , 0777, 0);
+				foStream.init(tempscript, -1 , 0, 0);
 
 				var converter = Components.classes["@mozilla.org/intl/converter-output-stream;1"]
 				.createInstance(Components.interfaces.nsIConverterOutputStream);
@@ -543,8 +531,8 @@ var flashaidWizard = {
 					var process = Components.classes['@mozilla.org/process/util;1']
 					.createInstance(Components.interfaces.nsIProcess);
 					process.init(terminal);
-					var arguments = ["-e","'"+tempscript.path+"'"];
-					process.run(false, arguments, arguments.length);
+					var args = ["-e","'"+tempscript.path+"'"];
+					process.run(false, args, args.length);
 
 					this.prefs.setBoolPref("needrestart",true);
 				}
@@ -559,11 +547,9 @@ var flashaidWizard = {
 					}
 					tempscript.copyTo(desktop,"flashaid.sh");
 					//alert user
-					alertsService = Components.classes["@mozilla.org/alerts-service;1"]
+					var alertsService = Components.classes["@mozilla.org/alerts-service;1"]
 					.getService(Components.interfaces.nsIAlertsService);
-					alertsService.showAlertNotification("chrome://flashaid/skin/icon32.png",
-							messagetitle, exported,
-							false, "", null);
+					alertsService.showAlertNotification("chrome://flashaid/skin/icon32.png", messagetitle, exported, false, "", null);
 				}				
 			}
 		}
