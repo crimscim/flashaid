@@ -43,8 +43,8 @@ var flashaidLauncher = {
 					
 					if(result == true){//execute if user confirm
 						data = {};
-						data.flashbeta32 = [{"timestamp":"20110811","version":"*","url":"http://updates.webgapps.org/flashplayer32","hash":"*"}];
-						data.flashbeta64 = [{"timestamp":"20110811","version":"*","url":"http://updates.webgapps.org/flashplayer64","hash":"*"}];
+						data.flashbeta32 = [{"timestamp":"20111121","version":"*","url":"http://updates.webgapps.org/flashplayer32","hash":"*"}];
+						data.flashbeta64 = [{"timestamp":"20111121","version":"*","url":"http://updates.webgapps.org/flashplayer64","hash":"*"}];
 						JSONdata = JSON.stringify(data);
  						this.prefs.setCharPref("datawebgapps",JSONdata);
 					}else{

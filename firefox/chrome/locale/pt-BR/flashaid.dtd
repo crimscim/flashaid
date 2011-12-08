@@ -21,6 +21,7 @@
 <!ENTITY CaptionTechnicalInfo "Plugin Info">
 <!ENTITY CaptionTweakingOptions "Opções de Optimização">
 
+<!ENTITY MenuItemCheckUpdate "Checar Atualização">
 <!ENTITY MenuItemDocumentation "Documentação">
 <!ENTITY MenuItemModeAdvanced "Modo Avançado">
 <!ENTITY MenuItemModeQuick "Modo Rápido">
@@ -38,11 +39,10 @@
 <!ENTITY TitleWizard "Assistente Flash-Aid">
 
 <!ENTITY OptionInstallBeta "Adobe Beta, da Adobe Labs">
-<!ENTITY OptionInstallRepo32 "Adobe versão estável, dos repositórios">
-<!ENTITY OptionInstallRepo64 "Adobe versão estável, dos repositórios (32bit em modo de compatibilidade)">
+<!ENTITY OptionInstallRepo32 "Adobe versão estável, dos repositórios (32bit)">
+<!ENTITY OptionInstallRepo64 "Adobe versão estável, dos repositórios (64bit)">
 <!ENTITY OptionInstallChrome "Google, do navegador Chrome">
 <!ENTITY OptionInstallRepoGnash "Gnash, dos repositórios">
-<!ENTITY OptionInstallRepoSwfdec "Swfdec, dos repositórios">
 <!ENTITY OptionInstallRepoLightspark "Lightspark, dos repositórios">
 <!ENTITY OptionInstallCustomURL "Personalizado (http url ou caminho local)">
 <!ENTITY OptionInstallDoNotInstall "Não instalar">
@@ -89,6 +89,7 @@
 <!ENTITY TooltipButtonExecute "Execute o script para remover plugins conflitantes, instalar o flash e aplicar optimizações">
 <!ENTITY TooltipButtonExport "Exportar o script para seu desktop, de mode que possa editá-lo ou executá-lo manualmente">
 
+<!ENTITY TooltipMenuItemCheckUpdate "Checar manualmente o servidor de atualização para verificar se existe uma nova versão flash">
 <!ENTITY TooltipMenuItemDocumentation "Visite a página de documentação do Flash-Aid">
 <!ENTITY TooltipMenuItemModeAdvanced "Instalar o flash plugin de fontes personalizadas ou usando opções avançadas">
 <!ENTITY TooltipMenuItemModeQuickBeta "Remover todos os plugins flash, instalar a versão beta do laboratório da Adobe e aplicar optimizações de performance automaticamente">

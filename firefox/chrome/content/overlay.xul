@@ -31,6 +31,34 @@
 			class="toolbarbutton-1 chromeclass-toolbar-additional" />
 	</toolbarpalette>
 
+	<menupopup id="menu_ToolsPopup">
+	    <menu id="flashaid-toolsmenu" label="&TitleAddon;" class="menu-iconic"
+	          image="chrome://flashaid/skin/toolbar-small.png">
+			<menupopup id="flashaid-toolsmenupopup" onpopupshowing="flashaidOverlay.showHideMenus();">
+				<menuitem id="flashaid-wizard-tools" tooltiptext="&TooltipMenuItemModeWizard;" label="&MenuItemModeWizard;" class="menuitem-iconic" image="chrome://flashaid/skin/wizard16.png" oncommand="flashaidLauncher.scriptManager('wizard');"/>
+				<menu id="flashaid-quick-tools" label="&MenuItemModeQuick;" class="menu-iconic" image="chrome://flashaid/skin/quick16.png" >
+					<menupopup id="flashaid-quick-popup-tools">
+						<menuitem id="flashaid-quick-popup-stable-tools" tooltiptext="&TooltipMenuItemModeQuickStable;" label="&MenuItemModeQuickStable;" class="menuitem-iconic" image="chrome://flashaid/skin/stable16.png" oncommand="flashaidLauncher.scriptManager('stable');"/>
+						<menuitem id="flashaid-quick-popup-beta-tools" tooltiptext="&TooltipMenuItemModeQuickBeta;" label="&MenuItemModeQuickBeta;" class="menuitem-iconic" image="chrome://flashaid/skin/beta16.png" oncommand="flashaidLauncher.scriptManager('beta');"/>
+						<menuitem id="flashaid-quick-popup-chrome-tools" tooltiptext="&TooltipMenuItemModeQuickChrome;" label="&MenuItemModeQuickChrome;" class="menuitem-iconic" image="chrome://flashaid/skin/chrome16.png" oncommand="flashaidLauncher.scriptManager('chrome');"/>
+					</menupopup>
+				</menu>
+				<menuitem id="flashaid-advanced-tools" tooltiptext="&TooltipMenuItemModeAdvanced;" label="&MenuItemModeAdvanced;" class="menuitem-iconic" image="chrome://flashaid/skin/advanced16.png" oncommand="flashaidLauncher.scriptManager('advanced');"/>
+				<menuseparator id="flashaid-helper-separator-tools"/>
+				<menuitem id="flashaid-check-update-tools" tooltiptext="&TooltipMenuItemCheckUpdate;" label="&MenuItemCheckUpdate;" class="menuitem-iconic" image="chrome://flashaid/skin/reload16.png" oncommand="flashaidFirstrun.forceflashBetaUpdate();"/>
+				<menu id="flashaid-helper-tools" label="&MenuItemHelp;" class="menu-iconic" image="chrome://flashaid/skin/help16.png">
+					<menupopup id="flashaid-helper-popup-tools">
+						<menuitem id="flashaid-helper-popup-support-tools" tooltiptext="&TooltipMenuItemSupport;" label="&MenuItemSupport;" class="menuitem-iconic" image="chrome://flashaid/skin/support16.png" oncommand="flashaidCommon.openLink('support');"/>
+						<menuitem id="flashaid-helper-popup-docs-tools" tooltiptext="&TooltipMenuItemDocumentation;" label="&MenuItemDocumentation;" class="menuitem-iconic" image="chrome://flashaid/skin/docs16.png" oncommand="flashaidCommon.openLink('docs');"/>
+						<menuitem id="flashaid-helper-popup-report-tools" tooltiptext="&TooltipMenuItemReport;" label="&MenuItemReport;" class="menuitem-iconic" image="chrome://flashaid/skin/report16.png" oncommand="flashaidOverlay.generateReport();"/>
+					</menupopup>
+				</menu>
+				<menuseparator id="flashaid-prefs-separator-tools"/>
+				<menuitem id="flashaid-preferences-tools" tooltiptext="&TooltipMenuItemPreferences;" label="&MenuItemPreferences;" class="menuitem-iconic" image="chrome://flashaid/skin/settings16.png" oncommand="window.openDialog('chrome://flashaid/content/options.xul', 'flashaid-prefs', 'chrome,centerscreen,alwaysRaised');"/>
+			</menupopup>
+	    </menu>
+	</menupopup>
+
 	<popupset>
 		<menupopup id="flashaid-contextmenu" onpopupshowing="flashaidOverlay.showHideMenus();">
 			<menuitem id="flashaid-wizard" tooltiptext="&TooltipMenuItemModeWizard;" label="&MenuItemModeWizard;" class="menuitem-iconic" image="chrome://flashaid/skin/wizard16.png" oncommand="flashaidLauncher.scriptManager('wizard');"/>
@@ -43,6 +71,7 @@
 			</menu>
 			<menuitem id="flashaid-advanced" tooltiptext="&TooltipMenuItemModeAdvanced;" label="&MenuItemModeAdvanced;" class="menuitem-iconic" image="chrome://flashaid/skin/advanced16.png" oncommand="flashaidLauncher.scriptManager('advanced');"/>
 			<menuseparator id="flashaid-helper-separator"/>
+			<menuitem id="flashaid-check-update" tooltiptext="&TooltipMenuItemCheckUpdate;" label="&MenuItemCheckUpdate;" class="menuitem-iconic" image="chrome://flashaid/skin/reload16.png" oncommand="flashaidFirstrun.forceflashBetaUpdate();"/>
 			<menu id="flashaid-helper" label="&MenuItemHelp;" class="menu-iconic" image="chrome://flashaid/skin/help16.png">
 				<menupopup id="flashaid-helper-popup">
 					<menuitem id="flashaid-helper-popup-support" tooltiptext="&TooltipMenuItemSupport;" label="&MenuItemSupport;" class="menuitem-iconic" image="chrome://flashaid/skin/support16.png" oncommand="flashaidCommon.openLink('support');"/>

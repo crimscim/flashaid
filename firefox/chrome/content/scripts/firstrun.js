@@ -206,12 +206,19 @@ var flashaidFirstrun = {
 			"use strict";
 
 			//declare release info
-			var version, codename;
+			var distro, version, codename;
+			
+			//get os architecture
+			var osstring = Components.classes["@mozilla.org/network/protocol;1?name=http"]
+			.getService(Components.interfaces.nsIHttpProtocolHandler).oscpu;
 
 			//access preferences interface
 			this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
 			.getService(Components.interfaces.nsIPrefService)
 			.getBranch("extensions.flashaid.");
+			
+			//uate prefs
+			this.prefs.setCharPref("osstring",osstring);
 			
 			try{
 				//declare and inititate sourcefile with release info
@@ -233,9 +240,14 @@ var flashaidFirstrun = {
 						hasmore = istream.readLine(line);
 						lines.push(line.value);
 
+						var matchdistro = /DISTRIB_ID=/.test(line.value);
 						var matchversion = /DISTRIB_RELEASE=/.test(line.value);
 						var matchcodename = /DISTRIB_CODENAME=/.test(line.value);
 
+						if (matchdistro == true) {
+							distro = line.value.replace(/DISTRIB_ID=/g, "");
+							this.prefs.setCharPref("osdistro",distro);
+						}
 						if (matchversion == true) {
 							version = line.value.replace(/DISTRIB_RELEASE=/g, "");
 							this.prefs.setCharPref("osversion",version);
@@ -251,21 +263,70 @@ var flashaidFirstrun = {
 			}catch(e){
 				//do nothing
 			}
+			try{
+				//reset pref
+				this.prefs.setBoolPref("partner",false);
+				
+				//declare and inititate sourcefile with release info
+				var sourcefile_path = "/etc/apt/sources.list";
+				var sourcefile = Components.classes["@mozilla.org/file/local;1"]
+				.createInstance(Components.interfaces.nsILocalFile);
+				sourcefile.initWithPath(sourcefile_path);
+				
+				if(sourcefile.exists()){
+
+					//read sourcefile and fetch lines with release info
+					var istream = Components.classes["@mozilla.org/network/file-input-stream;1"].
+					createInstance(Components.interfaces.nsIFileInputStream);
+					istream.init(sourcefile, -1, 0, 0);
+					istream.QueryInterface(Components.interfaces.nsILineInputStream);
+
+					var line = {}, lines = [], hasmore;
+					do {
+						hasmore = istream.readLine(line);
+						lines.push(line.value);
+
+						var matchrepo = /deb http:\/\/archive.canonical.com\/ubuntu.*partner/.test(line.value);
+						var matchcomment = /#/.test(line.value);
+
+						if (matchrepo == true) {
+							if(matchcomment === false){
+								this.prefs.setBoolPref("partner",true);
+							}
+						}
+					} while(hasmore);
+					istream.close();
+				}
+			}catch(e){
+				//do nothing
+			}
+		},
+		
+		forceflashBetaUpdate: function(){
+			
+			//access preferences interface
+			this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
+			.getService(Components.interfaces.nsIPrefService)
+			.getBranch("extensions.flashaid.");
+			
+			//get date from prefs
+			var newdate = flashaidCommon.dateManager('datestamp')-1;
+			//reset date in prefs
+			this.prefs.setIntPref("dataupdate",newdate);
+			//launch update manager
+			flashaidFirstrun.flashBetaUpdate('manual');
 		},
 
-		flashBetaUpdate: function(){
+		flashBetaUpdate: function(aMode){
 
 			"use strict";
-
-			//get os architecture
-			var osString = Components.classes["@mozilla.org/network/protocol;1?name=http"]
-			.getService(Components.interfaces.nsIHttpProtocolHandler).oscpu;
 
 			//access preferences interface
 			this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
 			.getService(Components.interfaces.nsIPrefService)
 			.getBranch("extensions.flashaid.");
 
+			var osstring = this.prefs.getCharPref("osstring");
 			var updatealert = this.prefs.getBoolPref("updatealert");
 			var dataupdate = this.prefs.getIntPref("dataupdate");
 
@@ -291,7 +352,7 @@ var flashaidFirstrun = {
 					//get current timestamp from  prefs
 					jsonObjectLocal = JSON.parse(datawebgapps);
 
-					if(osString.match(/x86_64/)){
+					if(osstring.match(/x86_64/)){
 						localtimestamp = jsonObjectLocal.flashbeta64[0].timestamp;
 					}else{
 						localtimestamp = jsonObjectLocal.flashbeta32[0].timestamp;
@@ -334,31 +395,60 @@ var flashaidFirstrun = {
 										jsonObjectRemote = JSON.parse(req.responseText);
 										this.prefs.setCharPref("datawebgapps",req.responseText);
 										
-										if(osString.match(/x86_64/)){
-											architecture = "Flash 64bit";
+										if(osstring.match(/x86_64/)){
+											architecture = "Flash 64bit Beta";
 											remotetimestamp = jsonObjectRemote.flashbeta64[0].timestamp;
 										}else{
-											architecture = "Flash 32bit";
+											architecture = "Flash 32bit Beta";
 											remotetimestamp = jsonObjectRemote.flashbeta32[0].timestamp;
 										}
 
-										if(remotetimestamp > localtimestamp && updatealert === true){
-											//fetch message
-											message = strbundle.getFormattedString("flashbetaupdate", [ architecture ]);
-											//alert user
-											var alertsService = Components.classes["@mozilla.org/alerts-service;1"]
-											.getService(Components.interfaces.nsIAlertsService);
-											alertsService.showAlertNotification("chrome://flashaid/skin/icon32.png", messagetitle, message,	false, "", null);
+										if(remotetimestamp > localtimestamp){
+											
+											if(updatealert === true || aMode === "manual"){
+												//fetch message
+												message = strbundle.getFormattedString("flashbetaupdate", [ architecture ]);
+												//alert user
+												var alertsService = Components.classes["@mozilla.org/alerts-service;1"]
+												.getService(Components.interfaces.nsIAlertsService);
+												alertsService.showAlertNotification("chrome://flashaid/skin/icon32.png", messagetitle, message,	false, "", null);
+											}
+
+										}else{
+											if(aMode === "manual"){
+												//fetch message
+												message = strbundle.getString("noupdate");
+												//alert user
+												var alertsService = Components.classes["@mozilla.org/alerts-service;1"]
+												.getService(Components.interfaces.nsIAlertsService);
+												alertsService.showAlertNotification("chrome://flashaid/skin/icon32.png", messagetitle, message,	false, "", null);
+											}
 										}
 									}
 								};
 								req.send(null);
+							}else{
+								if(aMode === "manual"){
+									//fetch message
+									message = strbundle.getString("nossl");
+									//alert user
+									var alertsService = Components.classes["@mozilla.org/alerts-service;1"]
+									.getService(Components.interfaces.nsIAlertsService);
+									alertsService.showAlertNotification("chrome://flashaid/skin/icon32.png", messagetitle, message,	false, "", null);
+								}
 							}
 						}
 					};
 					httpRequest.send(null);
 				}catch(e){
-					//do nothing
+					if(aMode === "manual"){
+						//fetch message
+						message = strbundle.getString("nossl");
+						//alert user
+						var alertsService = Components.classes["@mozilla.org/alerts-service;1"]
+						.getService(Components.interfaces.nsIAlertsService);
+						alertsService.showAlertNotification("chrome://flashaid/skin/icon32.png", messagetitle, message,	false, "", null);
+					}
 				}
 			}
 		},
@@ -459,5 +549,5 @@ var flashaidFirstrun = {
 //event listeners to call the functions when Firefox starts
 window.addEventListener("load",function(){ flashaidFirstrun.init(); },true);
 window.addEventListener("load", function(e) { setTimeout(function () { flashaidFirstrun.getSysInfo(); }, 500); }, false);
-window.addEventListener("load", function(e) { setTimeout(function () { flashaidFirstrun.flashBetaUpdate(); }, 5000); }, false);
+window.addEventListener("load", function(e) { setTimeout(function () { flashaidFirstrun.flashBetaUpdate('auto'); }, 5000); }, false);
 window.addEventListener("unload", function(e) { flashaidFirstrun.resetNeedRestart(); }, false);

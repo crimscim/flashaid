@@ -103,17 +103,14 @@ var flashaidCommon = {
 				}
 			}else{
 
-				if(aItem === "lightspark-ppa-maverick"){
-					itempath = "/etc/apt/sources.list.d/sssup-sssup-ppa-maverick.list";
+				if(aItem === "lightspark"){
+					itempath = "/usr/lib/lightspark/liblightspark.so";
 				}
-				if(aItem === "lightspark-ppa-natty"){
-					itempath = "/etc/apt/sources.list.d/sssup-sssup-ppa-natty.list";
+				if(aItem === "lightspark-oneiric"){
+					itempath = "/usr/lib/lightspark/liblightsparkplugin.so";
 				}
 				if(aItem === "googlechrome"){
 					itempath = "/opt/google/chrome/libgcflashplayer.so";
-				}
-				if(aItem === "lightspark"){
-					itempath = "/usr/lib/lightspark/liblightspark.so";
 				}
 				if(aItem === "swfdec"){
 					itempath = "/usr/lib/swfdec-mozilla/libswfdecmozilla.so";
@@ -187,6 +184,12 @@ var flashaidCommon = {
 			.getService(Components.interfaces.nsIPrefService)
 			.getBranch("extensions.flashaid.");
 
+			//get preferences
+			var osstring = this.prefs.getCharPref("osstring");
+			var osdistro = this.prefs.getCharPref("osdistro");
+			var osversion = this.prefs.getCharPref("osversion");
+			var oscodename = this.prefs.getCharPref("oscodename");
+
 			if(aCommand.match("beta.*")){
 				//parse json data
 				var datawebgapps = this.prefs.getCharPref("datawebgapps");
@@ -225,16 +228,16 @@ var flashaidCommon = {
 			}
 			//*****************************************removal********************************************
 			if(aCommand === "lightspark-removal"){
-				newcommand = "sudo apt-get"+skipuser+simulate+"purge lightspark-common";
+				newcommand = "sudo apt-get"+skipuser+simulate+"purge browser-plugin-lightspark"+newline+"sudo apt-get"+skipuser+simulate+"purge lightspark-common";
 			}
 			if(aCommand === "gnash-removal"){
-				newcommand = "sudo apt-get"+skipuser+simulate+"purge mozilla-plugin-gnash"+newline+"sudo apt-get"+skipuser+simulate+"purge browser-plugin-gnash";
+				newcommand = "sudo apt-get"+skipuser+simulate+"purge browser-plugin-gnash"+newline+"sudo apt-get"+skipuser+simulate+"purge mozilla-plugin-gnash";
 			}
 			if(aCommand === "swfdec-removal"){
 				newcommand = "sudo apt-get"+skipuser+simulate+"purge swfdec-mozilla";
 			}
 			if(aCommand === "adobeinstaller-removal"){
-				newcommand = "sudo apt-get"+skipuser+simulate+"purge flashplugin.*installer";
+				newcommand = "sudo apt-get"+skipuser+simulate+"purge flashplugin.*installer"+newline+"sudo apt-get"+skipuser+simulate+"purge flashplugin-downloader";
 			}
 			if(aCommand === "adobepartner-removal"){
 				newcommand = "sudo apt-get"+skipuser+simulate+"purge adobe-flashplugin";
@@ -266,13 +269,19 @@ var flashaidCommon = {
 			}
 			//*****************************************install********************************************
 			if(aCommand === "gnash-install"){
-				newcommand = "sudo apt-get"+skipuser+simulate+"install mozilla-plugin-gnash";
-			}
-			if(aCommand === "swfdec-install"){
-				newcommand = "sudo apt-get"+skipuser+simulate+"install swfdec-mozilla";
+				newcommand = "sudo apt-get"+skipuser+simulate+"install browser-plugin-gnash";
 			}
 			if(aCommand === "lightspark-install"){
-				newcommand = "sudo apt-get"+skipuser+simulate+"install lightspark";
+				newcommand = "sudo apt-get"+skipuser+simulate+"install browser-plugin-lightspark";
+			}
+			if(aCommand === "flashplugin-adobe-install"){
+				newcommand = "sudo apt-get"+skipuser+simulate+"install adobe-flashplugin";
+			}
+			if(aCommand === "flashplugin-installer-install"){
+				newcommand = "sudo apt-get"+skipuser+simulate+"install flashplugin-installer";
+			}
+			if(aCommand === "flashplugin-downloader-install"){
+				newcommand = "sudo apt-get"+skipuser+simulate+"install flashplugin-downloader";
 			}
 			if(aCommand === "flashplugin-nonfree-install"){
 				newcommand = "sudo apt-get"+skipuser+simulate+"install flashplugin-nonfree";
@@ -326,16 +335,13 @@ var flashaidCommon = {
 			if(aCommand === "gnash-symlink-opt"){
 				newcommand = "sudo ln -s /usr/lib/gnash/libgnashplugin.so /opt/firefox/plugins/libflashplayer.so";
 			}
-			if(aCommand === "swfdec-symlink-opt"){
-				newcommand = "sudo ln -s /usr/lib/swfdec-mozilla/libswfdecmozilla.so /opt/firefox/plugins/libflashplayer.so";
-			}
 			if(aCommand === "lightspark-symlink-opt"){
-				newcommand = "sudo ln -s /usr/lib/lightspark/lightspark.so /opt/firefox/plugins/libflashplayer.so";
+				newcommand = "sudo ln -s /usr/lib/lightspark/liblightsparkplugin.so /opt/firefox/plugins/libflashplayer.so";
 			}
 			if(aCommand === "googlechrome-symlink-opt"){
 				newcommand = "sudo ln -s /usr/lib/mozilla/plugins/libflashplayer.so /opt/firefox/plugins/libflashplayer.so";
 			}		
-			if(aCommand === "flashplugin-nonfree-symlink-opt"){
+			if(aCommand === "flashplugin-symlink-opt"){
 				newcommand = "sudo ln -s /usr/lib/mozilla/plugins/flashplugin-alternative.so /opt/firefox/plugins/libflashplayer.so";
 			}
 			if(aCommand === "beta-symlink-opt"){
@@ -344,82 +350,45 @@ var flashaidCommon = {
 			//*****************************************tweaks********************************************
 
 			//***********************npviewer tweak********************
-			if(aCommand === "npviewer-tweak-add1"){
+			if(aCommand === "npviewer-tweak-add"){
 				newcommand = "NPVIEWER=/usr/lib/nspluginwrapper/i386/linux/npviewer";
-			}
-			if(aCommand === "npviewer-tweak-add2"){
-				newcommand = "if test -f \"${NPVIEWER}\";then";
-			}
-			if(aCommand === "npviewer-tweak-add3"){
-				newcommand = "TWEAK=$(cat /usr/lib/nspluginwrapper/i386/linux/npviewer | grep 'GDK_NATIVE_WINDOWS=1')";
-			}
-			if(aCommand === "npviewer-tweak-add4"){
-				newcommand = "if test -z \"${TWEAK}\";then";
-			}
-			if(aCommand === "npviewer-tweak-add5"){
-				newcommand = "echo '#!/bin/sh' | sudo tee /usr/lib/nspluginwrapper/i386/linux/npviewer";
-			}
-			if(aCommand === "npviewer-tweak-add6"){
-				newcommand = "echo 'TARGET_OS=linux' | sudo tee -a /usr/lib/nspluginwrapper/i386/linux/npviewer";
-			}
-			if(aCommand === "npviewer-tweak-add7"){
-				newcommand = "echo 'TARGET_ARCH=i386' | sudo tee -a /usr/lib/nspluginwrapper/i386/linux/npviewer";
-			}
-			if(aCommand === "npviewer-tweak-add8"){
-				newcommand = "echo 'case \"$*\" in' | sudo tee -a /usr/lib/nspluginwrapper/i386/linux/npviewer";
-			}
-			if(aCommand === "npviewer-tweak-add9"){
-				newcommand = "echo '*libflashplayer*)' | sudo tee -a /usr/lib/nspluginwrapper/i386/linux/npviewer";
-			}
-			if(aCommand === "npviewer-tweak-add10"){
-				newcommand = "echo '	export GDK_NATIVE_WINDOWS=1' | sudo tee -a /usr/lib/nspluginwrapper/i386/linux/npviewer";
-			}
-			if(aCommand === "npviewer-tweak-add11"){
-				newcommand = "echo '	;;' | sudo tee -a /usr/lib/nspluginwrapper/i386/linux/npviewer";
-			}
-			if(aCommand === "npviewer-tweak-add12"){
-				newcommand = "echo 'esac' | sudo tee -a /usr/lib/nspluginwrapper/i386/linux/npviewer";
-			}
-			if(aCommand === "npviewer-tweak-add13"){
-				newcommand = "echo '. /usr/lib/nspluginwrapper/noarch/npviewer' | sudo tee -a /usr/lib/nspluginwrapper/i386/linux/npviewer";
-			}
-			if(aCommand === "npviewer-tweak-add14"){
-				newcommand = "fi";
-			}
-			if(aCommand === "npviewer-tweak-add15"){
-				newcommand = "fi";
+				newcommand = newcommand+newline+"if test -f \"${NPVIEWER}\";then";
+				newcommand = newcommand+newline+"TWEAK=$(cat /usr/lib/nspluginwrapper/i386/linux/npviewer | grep 'GDK_NATIVE_WINDOWS=1')";
+				newcommand = newcommand+newline+"if test -z \"${TWEAK}\";then";
+				newcommand = newcommand+newline+"echo '#!/bin/sh' | sudo tee /usr/lib/nspluginwrapper/i386/linux/npviewer";
+				newcommand = newcommand+newline+"echo 'TARGET_OS=linux' | sudo tee -a /usr/lib/nspluginwrapper/i386/linux/npviewer";
+				newcommand = newcommand+newline+"echo 'TARGET_ARCH=i386' | sudo tee -a /usr/lib/nspluginwrapper/i386/linux/npviewer";
+				newcommand = newcommand+newline+"echo 'case \"$*\" in' | sudo tee -a /usr/lib/nspluginwrapper/i386/linux/npviewer";
+				newcommand = newcommand+newline+"echo '*libflashplayer*)' | sudo tee -a /usr/lib/nspluginwrapper/i386/linux/npviewer";
+				newcommand = newcommand+newline+"echo '	export GDK_NATIVE_WINDOWS=1' | sudo tee -a /usr/lib/nspluginwrapper/i386/linux/npviewer";
+				newcommand = newcommand+newline+"echo '	;;' | sudo tee -a /usr/lib/nspluginwrapper/i386/linux/npviewer";
+				newcommand = newcommand+newline+"echo 'esac' | sudo tee -a /usr/lib/nspluginwrapper/i386/linux/npviewer";
+				newcommand = newcommand+newline+"echo '. /usr/lib/nspluginwrapper/noarch/npviewer' | sudo tee -a /usr/lib/nspluginwrapper/i386/linux/npviewer";
+				newcommand = newcommand+newline+"fi";
+				newcommand = newcommand+newline+"fi";			
 			}
 			if(aCommand === "npviewer-tweak-remove"){
-				newcommand = "cat /usr/lib/nspluginwrapper/i386/linux/npviewer | sed '/export GDK_NATIVE_WINDOWS=1/d' | sudo tee /usr/lib/nspluginwrapper/i386/linux/npviewer";
+				newcommand = "NPVIEWER=/usr/lib/nspluginwrapper/i386/linux/npviewer";
+				newcommand = newcommand+newline+"if test -f \"${NPVIEWER}\";then";
+				newcommand = newcommand+newline+"cat /usr/lib/nspluginwrapper/i386/linux/npviewer | sed '/export GDK_NATIVE_WINDOWS=1/d' | sudo tee /usr/lib/nspluginwrapper/i386/linux/npviewer";
+				newcommand = newcommand+newline+"fi";
 			}
 			//***********************vdpau tweak********************
-			if(aCommand === "vdpau-tweak-add1"){
+			if(aCommand === "vdpau-tweak-add"){
 				newcommand = "TWEAK=$(cat /etc/adobe/mms.cfg | grep 'EnableLinuxHWVideoDecode')";
-			}
-			if(aCommand === "vdpau-tweak-add2"){
-				newcommand = "if test -z \"${TWEAK}\";then";
-			}
-			if(aCommand === "vdpau-tweak-add3"){
-				newcommand = "echo 'EnableLinuxHWVideoDecode=1' | sudo tee -a /etc/adobe/mms.cfg";
-			}
-			if(aCommand === "vdpau-tweak-add4"){
-				newcommand = "fi";
+				newcommand = newcommand+newline+"if test -z \"${TWEAK}\";then";
+				newcommand = newcommand+newline+"echo 'EnableLinuxHWVideoDecode=1' | sudo tee -a /etc/adobe/mms.cfg";
+				newcommand = newcommand+newline+"fi";			
 			}
 			if(aCommand === "vdpau-tweak-remove"){
 				newcommand = "cat /etc/adobe/mms.cfg | sed '/EnableLinuxHWVideoDecode=1/d' | sudo tee /etc/adobe/mms.cfg";
 			}
 			//***********************gpu overrride tweak********************
-			if(aCommand === "gpuoverride-tweak-add1"){
+			if(aCommand === "gpuoverride-tweak-add"){
 				newcommand = "TWEAK=$(cat /etc/adobe/mms.cfg | grep 'OverrideGPUValidation')";
-			}
-			if(aCommand === "gpuoverride-tweak-add2"){
-				newcommand = "if test -z \"${TWEAK}\";then";
-			}
-			if(aCommand === "gpuoverride-tweak-add3"){
-				newcommand = "echo 'OverrideGPUValidation=true' | sudo tee -a /etc/adobe/mms.cfg";
-			}
-			if(aCommand === "gpuoverride-tweak-add4"){
-				newcommand = "fi";
+				newcommand = newcommand+newline+"if test -z \"${TWEAK}\";then";
+				newcommand = newcommand+newline+"echo 'OverrideGPUValidation=true' | sudo tee -a /etc/adobe/mms.cfg";
+				newcommand = newcommand+newline+"fi";
 			}
 			if(aCommand === "gpuoverride-tweak-remove"){
 				newcommand = "cat /etc/adobe/mms.cfg | sed '/OverrideGPUValidation=true/d' | sudo tee /etc/adobe/mms.cfg";

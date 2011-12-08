@@ -15,27 +15,27 @@ var flashaidQuick = {
 			var tweakcommands = strbundle.getString("tweakcommands");
 			var messagetitle = strbundle.getString("flashaidmessage");
 
-			//get os architecture
-			var osString = Components.classes["@mozilla.org/network/protocol;1?name=http"]
-			.getService(Components.interfaces.nsIHttpProtocolHandler).oscpu;
-
 			//access preferences interface
 			this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
 			.getService(Components.interfaces.nsIPrefService)
 			.getBranch("extensions.flashaid.");
 
 			//get preferences
+			var osstring = this.prefs.getCharPref("osstring");
+			var osdistro = this.prefs.getCharPref("osdistro");
 			var osversion = this.prefs.getCharPref("osversion");
 			var oscodename = this.prefs.getCharPref("oscodename");
+			var partner = this.prefs.getBoolPref("partner");
 
 			///declare variables
-			var lightspark, swfdec, gnash, adobeinstaller, adobenonfree, adobepartner, systemplugin, systempluginf, mozilla, 
+			var lightspark, lightsparkoneiric, swfdec, gnash, adobeinstaller, adobenonfree, adobepartner, systemplugin, systempluginf, mozilla, 
 			opt, firefox, wine, vdpauso, npviewer, mmscfg, etcadobe, istream, pluginreg, gpu;
 
 			//**************************check plugins********************************************
 
 			//check files
 			lightspark = flashaidCommon.checkItem("lightspark");
+			lightsparkoneiric = flashaidCommon.checkItem("lightspark-oneiric");
 			swfdec = flashaidCommon.checkItem("swfdec");
 			gnash = flashaidCommon.checkItem("gnash");
 			adobenonfree = flashaidCommon.checkItem("adobenonfree");
@@ -52,12 +52,12 @@ var flashaidQuick = {
 			etcadobe = flashaidCommon.checkItem("etcadobe");
 			mmscfg = flashaidCommon.checkItem("mmscfg");
 
-			if(systemplugin === true && lightspark !== true && gnash !== true && swfdec !== true && adobepartner !== true && adobeinstaller !== true && adobenonfree !== true){
+			if(systemplugin === true && lightspark !== true && lightsparkoneiric !== true && gnash !== true && swfdec !== true && adobepartner !== true && adobeinstaller !== true && adobenonfree !== true){
 				systemplugin = true;
 			}else{
 				systemplugin = false;
 			}
-			if(systempluginf === true && lightspark !== true && gnash !== true && swfdec !== true && adobepartner !== true && adobeinstaller !== true && adobenonfree !== true){
+			if(systempluginf === true && lightspark !== true && lightsparkoneiric !== true && gnash !== true && swfdec !== true && adobepartner !== true && adobeinstaller !== true && adobenonfree !== true){
 				systempluginf = true;
 			}else{
 				systempluginf = false;
@@ -161,9 +161,9 @@ var flashaidQuick = {
 				command = command+newline+"echo '"+installcommands+"'";
 
 				if(aAction === "beta"){
-					if(osString.match(/x86_64/)){
+					if(osstring.match(/x86_64/)){
 
-						if(osString.match(/i686/)){
+						if(osstring.match(/i686/)){
 							command = command+newline+flashaidCommon.scriptManager(aAction,"beta64-install-x86_64-i686");
 							command = command+newline+flashaidCommon.scriptManager(aAction,"beta32-install-x86_64-i686");
 						}else{
@@ -177,9 +177,34 @@ var flashaidQuick = {
 					}
 				}			
 				if(aAction === "stable"){
-					command = command+newline+flashaidCommon.scriptManager(aAction,"flashplugin-nonfree-install");
-					if(opt === true){
-						command = command+newline+flashaidCommon.scriptManager(aAction,"flashplugin-nonfree-symlink-opt");
+					
+					if(osversion === "12.04" || osversion === "11.10"){
+						if(osstring.match(/x86_64/)){
+							if(partner === true){
+								command = command+newline+flashaidCommon.scriptManager(aAction,"flashplugin-adobe-install");
+							}else{
+								command = command+newline+flashaidCommon.scriptManager(aAction,"flashplugin-installer-install");
+							}
+						}else{
+							command = command+newline+flashaidCommon.scriptManager(aAction,"flashplugin-installer-install");
+						}
+						if(opt === true){
+							command = command+newline+flashaidCommon.scriptManager(aAction,"flashplugin-symlink-opt");
+						}
+					}else if(osversion === "11.04" || osversion === "10.10" || osversion === "10.04"){
+						command = command+newline+flashaidCommon.scriptManager(aAction,"flashplugin-installer-install");
+						if(opt === true){
+							command = command+newline+flashaidCommon.scriptManager(aAction,"flashplugin-symlink-opt");
+						}
+					}else{
+						if(osdistro === "Ubuntu"){
+							command = command+newline+flashaidCommon.scriptManager(aAction,"flashplugin-nonfree-install");
+						}else{
+							command = command+newline+flashaidCommon.scriptManager(aAction,"flashplugin-installer-install");
+						}
+						if(opt === true){
+							command = command+newline+flashaidCommon.scriptManager(aAction,"flashplugin-symlink-opt");
+						}
 					}
 				}
 				if(aAction === "chrome"){
@@ -198,36 +223,16 @@ var flashaidQuick = {
 				if(mmscfg === false){
 					command = command+newline+"sudo touch /etc/adobe/mms.cfg";
 				}
-				command = command+newline+flashaidCommon.scriptManager(aAction,"gpuoverride-tweak-add1");
-				command = command+newline+flashaidCommon.scriptManager(aAction,"gpuoverride-tweak-add2");
-				command = command+newline+flashaidCommon.scriptManager(aAction,"gpuoverride-tweak-add3");
-				command = command+newline+flashaidCommon.scriptManager(aAction,"gpuoverride-tweak-add4");
+				command = command+newline+flashaidCommon.scriptManager(aAction,"gpuoverride-tweak-add");
 
 				if(vdpauso === true){
-					command = command+newline+flashaidCommon.scriptManager(aAction,"vdpau-tweak-add1");
-					command = command+newline+flashaidCommon.scriptManager(aAction,"vdpau-tweak-add2");
-					command = command+newline+flashaidCommon.scriptManager(aAction,"vdpau-tweak-add3");
-					command = command+newline+flashaidCommon.scriptManager(aAction,"vdpau-tweak-add4");
+					command = command+newline+flashaidCommon.scriptManager(aAction,"vdpau-tweak-add");
 				}else{
 					command = command+newline+flashaidCommon.scriptManager(aAction,"vdpau-tweak-remove");
 				}
 
 				if(npviewer === true){
-					command = command+newline+flashaidCommon.scriptManager(aAction,"npviewer-tweak-add1");
-					command = command+newline+flashaidCommon.scriptManager(aAction,"npviewer-tweak-add2");
-					command = command+newline+flashaidCommon.scriptManager(aAction,"npviewer-tweak-add3");
-					command = command+newline+flashaidCommon.scriptManager(aAction,"npviewer-tweak-add4");
-					command = command+newline+flashaidCommon.scriptManager(aAction,"npviewer-tweak-add5");
-					command = command+newline+flashaidCommon.scriptManager(aAction,"npviewer-tweak-add6");
-					command = command+newline+flashaidCommon.scriptManager(aAction,"npviewer-tweak-add7");
-					command = command+newline+flashaidCommon.scriptManager(aAction,"npviewer-tweak-add8");
-					command = command+newline+flashaidCommon.scriptManager(aAction,"npviewer-tweak-add9");
-					command = command+newline+flashaidCommon.scriptManager(aAction,"npviewer-tweak-add10");
-					command = command+newline+flashaidCommon.scriptManager(aAction,"npviewer-tweak-add11");
-					command = command+newline+flashaidCommon.scriptManager(aAction,"npviewer-tweak-add12");
-					command = command+newline+flashaidCommon.scriptManager(aAction,"npviewer-tweak-add13");
-					command = command+newline+flashaidCommon.scriptManager(aAction,"npviewer-tweak-add14");
-					command = command+newline+flashaidCommon.scriptManager(aAction,"npviewer-tweak-add15");
+					command = command+newline+flashaidCommon.scriptManager(aAction,"npviewer-tweak-add");
 				}
 
 				//write command lines to temporary script

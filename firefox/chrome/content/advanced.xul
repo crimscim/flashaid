@@ -47,7 +47,6 @@
 												selected="true" />
 											<menuitem id="googlechrome" tooltiptext="&TooltipOptionInstallChrome;" label="&OptionInstallChrome;" value="googlechrome" />
 											<menuitem id="repognash" tooltiptext="&TooltipOptionInstallGnash;" label="&OptionInstallRepoGnash;" value="repognash" />
-											<menuitem id="reposwfdec" tooltiptext="&TooltipOptionInstallSwfdec;" label="&OptionInstallRepoSwfdec;" value="reposwfdec" />
 											<menuitem id="repolightspark" tooltiptext="&TooltipOptionInstallLightspark;" label="&OptionInstallRepoLightspark;"
 												value="repolightspark" />
 											<menuitem id="customurl" tooltiptext="&TooltipOptionInstallCustom;" label="&OptionInstallCustomURL;" value="customurl" />

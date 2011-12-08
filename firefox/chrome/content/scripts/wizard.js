@@ -4,31 +4,37 @@ var flashaidWizard = {
 
 			"use strict";
 
-			//get os architecture
-			var osString = Components.classes["@mozilla.org/network/protocol;1?name=http"]
-			.getService(Components.interfaces.nsIHttpProtocolHandler).oscpu;
-
 			//access preferences interface
 			this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
 			.getService(Components.interfaces.nsIPrefService)
 			.getBranch("extensions.flashaid.");
 
 			//get preferences
+			var osstring = this.prefs.getCharPref("osstring");
 			var osversion = this.prefs.getCharPref("osversion");
 			var oscodename = this.prefs.getCharPref("oscodename");
+			var partner = this.prefs.getBoolPref("partner");
 
 			//switch instalaltion options based on architecture
-			if(osString.match(/x86_64/)){
+			if(osstring.match(/x86_64/)){
 
 				document.getElementById("installtip32").hidden = true;
 				document.getElementById("installtip64").hidden = false;
-				document.getElementById("repo32").hidden = true;
-				document.getElementById("repo64").hidden = false;
+				document.getElementById("repo32").hidden = false;
+				if(osversion === "12.04" || osversion === "11.10"){
+					if(partner === true){
+						document.getElementById("repo64").hidden = false;
+					}else{
+						document.getElementById("repo64").hidden = true;
+					}
+				}else{
+					document.getElementById("repo64").hidden = true;
+				}
 				document.getElementById("beta").hidden = false;
 				document.getElementById("googlechrome").hidden = true;
 				try{
 					if(osversion === "8.04" || oscodename === "hardy"){
-						document.getElementById("flversion").value = "repo64";
+						document.getElementById("flversion").value = "repo32";
 					}else{
 						document.getElementById("flversion").value = "beta";
 					}
@@ -88,13 +94,14 @@ var flashaidWizard = {
 			document.getElementById("npviewer").checked = false;
 
 			///declare variables
-			var lightspark, swfdec, gnash, adobeinstaller, adobenonfree, adobepartner, systemplugin, systempluginf, mozilla, 
+			var lightspark, lightsparkoneiric, swfdec, gnash, adobeinstaller, adobenonfree, adobepartner, systemplugin, systempluginf, mozilla, 
 			opt, firefox, wine, vdpauso, npviewer, istream, pluginreg, gpu;
 
 			//**************************check plugins********************************************
 
 			//check files
 			lightspark = flashaidCommon.checkItem("lightspark");
+			lightsparkoneiric = flashaidCommon.checkItem("lightspark-oneiric");
 			swfdec = flashaidCommon.checkItem("swfdec");
 			gnash = flashaidCommon.checkItem("gnash");
 			adobenonfree = flashaidCommon.checkItem("adobenonfree");
@@ -109,7 +116,7 @@ var flashaidWizard = {
 			vdpauso = flashaidCommon.checkItem("vdpauso");
 			npviewer = flashaidCommon.checkItem("npviewer");
 
-			if(lightspark === true){
+			if(lightspark === true || lightsparkoneiric === true){
 				document.getElementById("lightspark").checked = true;
 				document.getElementById("lightspark").hidden = false;
 			}
@@ -133,13 +140,13 @@ var flashaidWizard = {
 				document.getElementById("adobepartner").checked = true;
 				document.getElementById("adobepartner").hidden = false;
 			}
-			if(systemplugin === true && lightspark !== true && gnash !== true && swfdec !== true && adobepartner !== true && adobeinstaller !== true && adobenonfree !== true){
+			if(systemplugin === true && lightspark !== true && lightsparkoneiric !== true && gnash !== true && swfdec !== true && adobepartner !== true && adobeinstaller !== true && adobenonfree !== true){
 				document.getElementById("systemplugin").checked = true;
 				document.getElementById("systemplugin").hidden = false;
 			}else{
 				systemplugin = false;
 			}
-			if(systempluginf === true && lightspark !== true && gnash !== true && swfdec !== true && adobepartner !== true && adobeinstaller !== true && adobenonfree !== true){
+			if(systempluginf === true && lightspark !== true && lightsparkoneiric !== true && gnash !== true && swfdec !== true && adobepartner !== true && adobeinstaller !== true && adobenonfree !== true){
 				document.getElementById("systempluginf").checked = true;
 				document.getElementById("systempluginf").hidden = false;
 			}else{
@@ -168,10 +175,10 @@ var flashaidWizard = {
 
 			if(vdpauso === true){
 				document.getElementById("enablelinuxhwvideodecode").hidden = false;
-				document.getElementById("enablelinuxhwvideodecode").checked = true;
+				document.getElementById("enablelinuxhwvideodecode").checked = false;
 			}
-
-			if(npviewer === true){
+			var flversion = document.getElementById("flversion").value;
+			if(osstring.match(/x86_64/) && flversion === "repo32"){
 				document.getElementById("npviewer").hidden = false;
 				document.getElementById("npviewer").checked = true;
 			}
@@ -187,15 +194,21 @@ var flashaidWizard = {
 			.getBranch("extensions.flashaid.");
 
 			//get os architecture
-			var osString = Components.classes["@mozilla.org/network/protocol;1?name=http"]
-			.getService(Components.interfaces.nsIHttpProtocolHandler).oscpu;
+			var osstring = this.prefs.getCharPref("osstring");
 			
 			//fetch localization from strbundle
 			var strbundle = document.getElementById("flashaidstrings");
 			var strrepositories = strbundle.getString("repositories");
-			var strwrapper = strbundle.getString("wrapper");
 			
 			var version = document.getElementById("flversion").value;
+			
+			if(osstring.match(/x86_64/) && flversion === "repo32"){
+				document.getElementById("npviewer").hidden = false;
+				document.getElementById("npviewer").checked = true;
+			}else{
+				document.getElementById("npviewer").hidden = true;
+				document.getElementById("npviewer").checked = false;
+			}
 
 			if(version == "repo32"){
 				document.getElementById("flash-aid-wizard-info").hidden = false;
@@ -219,7 +232,7 @@ var flashaidWizard = {
 				document.getElementById("flash-aid-wizard-info-release").hidden = true;
 				document.getElementById("flash-aid-wizard-info-source").setAttribute('value',strrepositories);
 				document.getElementById("flash-aid-wizard-info-source").setAttribute('tooltiptext',strrepositories);
-				document.getElementById("flash-aid-wizard-info-architecture").setAttribute('value',strwrapper);
+				document.getElementById("flash-aid-wizard-info-architecture").setAttribute('value',"64bit");
 			}	
 			if(version == "beta"){
 				document.getElementById("flash-aid-wizard-info").hidden = false;
@@ -243,8 +256,8 @@ var flashaidWizard = {
 					var hash64 = jsonObjectLocal.flashbeta64[0].hash;
 					var hash32 = jsonObjectLocal.flashbeta32[0].hash;
 					
-					if(osString.match(/x86_64/)){
-						if(osString.match(/i686/)){
+					if(osstring.match(/x86_64/)){
+						if(osstring.match(/i686/)){
 							document.getElementById("flash-aid-wizard-info-source").setAttribute('value',url32+" | "+url64);
 							document.getElementById("flash-aid-wizard-info-source").setAttribute('tooltiptext',url32+" | "+url64);
 							document.getElementById("flash-aid-wizard-info-architecture").setAttribute('value',"32bit | 64bit");
@@ -299,14 +312,16 @@ var flashaidWizard = {
 			var exported = strbundle.getString("exported");
 			var messagetitle = strbundle.getString("flashaidmessage");
 
-			//get os architecture
-			var osString = Components.classes["@mozilla.org/network/protocol;1?name=http"]
-			.getService(Components.interfaces.nsIHttpProtocolHandler).oscpu; 
-
 			//access preferences interface
 			this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
 			.getService(Components.interfaces.nsIPrefService)
 			.getBranch("extensions.flashaid.");
+			
+			//get preferences
+			var osstring = this.prefs.getCharPref("osstring");
+			var osdistro = this.prefs.getCharPref("osdistro");
+			var osversion = this.prefs.getCharPref("osversion");
+			var oscodename = this.prefs.getCharPref("oscodename");
 
 			//get options from selections
 			var lightspark = document.getElementById("lightspark").checked;
@@ -432,15 +447,38 @@ var flashaidWizard = {
 				command = command+newline+"echo '"+installcommands+"'";
 
 				if(flversion === "repo32" || flversion === "repo64"){
-					command = command+newline+flashaidCommon.scriptManager(aAction,"flashplugin-nonfree-install");
-					if(opt === true){
-						command = command+newline+flashaidCommon.scriptManager(aAction,"flashplugin-nonfree-symlink-opt");
+					
+					if(osversion === "12.04" || osversion === "11.10"){
+						
+						if (flversion === "repo32" ){
+							command = command+newline+flashaidCommon.scriptManager(aAction,"flashplugin-installer-install");
+						}
+						if (flversion === "repo64" ){
+							command = command+newline+flashaidCommon.scriptManager(aAction,"flashplugin-adobe-install");
+						}
+						if(opt === true){
+							command = command+newline+flashaidCommon.scriptManager(aAction,"flashplugin-symlink-opt");
+						}
+					}else if(osversion === "11.04" || osversion === "10.10" || osversion === "10.04"){
+						command = command+newline+flashaidCommon.scriptManager(aAction,"flashplugin-installer-install");
+						if(opt === true){
+							command = command+newline+flashaidCommon.scriptManager(aAction,"flashplugin-symlink-opt");
+						}
+					}else{
+						if(osdistro === "Ubuntu"){
+							command = command+newline+flashaidCommon.scriptManager(aAction,"flashplugin-nonfree-install");
+						}else{
+							command = command+newline+flashaidCommon.scriptManager(aAction,"flashplugin-installer-install");
+						}
+						if(opt === true){
+							command = command+newline+flashaidCommon.scriptManager(aAction,"flashplugin-symlink-opt");
+						}
 					}
 				}
 				if(flversion === "beta"){
-					if(osString.match(/x86_64/)){
+					if(osstring.match(/x86_64/)){
 
-						if(osString.match(/i686/)){
+						if(osstring.match(/i686/)){
 							command = command+newline+flashaidCommon.scriptManager(aAction,"beta64-install-x86_64-i686");
 							command = command+newline+flashaidCommon.scriptManager(aAction,"beta32-install-x86_64-i686");
 						}else{
@@ -472,45 +510,21 @@ var flashaidWizard = {
 					command = command+newline+"sudo touch /etc/adobe/mms.cfg";
 				}
 				if(overridegpuvalidation === true){
-					command = command+newline+flashaidCommon.scriptManager(aAction,"gpuoverride-tweak-add1");
-					command = command+newline+flashaidCommon.scriptManager(aAction,"gpuoverride-tweak-add2");
-					command = command+newline+flashaidCommon.scriptManager(aAction,"gpuoverride-tweak-add3");
-					command = command+newline+flashaidCommon.scriptManager(aAction,"gpuoverride-tweak-add4");
+					command = command+newline+flashaidCommon.scriptManager(aAction,"gpuoverride-tweak-add");
 				}else{
 					command = command+newline+flashaidCommon.scriptManager(aAction,"gpuoverride-tweak-remove");
 				}
 
 				if(enablelinuxhwvideodecode === true){
-					command = command+newline+flashaidCommon.scriptManager(aAction,"vdpau-tweak-add1");
-					command = command+newline+flashaidCommon.scriptManager(aAction,"vdpau-tweak-add2");
-					command = command+newline+flashaidCommon.scriptManager(aAction,"vdpau-tweak-add3");
-					command = command+newline+flashaidCommon.scriptManager(aAction,"vdpau-tweak-add4");
+					command = command+newline+flashaidCommon.scriptManager(aAction,"vdpau-tweak-add");
 				}else{
 					command = command+newline+flashaidCommon.scriptManager(aAction,"vdpau-tweak-remove");
 				}
 
 				if(npviewer === true){
-					command = command+newline+flashaidCommon.scriptManager(aAction,"npviewer-tweak-add1");
-					command = command+newline+flashaidCommon.scriptManager(aAction,"npviewer-tweak-add2");
-					command = command+newline+flashaidCommon.scriptManager(aAction,"npviewer-tweak-add3");
-					command = command+newline+flashaidCommon.scriptManager(aAction,"npviewer-tweak-add4");
-					command = command+newline+flashaidCommon.scriptManager(aAction,"npviewer-tweak-add5");
-					command = command+newline+flashaidCommon.scriptManager(aAction,"npviewer-tweak-add6");
-					command = command+newline+flashaidCommon.scriptManager(aAction,"npviewer-tweak-add7");
-					command = command+newline+flashaidCommon.scriptManager(aAction,"npviewer-tweak-add8");
-					command = command+newline+flashaidCommon.scriptManager(aAction,"npviewer-tweak-add9");
-					command = command+newline+flashaidCommon.scriptManager(aAction,"npviewer-tweak-add10");
-					command = command+newline+flashaidCommon.scriptManager(aAction,"npviewer-tweak-add11");
-					command = command+newline+flashaidCommon.scriptManager(aAction,"npviewer-tweak-add12");
-					command = command+newline+flashaidCommon.scriptManager(aAction,"npviewer-tweak-add13");
-					command = command+newline+flashaidCommon.scriptManager(aAction,"npviewer-tweak-add14");
-					command = command+newline+flashaidCommon.scriptManager(aAction,"npviewer-tweak-add15");
+					command = command+newline+flashaidCommon.scriptManager(aAction,"npviewer-tweak-add");
 				}else{
-					//initiate file
-					var npviewer = flashaidCommon.checkItem("npviewer");
-					if(npviewer === true){
-						command = command+newline+flashaidCommon.scriptManager(aAction,"npviewer-tweak-remove");
-					}
+					command = command+newline+flashaidCommon.scriptManager(aAction,"npviewer-tweak-remove");
 				}
 
 				//write command lines to temporary script

@@ -28,6 +28,12 @@ var flashaidOverlay = {
 			document.getElementById("flashaid-quick-popup-chrome").hidden = true;
 			document.getElementById("flashaid-wizard").hidden = true;
 			document.getElementById("flashaid-helper-separator").hidden = true;
+			
+			document.getElementById("flashaid-advanced-tools").hidden = true;
+			document.getElementById("flashaid-quick-tools").hidden = true;
+			document.getElementById("flashaid-quick-popup-chrome-tools").hidden = true;
+			document.getElementById("flashaid-wizard-tools").hidden = true;
+			document.getElementById("flashaid-helper-separator-tools").hidden = true;
 
 			try{
 				//check chrome
@@ -49,6 +55,8 @@ var flashaidOverlay = {
 					//toggle menus
 					document.getElementById("flashaid-advanced").hidden = false;
 					document.getElementById("flashaid-helper-separator").hidden = false;
+					document.getElementById("flashaid-advanced-tools").hidden = false;
+					document.getElementById("flashaid-helper-separator-tools").hidden = false;
 
 				}else{
 
@@ -83,11 +91,16 @@ var flashaidOverlay = {
 					//toggle menus
 					document.getElementById("flashaid-advanced").hidden = false;
 					document.getElementById("flashaid-quick").hidden = false;
-					if(googlechrome === true){
-						document.getElementById("flashaid-quick-popup-chrome").hidden = false;
-					}
 					document.getElementById("flashaid-wizard").hidden = false;
 					document.getElementById("flashaid-helper-separator").hidden = false;
+					document.getElementById("flashaid-advanced-tools").hidden = false;
+					document.getElementById("flashaid-quick-tools").hidden = false;
+					document.getElementById("flashaid-wizard-tools").hidden = false;
+					document.getElementById("flashaid-helper-separator-tools").hidden = false;
+					if(googlechrome === true){
+						document.getElementById("flashaid-quick-popup-chrome").hidden = false;
+						document.getElementById("flashaid-quick-popup-chrome-tools").hidden = false;
+					}
 				}
 			}			
 		},

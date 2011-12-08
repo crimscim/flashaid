@@ -21,6 +21,7 @@
 <!ENTITY CaptionTechnicalInfo "Plugin Info">
 <!ENTITY CaptionTweakingOptions "Tweaking Options">
 
+<!ENTITY MenuItemCheckUpdate "Check Update">
 <!ENTITY MenuItemDocumentation "Documentation">
 <!ENTITY MenuItemModeAdvanced "Advanced Mode">
 <!ENTITY MenuItemModeQuick "Quick Mode">
@@ -38,11 +39,10 @@
 <!ENTITY TitleWizard "Flash-Aid Wizard">
 
 <!ENTITY OptionInstallBeta "Adobe Beta, from Adobe Labs">
-<!ENTITY OptionInstallRepo32 "Adobe Stable, from repositories">
-<!ENTITY OptionInstallRepo64 "Adobe Stable, from repositories (32bit with compatibility wrapper)">
+<!ENTITY OptionInstallRepo32 "Adobe Stable, from repositories (32bit)">
+<!ENTITY OptionInstallRepo64 "Adobe Stable, from repositories (64bit)">
 <!ENTITY OptionInstallChrome "Google, from Chrome">
 <!ENTITY OptionInstallRepoGnash "Gnash, from repositories">
-<!ENTITY OptionInstallRepoSwfdec "Swfdec, from repositories">
 <!ENTITY OptionInstallRepoLightspark "Lightspark, from repositories">
 <!ENTITY OptionInstallCustomURL "Custom (http url or local path)">
 <!ENTITY OptionInstallDoNotInstall "Do not install">
@@ -89,6 +89,7 @@
 <!ENTITY TooltipButtonExecute "Execute the script to remove conflicting plugins, install flash and apply tweaks">
 <!ENTITY TooltipButtonExport "Export the script to your desktop, so you can modify it or run it manually">
 
+<!ENTITY TooltipMenuItemCheckUpdate "Manually check the update server to verify if there is a new flash version available">
 <!ENTITY TooltipMenuItemDocumentation "Visit Flash-Aid documentation web page">
 <!ENTITY TooltipMenuItemModeAdvanced "Install flash using custom sources and advanced options">
 <!ENTITY TooltipMenuItemModeQuickBeta "Remove all flash plugins, install beta flash version from Adobe Labs and apply performance tweaks automatically">
