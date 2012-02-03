@@ -403,10 +403,10 @@ var flashaidCommon = {
 			var url;
 
 			if (aSite == "docs") {
-				url = "http://www.webgapps.org/add-ons/flash-aid/documentation";
+				url = "https://github.com/webgapps/flashaid/wiki";
 			}
 			if (aSite == "support") {
-				url = "http://support.webgapps.org/add-ons/flash-aid";
+				url = "https://github.com/webgapps/flashaid/issues";
 			}
 			if (aSite.match("file:") || aSite.match("http:")) {
 				url = aSite;

@@ -202,7 +202,7 @@ var flashaidWizard = {
 			
 			var version = document.getElementById("flversion").value;
 			
-			if(osstring.match(/x86_64/) && flversion === "repo32"){
+			if(osstring.match(/x86_64/) && version === "repo32"){
 				document.getElementById("npviewer").hidden = false;
 				document.getElementById("npviewer").checked = true;
 			}else{

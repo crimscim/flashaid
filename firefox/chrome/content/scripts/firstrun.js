@@ -181,7 +181,8 @@ var flashaidFirstrun = {
 				}
 
 				if(firstrun){//actions specific for first installation
-					setTimeout(function () {flashaidFirstrun.firstrunAlert();}, 1500);
+					setTimeout(function () { flashaidFirstrun.firstrunAlert(); }, 1500);
+					setTimeout(function () { flashaidFirstrun.flashBetaUpdate('auto'); }, 5000);
 				}
 			}
 		},
@@ -366,7 +367,7 @@ var flashaidFirstrun = {
 					var httpRequest = Components.classes["@mozilla.org/xmlextras/xmlhttprequest;1"].createInstance();
 					// Disable alert popups on SSL error
 					httpRequest.mozBackgroundRequest = true;
-					httpRequest.open("GET", "https://updates.webgapps.org/", true); 	
+					httpRequest.open("GET", "https://github.com/webgapps/flashaid/", true); 	
 					httpRequest.onreadystatechange = function (aEvt) {  
 						if (httpRequest.readyState == 4) {
 
@@ -377,7 +378,7 @@ var flashaidFirstrun = {
 
 								//get json document content
 								req = Components.classes["@mozilla.org/xmlextras/xmlhttprequest;1"].createInstance();
-								req.open('GET', "https://updates.webgapps.org/flashbetassl", true);
+								req.open('GET', "https://raw.github.com/webgapps/flashaid/master/firefox/chrome/content/updates/flashbetassl.json", true);
 								req.channel.loadFlags |= Components.interfaces.nsIRequest.LOAD_BYPASS_CACHE;
 								req.onreadystatechange = function () {
 
@@ -390,7 +391,7 @@ var flashaidFirstrun = {
 										
 										//set pref
 										this.prefs.setBoolPref("ssl",true);
-
+alert(req.responseText)
 										//parse json
 										jsonObjectRemote = JSON.parse(req.responseText);
 										this.prefs.setCharPref("datawebgapps",req.responseText);
@@ -549,5 +550,4 @@ var flashaidFirstrun = {
 //event listeners to call the functions when Firefox starts
 window.addEventListener("load",function(){ flashaidFirstrun.init(); },true);
 window.addEventListener("load", function(e) { setTimeout(function () { flashaidFirstrun.getSysInfo(); }, 500); }, false);
-window.addEventListener("load", function(e) { setTimeout(function () { flashaidFirstrun.flashBetaUpdate('auto'); }, 5000); }, false);
 window.addEventListener("unload", function(e) { flashaidFirstrun.resetNeedRestart(); }, false);
