@@ -192,8 +192,8 @@ var flashaidCommon = {
 
 			if(aCommand.match("beta.*")){
 				//parse json data
-				var datawebgapps = this.prefs.getCharPref("datawebgapps");
-				var jsonObjectLocal = JSON.parse(datawebgapps);
+				var remotedata = this.prefs.getCharPref("remotedata");
+				var jsonObjectLocal = JSON.parse(remotedata);
 				var url64 = jsonObjectLocal.flashbeta64[0].url;
 				var url32 = jsonObjectLocal.flashbeta32[0].url;
 				var hash64 = jsonObjectLocal.flashbeta64[0].hash;

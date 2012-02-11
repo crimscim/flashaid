@@ -245,8 +245,8 @@ var flashaidWizard = {
 				
 				try{
 					//parse json data
-					var datawebgapps = this.prefs.getCharPref("datawebgapps");
-					var jsonObjectLocal = JSON.parse(datawebgapps);
+					var remotedata = this.prefs.getCharPref("remotedata");
+					var jsonObjectLocal = JSON.parse(remotedata);
 					var timestamp64 = jsonObjectLocal.flashbeta64[0].timestamp;
 					var timestamp32 = jsonObjectLocal.flashbeta32[0].timestamp;
 					var version64 = jsonObjectLocal.flashbeta64[0].version;

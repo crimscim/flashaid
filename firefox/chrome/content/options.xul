@@ -14,15 +14,12 @@
 
 	<prefpane id="flashaid-pref-pane" flex="1">
 		<preferences>
-			<preference id="pref_updatealert" name="extensions.flashaid.updatealert" type="bool"/>
 			<preference id="pref_terminal" name="extensions.flashaid.terminal" type="string"/>
 		</preferences>
 		
 		<hbox flex="1">
 			<spacer width="10" flex="0" />
 			<vbox flex="1">
-				<spacer height="10" flex="0" />
-				<checkbox label="&LabelUpdateAlerts;" preference="pref_updatealert" id="updatealert" size="30"/>
 				<spacer height="10" flex="0" />
 				<caption label="&CaptionTerminal;" />
 				<hbox>

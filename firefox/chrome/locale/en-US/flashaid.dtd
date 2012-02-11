@@ -5,7 +5,6 @@
 <!ENTITY TabOptions "Options">
 <!ENTITY TabScript "Script">
 
-<!ENTITY LabelUpdateAlerts "Receive alerts about flash updates">
 <!ENTITY LabelInstallVersion "Version and Source:">
 <!ENTITY LabelSource "Source">
 <!ENTITY LabelArchitecture "Architecture">

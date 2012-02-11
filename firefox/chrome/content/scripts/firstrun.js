@@ -328,8 +328,9 @@ var flashaidFirstrun = {
 			.getBranch("extensions.flashaid.");
 
 			var osstring = this.prefs.getCharPref("osstring");
-			var updatealert = this.prefs.getBoolPref("updatealert");
 			var dataupdate = this.prefs.getIntPref("dataupdate");
+			var remotetest = this.prefs.getCharPref("remotetest");
+			var remoteurl = this.prefs.getCharPref("remoteurl");
 
 			//get date and time
 			var currenttimestamp = flashaidCommon.dateManager('datestamp');
@@ -344,14 +345,14 @@ var flashaidFirstrun = {
 				var strbundle = document.getElementById("flashaidstrings");
 				var messagetitle = strbundle.getString("flashaidalert");
 
-				var datawebgapps, xmlsource, jsonObjectLocal, jsonObjectRemote, JSONtimestamp, req, localtimestamp, remotetimestamp, message, architecture;
+				var remotedata, xmlsource, jsonObjectLocal, jsonObjectRemote, JSONtimestamp, req, localtimestamp, remotetimestamp, message, architecture;
 
 				try{
 					//get current timestamp
-					datawebgapps = this.prefs.getCharPref("datawebgapps");
+					remotedata = this.prefs.getCharPref("remotedata");
 
 					//get current timestamp from  prefs
-					jsonObjectLocal = JSON.parse(datawebgapps);
+					jsonObjectLocal = JSON.parse(remotedata);
 
 					if(osstring.match(/x86_64/)){
 						localtimestamp = jsonObjectLocal.flashbeta64[0].timestamp;
@@ -367,7 +368,7 @@ var flashaidFirstrun = {
 					var httpRequest = Components.classes["@mozilla.org/xmlextras/xmlhttprequest;1"].createInstance();
 					// Disable alert popups on SSL error
 					httpRequest.mozBackgroundRequest = true;
-					httpRequest.open("GET", "https://github.com/webgapps/flashaid/", true); 	
+					httpRequest.open("GET", remotetest, true); 	
 					httpRequest.onreadystatechange = function (aEvt) {  
 						if (httpRequest.readyState == 4) {
 
@@ -378,7 +379,7 @@ var flashaidFirstrun = {
 
 								//get json document content
 								req = Components.classes["@mozilla.org/xmlextras/xmlhttprequest;1"].createInstance();
-								req.open('GET', "https://raw.github.com/webgapps/flashaid/master/firefox/chrome/content/updates/flashbetassl.json", true);
+								req.open('GET', remoteurl, true);
 								req.channel.loadFlags |= Components.interfaces.nsIRequest.LOAD_BYPASS_CACHE;
 								req.onreadystatechange = function () {
 
@@ -391,10 +392,10 @@ var flashaidFirstrun = {
 										
 										//set pref
 										this.prefs.setBoolPref("ssl",true);
-alert(req.responseText)
+
 										//parse json
 										jsonObjectRemote = JSON.parse(req.responseText);
-										this.prefs.setCharPref("datawebgapps",req.responseText);
+										this.prefs.setCharPref("remotedata",req.responseText);
 										
 										if(osstring.match(/x86_64/)){
 											architecture = "Flash 64bit Beta";
@@ -406,14 +407,12 @@ alert(req.responseText)
 
 										if(remotetimestamp > localtimestamp){
 											
-											if(updatealert === true || aMode === "manual"){
-												//fetch message
-												message = strbundle.getFormattedString("flashbetaupdate", [ architecture ]);
-												//alert user
-												var alertsService = Components.classes["@mozilla.org/alerts-service;1"]
-												.getService(Components.interfaces.nsIAlertsService);
-												alertsService.showAlertNotification("chrome://flashaid/skin/icon32.png", messagetitle, message,	false, "", null);
-											}
+											//fetch message
+											message = strbundle.getFormattedString("flashbetaupdate", [ architecture ]);
+											//alert user
+											var alertsService = Components.classes["@mozilla.org/alerts-service;1"]
+											.getService(Components.interfaces.nsIAlertsService);
+											alertsService.showAlertNotification("chrome://flashaid/skin/icon32.png", messagetitle, message,	false, "", null);
 
 										}else{
 											if(aMode === "manual"){

@@ -12,8 +12,8 @@ var flashaidLauncher = {
 			//get preferences
 			var needrestart = this.prefs.getBoolPref("needrestart");
 			var ssl = this.prefs.getBoolPref("ssl");
-			var datawebgapps = this.prefs.getCharPref("datawebgapps");
-			var jsonObjectLocal = JSON.parse(datawebgapps);
+			var remotedata = this.prefs.getCharPref("remotedata");
+			var jsonObjectLocal = JSON.parse(remotedata);
 			var hash = jsonObjectLocal.flashbeta32[0].hash;
 			
 			//fetch date and time
@@ -34,26 +34,6 @@ var flashaidLauncher = {
 
 			}else{
 				
-				if(ssl === false){
-					//alert user
-					message = strbundle.getString("sslerror");
-					prompts = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
-					.getService(Components.interfaces.nsIPromptService);
-					result = prompts.confirm(window, messagetitle, message);
-					
-					if(result == true){//execute if user confirm
-						data = {};
-						data.flashbeta32 = [{"timestamp":"20120119","version":"*","url":"http://download.macromedia.com/pub/labs/flashplatformruntimes/flashplayer11-2/flashplayer11-2_p4_install_lin_32_011912.tar.gz","hash":"*"}];
-						data.flashbeta64 = [{"timestamp":"20120119","version":"*","url":"http://download.macromedia.com/pub/labs/flashplatformruntimes/flashplayer11-2/flashplayer11-2_p4_install_lin_64_011912.tar.gz","hash":"*"}];
-						JSONdata = JSON.stringify(data);
- 						this.prefs.setCharPref("datawebgapps",JSONdata);
-					}else{
-						if(hash === "*"){
-							this.prefs.clearUserPref("datawebgapps");	
-						}
-					}
-				}
-
 				if(aMethod === "stable" || aMethod === "beta" || aMethod === "chrome"){
 					flashaidQuick.scriptManager(aMethod);
 				}
